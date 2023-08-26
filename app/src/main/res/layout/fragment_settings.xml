@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".settingsFragment">
 
-    <include layout="@layout/customtoolbar"/>
+    <include layout="@layout/custom_toolbar"/>
 
 
         <TextView
