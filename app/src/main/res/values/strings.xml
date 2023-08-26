@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">PhoremAndr</string>
+    <string name="Sign_up">Sign up</string>
+    <string name="firstname">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="country">Country</string>
+    <string name="password">Password</string>
+    <string name="alreadyHaveAnAccount">Already have an account?</string>
+
+    <string name="signIn">Sign in</string>
+    <string name="forget_password">Forget password ?</string>
+    <string name="dontHaveAnAccount">Don\'t have an account?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="memos">Memos</string>
+    <string name="demoText">DemoText</string>
+    <string name="contact_name">Contact name</string>
+    <string name="settings">Settings</string>
+    <string name="create_memo">Create Memo</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="contact_list">Contact List</string>
+    <string name="memo_list">Memo List</string>
+    <string name="log_out">Log Out</string>
+    <string name="change_avatar">Change Avatar</string>
+    <string name="name">Name</string>
+    <string name="update_profile">Update profile</string>
 </resources>
