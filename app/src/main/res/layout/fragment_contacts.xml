@@ -12,7 +12,7 @@
             android:id="@+id/contactSearch"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/colorPrimary">
+            android:background="@color/green_500">
         </SearchView>
 
         <androidx.recyclerview.widget.RecyclerView

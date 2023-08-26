@@ -89,7 +89,7 @@
                     android:textSize="22sp"
                     android:paddingLeft="5dp"
                     android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/green_200"/>
 
             </LinearLayout>
 
