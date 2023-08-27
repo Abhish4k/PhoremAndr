@@ -29,5 +29,7 @@
     <string name="enter_email">Please enter your email</string>
     <string name="enter_password">Please enter your password</string>
     <string name="enter_valid_email">Please enter valid email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="create_your_memo">Create your memo</string>
 
 </resources>

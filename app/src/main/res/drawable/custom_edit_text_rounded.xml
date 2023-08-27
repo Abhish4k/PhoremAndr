@@ -4,7 +4,7 @@
     <!--The outline turns to colorPrimary when the EditText is in focus-->
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <solid android:color="@android:color/" />
             <corners android:radius="12dp" />
             <stroke android:width="2dp" android:color="@color/green_200" />
         </shape>
