@@ -31,5 +31,10 @@
     <string name="enter_valid_email">Please enter valid email</string>
     <string name="phone_number">Phone number</string>
     <string name="create_your_memo">Create your memo</string>
+    <string name="home">Home</string>
+    <string name="contacts">Contacts</string>
+    <string name="enter_first_name">Please enter first name</string>
+    <string name="enter_last_name">Please enter last name</string>
+    <string name="enter_country">Please enter your country</string>
 
 </resources>

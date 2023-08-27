@@ -13,10 +13,12 @@ import androidx.viewbinding.ViewBinding;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_model.LoginResponse;
+import com.example.phoremandr.api_model.LoginResponseData;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySigninBinding;
 import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -94,7 +96,20 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                 signInBinding.loginProgress.setVisibility(View.GONE);
 
                 assert response.body() != null;
-                AppValidator.logData("loginProgress",""+response.body());
+                AppValidator.showToast(SignInScreen.this, response.body().getMessage());
+                if(response.body().getCode().contains("200")){
+                    AppValidator.logData("key","goToDashboard");
+                    sharedPrefHelper.setValue(SharedPreferencesKeys.firstName,response.body().getData().getFirstname());
+                    sharedPrefHelper.setValue(SharedPreferencesKeys.lastName, response.body().getData().getLastname());
+                    sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
+
+                    if(!response.body().getData().getToken().isEmpty()){
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
+                    }
+                    sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
+
+                    goToDashboard();
+                }
 
 
             }
@@ -104,5 +119,13 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                 AppValidator.logData("loginProgress",""+t.getMessage());
             }
         });
+
+
+
           }
+
+    void goToDashboard(){
+
+        startActivity(new Intent(SignInScreen.this, DashboardActivity.class));
+    }
 }

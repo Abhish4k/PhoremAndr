@@ -1,6 +1,11 @@
 package com.example.phoremandr.api_services;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -10,22 +15,27 @@ public  class APIClient {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient() {
+    public static ApiInterface getClient() {
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient okHttpClient= new OkHttpClient();
+        okHttpClient.newBuilder()
+                .addInterceptor(new ApiInterceptor())
+                .connectTimeout(150, TimeUnit.SECONDS)
+                .readTimeout(150, TimeUnit.SECONDS)
+                .writeTimeout(150, TimeUnit.SECONDS)
+                .build();
+        Gson gson = new GsonBuilder()
+                .create();
 
-
+        GsonConverterFactory factory = GsonConverterFactory.create(gson);
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiUrl.baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
+                .addConverterFactory(factory)
+                .client(okHttpClient).build();
 
 
 
-        return retrofit;
+        return retrofit.create(ApiInterface.class);
     }
 
 }

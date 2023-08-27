@@ -33,17 +33,17 @@ public class SharedPrefHelper {
     }
 
 
-    public String  getValue(String key, String value){
-        return  sharedPreferences.getString(key,value);
+    public String  getValue(String key){
+        return  sharedPreferences.getString(key,"");
 
     }
 
-    public int  getIntValue(String key, int value){
-        return sharedPreferences.getInt(key,value);
+    public int  getIntValue(String key){
+        return sharedPreferences.getInt(key,0);
     }
 
-    public boolean  getBoolValue(String key, boolean value){
-        return sharedPreferences.getBoolean(key,value);
+    public boolean  getBoolValue(String key){
+        return sharedPreferences.getBoolean(key,false);
     }
 
 

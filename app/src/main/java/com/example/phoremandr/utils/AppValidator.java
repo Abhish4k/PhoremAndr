@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
+import com.example.phoremandr.api_request_model.RegisterRequestModel;
 
 import java.util.regex.Pattern;
 
@@ -45,6 +46,43 @@ public class AppValidator {
         }
 
         if(loginRequestModel.getPassword().isEmpty()){
+            showToast(context, context.getString(R.string.enter_password));
+            return false;
+        }
+
+        return  true;
+    }
+
+
+
+    public static  boolean validateRegister(Context context, RegisterRequestModel registerRequestModel){
+
+        if(registerRequestModel.getFirstName().isEmpty()){
+            showToast(context, context.getString(R.string.enter_first_name));
+            return  false;
+        }
+
+        if(registerRequestModel.getLastName().isEmpty()){
+            showToast(context, context.getString(R.string.enter_last_name));
+            return  false;
+        }
+
+        if (registerRequestModel.getEmail().isEmpty()){
+            showToast(context,context.getString(R.string.enter_email));
+            return  false;
+        }
+
+        if(!isValid(registerRequestModel.getEmail())){
+            showToast(context,context.getString(R.string.enter_valid_email));
+            return  false;
+        }
+
+        if(registerRequestModel.getCountry().isEmpty()){
+            showToast(context, context.getString(R.string.enter_country));
+            return  false;
+        }
+
+        if(registerRequestModel.getPassword().isEmpty()){
             showToast(context, context.getString(R.string.enter_password));
             return false;
         }

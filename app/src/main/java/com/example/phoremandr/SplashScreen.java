@@ -10,9 +10,12 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewbinding.ViewBinding;
 
+import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
+import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends BaseActivity {
@@ -36,6 +39,16 @@ public class SplashScreen extends BaseActivity {
 
 
     public  void goToHome(){
-        new Handler().postDelayed(() -> startActivity(new Intent(SplashScreen.this, SignInScreen.class)), 2000);
+        new Handler().postDelayed(this::validateUserDetails, 2000);
+    }
+
+
+    public void validateUserDetails(){
+        AppValidator.logData("userId","" + sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
+        if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty()){
+            startActivity(new Intent(SplashScreen.this, SignInScreen.class));
+        }else {
+            startActivity(new Intent(SplashScreen.this, DashboardActivity.class));
+        }
     }
 }

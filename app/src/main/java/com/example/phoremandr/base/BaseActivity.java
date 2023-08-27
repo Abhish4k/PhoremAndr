@@ -21,7 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewBinding =  getViewModel();
-        apiInterface = APIClient.getClient().create(ApiInterface.class);
+        apiInterface = APIClient.getClient();
         setStatusBarColor(R.color.green_500);
         SharedPrefHelper.getInstance(viewBinding.getRoot().getContext());
         sharedPrefHelper = new SharedPrefHelper();
