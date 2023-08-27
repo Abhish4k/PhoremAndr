@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
@@ -16,10 +15,8 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.example.phoremandr.MainActivity;
+import com.example.phoremandr.SplashScreen;
 import com.example.phoremandr.R;
-
-import java.security.Provider;
 
 public class IncomingCallService extends Service {
     private IncomingCallReceiver callReceiver;
@@ -69,7 +66,7 @@ public class IncomingCallService extends Service {
         builder.setMessage("You have an Incoming call! Pick Up.");
         builder.setPositiveButton("Answer", (dialog, which) -> {
 
-            Intent openAppIntent = new Intent(context, MainActivity.class);
+            Intent openAppIntent = new Intent(context, SplashScreen.class);
             openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(openAppIntent);
 

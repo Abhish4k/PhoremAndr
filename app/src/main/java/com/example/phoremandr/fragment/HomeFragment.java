@@ -7,13 +7,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 
-public class HomeFragment extends Fragment {
+import com.example.phoremandr.R;
+import com.example.phoremandr.base.BaseFragment;
+import com.example.phoremandr.databinding.FragmentHomeBinding;
 
-    @Nullable
+public class HomeFragment extends BaseFragment {
+
+    FragmentHomeBinding fragmentHomeBinding;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
+        fragmentHomeBinding = DataBindingUtil.inflate(
+                layoutInflater, R.layout.fragment_home, container, false);
+
+        return  fragmentHomeBinding;
+
     }
 }

@@ -7,92 +7,105 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/loginProgress"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:orientation="vertical">
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
             <TextView
                 android:id="@+id/signupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/signIn"
-                android:textSize="70sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="70dp"
-                android:textColor="#3BEF42"/>
+                android:text="@string/signIn"
+                android:textColor="#3BEF42"
+                android:textSize="@dimen/_45ssp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signupNameTL"
+                android:id="@+id/etLayEmail"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                android:hint="@string/email">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signupNameTF"
+                    android:id="@+id/etEmail"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signupLastNameTL"
+                android:id="@+id/etLayPass"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:hint="@string/password">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signupLastNameTF"
+                    android:id="@+id/etPass"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
-                    android:drawableRight="@drawable/eye"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:drawableEnd="@drawable/eye" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/etForgot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10sp"
                 android:text="@string/forget_password"
-                android:textSize="20sp"
                 android:textColor="@color/black"
-                android:padding="10sp"/>
+                android:textSize="@dimen/_12ssp" />
 
             <Button
-                android:id="@+id/signInBTN"
+                android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
-                android:text="@string/signIn"
-                android:textSize="26sp"
                 android:background="@drawable/custom_button"
-                android:textAllCaps="false"/>
+                android:text="@string/signIn"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_18ssp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textColor="@color/black"
-                    android:text="@string/dontHaveAnAccount"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/dontHaveAnAccount"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_15ssp" />
+
+                <TextView
+                    android:id="@+id/tvSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:text="@string/Sign_up"
-                    android:textSize="22sp"
-                    android:paddingLeft="5dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/green_200"/>
+                    android:textColor="@color/green_200"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
-
 
 
         </LinearLayout>

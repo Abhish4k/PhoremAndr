@@ -26,4 +26,8 @@
     <string name="change_avatar">Change Avatar</string>
     <string name="name">Name</string>
     <string name="update_profile">Update profile</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="enter_password">Please enter your password</string>
+    <string name="enter_valid_email">Please enter valid email</string>
+
 </resources>

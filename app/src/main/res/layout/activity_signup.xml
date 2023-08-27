@@ -5,12 +5,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
             <TextView
@@ -18,13 +19,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Sign_up"
-                android:textSize="70sp"
+                android:textSize="@dimen/_45ssp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="70dp"
                 android:textColor="#3BEF42"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signupNameTL"
+                android:id="@+id/etLayFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/firstname"
@@ -32,14 +33,14 @@
                 android:layout_marginTop="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signupNameTF"
+                    android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signupLastNameTL"
+                android:id="@+id/etLayLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/last_name"
@@ -47,14 +48,14 @@
                 android:layout_marginTop="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signupLastNameTF"
+                    android:id="@+id/etLastName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signupEmailTL"
+                android:id="@+id/etLayEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -62,13 +63,13 @@
                 android:layout_marginTop="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signupEmailTF"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/countryTL"
+                android:id="@+id/etLayCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/country"
@@ -76,13 +77,13 @@
                 android:layout_marginTop="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/countryTF"
+                    android:id="@+id/etCountry"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordTL"
+                android:id="@+id/etLayPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -90,18 +91,20 @@
                 android:layout_marginTop="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordTF"
+                    android:id="@+id/etPass"
+                    android:drawableEnd="@drawable/eye"
+                    android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/signUpBTN"
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:text="@string/Sign_up"
-                android:textSize="26sp"
+                android:textSize="@dimen/_18ssp"
                 android:background="@drawable/custom_button"
                 android:textAllCaps="false"/>
 
@@ -112,16 +115,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/_15ssp"
                     android:textColor="@color/black"
                     android:text="@string/alreadyHaveAnAccount"/>
 
                 <TextView
+                    android:id="@+id/tvSignIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signIn"
-                    android:textSize="22sp"
-                    android:paddingLeft="5dp"
+                    android:textSize="@dimen/_15ssp"
+                    android:layout_marginStart="5dp"
                     android:textStyle="bold"
                     android:textColor="@color/green_200"/>
             </LinearLayout>
