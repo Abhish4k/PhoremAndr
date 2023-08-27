@@ -5,5 +5,6 @@
     <color name="green_700">#FF22E12B</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#373636</color>
     <color name="changeAvatar">#2D97ED</color>
 </resources>

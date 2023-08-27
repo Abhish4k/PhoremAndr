@@ -7,13 +7,20 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 
-public class SettingsFragment extends Fragment {
+import com.example.phoremandr.R;
+import com.example.phoremandr.base.BaseFragment;
+import com.example.phoremandr.databinding.FragmentSettingsBinding;
 
-    @Nullable
+public class SettingsFragment extends BaseFragment {
+   FragmentSettingsBinding settingsBinding;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
+        settingsBinding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_settings, container,false);
+        return settingsBinding;
     }
 }

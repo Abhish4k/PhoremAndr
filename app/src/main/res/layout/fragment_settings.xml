@@ -1,81 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".settingsFragment">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <include layout="@layout/custom_toolbar"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_50sdp"
+           android:background="@color/green_500"
+           android:layout_gravity="center">
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:text="@string/settings"
+               android:textColor="@color/white"
+               android:gravity="center"
+               android:textSize="@dimen/_15ssp"
+               android:layout_gravity="center"/>
+       </LinearLayout>
 
 
         <TextView
-            android:id="@+id/createMemoTV"
-            android:layout_margin="10dp"
+            android:id="@+id/tvCreateMemo"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_memo"
-            android:textSize="28sp" />
+            android:textSize="@dimen/_14ssp" />
         <View
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"/>
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
 
-    <TextView
-        android:id="@+id/editProfileTV"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_profile"
-        android:textSize="28sp" />
-    <View
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
-
-
-    <TextView
-        android:id="@+id/contactListTV"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/contact_list"
-        android:textSize="28sp" />
-    <View
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
+        <TextView
+            android:id="@+id/tvEditProfile"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_profile"
+            android:textSize="@dimen/_14ssp" />
+        <View
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
 
 
-    <TextView
-        android:id="@+id/memoListTV"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/memo_list"
-        android:textSize="28sp" />
-    <View
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
+        <TextView
+            android:id="@+id/tvContactList"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_list"
+            android:textSize="@dimen/_14ssp" />
+        <View
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
 
-    <TextView
-        android:id="@+id/logOutTV"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/log_out"
-        android:textSize="28sp" />
-    <View
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
+
+        <TextView
+            android:id="@+id/tvMemoList"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/memo_list"
+            android:textSize="@dimen/_14ssp" />
+        <View
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
 
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvAddAlarm"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addAlarmSound"
+            android:textSize="@dimen/_14ssp" />
+        <View
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
+
+        <TextView
+            android:id="@+id/tvLogout"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_12sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_out"
+            android:textSize="@dimen/_14ssp" />
+        <View
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/grey"/>
+
+
+
+    </LinearLayout>
+</layout>
