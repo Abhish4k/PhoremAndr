@@ -26,7 +26,9 @@ public class CallReceiver extends PhoneCallReceiver {
         Toast.makeText(ctx,"New Incoming Call"+ number,Toast.LENGTH_LONG).show();
         context =   ctx;
 
-        showAlertDialog(ctx, number);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            showAlertDialog(ctx, number);
+        }
         Log.d("phoneNumber","" + number);
 
     }

@@ -27,14 +27,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="@string/demoText"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="22sp" />
                 <TextView
                     android:id="@+id/memoListTV2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:text="@string/demoText"
                     android:textSize="18sp" />
                 <TextView
@@ -43,7 +43,7 @@
                     android:layout_margin="5dp"
                     android:layout_height="wrap_content"
                     android:text="@string/demoText"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
                 <TextView
                     android:id="@+id/memoListTV4"
@@ -51,17 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="@string/demoText"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
-                <TextView
-                    android:id="@+id/memoListTV5"
-                    android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content"
-                    android:text="@string/demoText"
-                    android:textSize="18sp" />
-
 
             </LinearLayout>
 

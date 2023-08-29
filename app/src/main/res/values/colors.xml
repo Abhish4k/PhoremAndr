@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_200">#22E12B</color>
-    <color name="green_500">#2AF634</color>
-    <color name="green_700">#FF22E12B</color>
+    <color name="green_200">#25D366</color>
+    <color name="green_500">#25D366</color>
+    <color name="green_700">#25D366</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#373636</color>
     <color name="changeAvatar">#2D97ED</color>
+    <color name="stopBtnColor">#650707</color>
 </resources>

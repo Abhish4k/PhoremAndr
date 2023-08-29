@@ -59,4 +59,9 @@ dependencies {
     /// sdp for height and width, ssp for text size
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
+
+    dependencies{
+        implementation 'com.karumi:dexter:6.2.3'
+    }
+
 }

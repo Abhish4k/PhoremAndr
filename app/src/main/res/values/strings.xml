@@ -37,5 +37,8 @@
     <string name="enter_first_name">Please enter first name</string>
     <string name="enter_last_name">Please enter last name</string>
     <string name="enter_country">Please enter your country</string>
-
+    <string name="recording_audio_memo">Recording Audio Memo</string>
+    <string name="add_custom_alarm_sound">Add Custom Alarm sound</string>
+    <string name="sound_1">Sound 1</string>
+    <string name="set_sound">Set Sound</string>
 </resources>

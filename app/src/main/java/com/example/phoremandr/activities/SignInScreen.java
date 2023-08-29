@@ -1,12 +1,20 @@
 package com.example.phoremandr.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewbinding.ViewBinding;
 
@@ -26,7 +34,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class SignInScreen extends BaseActivity implements View.OnClickListener {
+
+
+
     ActivitySigninBinding signInBinding;
     @Override
     public ViewBinding getViewModel() {
@@ -128,4 +140,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
         startActivity(new Intent(SignInScreen.this, DashboardActivity.class));
     }
+
+
+
 }
