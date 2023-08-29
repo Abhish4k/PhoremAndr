@@ -24,6 +24,7 @@ public class CreateMemoFragment extends BaseFragment {
 
     private MediaRecorder recorder;
     private boolean isRecording = false;
+    //sdf
     private String recordPermission = Manifest.permission.RECORD_AUDIO;
     private String fileName;
 
