@@ -1,12 +1,8 @@
 package com.example.phoremandr.fragment;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
@@ -21,6 +17,32 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
         settingsBinding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_settings, container,false);
+        initView();
         return settingsBinding;
     }
+
+
+
+    void initView(){
+        settingsBinding.tvCreateMemo.setOnClickListener(v -> onClickCreateMemo());
+        settingsBinding.tvContactList.setOnClickListener(v -> onClickContactList());
+    }
+
+
+    void  onClickCreateMemo(){
+        loadFragment(new CreateMemoFragment(), getString(R.string.create_memo));
+    }
+    public void onClickContactList(){
+        loadFragment(new ContactFragment(true, requireContext().getString(R.string.contact_list)), getString(R.string.contacts));
+    }
+
+
+    public  void  loadFragment(Fragment fragment, String name){
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).addToBackStack(name).commit();
+    }
+
+
+
+
+
 }

@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.adapter.ContactAdapter;
 import com.example.phoremandr.api_request_model.ContactListModel;
 import com.example.phoremandr.base.BaseFragment;
@@ -48,12 +49,22 @@ public class ContactFragment extends BaseFragment {
 
     List<ContactListModel> contactList;
 
+    public  boolean isView;
+    public String name;
+    public ContactFragment(boolean isView, String name){
+        this.isView = isView;
+        this.name = name;
+    }
+
     @Override
     public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
         contactsBinding  = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_contacts, container, false);
-
+        contactsBinding.contactToolbar.setNameData(name);
+        contactsBinding.contactToolbar.setVisibility(isView);
         contactList = new ArrayList<>();
         checkContactPermission();
+
+        contactsBinding.contactToolbar.ivBack.setOnClickListener(v -> getFragmentManager().popBackStack());
         return contactsBinding;
     }
 

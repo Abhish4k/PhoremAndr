@@ -2,23 +2,38 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="nameData"
+            type="String" />
+
+        <variable
+            name="visibility"
+            type="java.lang.Boolean" />
+
+
+
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
         android:background="@color/green_200">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_5sdp">
 
             <ImageView
+                android:id="@+id/ivBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_12sdp"
                 android:src="@drawable/arrow_back"
                 app:tint="@color/black" />
 
@@ -26,10 +41,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/memos"
+                android:text="@{nameData}"
                 android:fontFamily="@font/abel"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+
+                android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
 
 

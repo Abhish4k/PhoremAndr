@@ -26,7 +26,7 @@
             android:id="@+id/tvCreateMemo"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_memo"
             android:textSize="@dimen/_14ssp" />
@@ -40,7 +40,7 @@
             android:id="@+id/tvEditProfile"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_profile"
             android:textSize="@dimen/_14ssp" />
@@ -55,8 +55,9 @@
             android:id="@+id/tvContactList"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="@string/contact_list"
             android:textSize="@dimen/_14ssp" />
         <View
@@ -70,7 +71,7 @@
             android:id="@+id/tvMemoList"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/memo_list"
             android:textSize="@dimen/_14ssp" />
@@ -86,7 +87,7 @@
             android:id="@+id/tvAddAlarm"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/addAlarmSound"
             android:textSize="@dimen/_14ssp" />
@@ -100,7 +101,7 @@
             android:id="@+id/tvLogout"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginVertical="@dimen/_12sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/log_out"
             android:textSize="@dimen/_14ssp" />

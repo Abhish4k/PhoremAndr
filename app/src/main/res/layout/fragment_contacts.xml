@@ -8,6 +8,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include android:id="@+id/contactToolbar"
+
+            layout="@layout/toolbar"
+            android:visibility="gone"/>
+
         <SearchView
             android:id="@+id/contactSearch"
             android:layout_width="match_parent"

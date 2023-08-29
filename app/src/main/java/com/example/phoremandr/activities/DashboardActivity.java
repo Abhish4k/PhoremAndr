@@ -1,20 +1,14 @@
 package com.example.phoremandr.activities;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
@@ -26,14 +20,7 @@ import com.example.phoremandr.fragment.ContactFragment;
 import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.DexterBuilder;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.util.List;
 
 public class DashboardActivity extends BaseActivity   implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -92,21 +79,22 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
 
 
 
-    public  void  loadFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).commit();
+    public  void  loadFragment(Fragment fragment, String name){
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).addToBackStack(name).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.bnHome:
-                loadFragment(new HomeFragment());
+                loadFragment(new HomeFragment(), getString(R.string.home));
                 break;
             case R.id.bnContacts:
-                loadFragment(new ContactFragment());
+
+                loadFragment(new ContactFragment(false, ""), getString(R.string.contacts));
                 break;
             case R.id.bnSettings:
-                loadFragment(new SettingsFragment());
+                loadFragment(new SettingsFragment(), getString(R.string.settings));
                 break;
         }
 
