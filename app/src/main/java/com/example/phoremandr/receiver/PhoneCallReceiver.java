@@ -1,9 +1,15 @@
 package com.example.phoremandr.receiver;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.example.phoremandr.R;
 
 import java.util.Date;
 public class PhoneCallReceiver  extends BroadcastReceiver
@@ -74,6 +80,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
                 callStartTime = new Date();
                 savedNumber = number;
                 onIncomingCallStarted(context, number, callStartTime);
+                showAlertDialog(context, number);
                 break;
 
             case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -89,5 +96,33 @@ public class PhoneCallReceiver  extends BroadcastReceiver
                 }
         }
         lastState = state;
+    }
+
+
+    private void showAlertDialog(Context context, String number) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Incoming Call");
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage("You have an Incoming call! Pick Up." + number);
+        builder.setPositiveButton("App Open", (dialog, which) -> {
+            Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
+            context.startActivity(i);
+
+        });
+        builder.setNegativeButton("Decline", (dialog, which) -> {
+            // Code to decline the call by the alert dialog box will be here
+            dialog.dismiss();
+        });
+
+        AlertDialog alertDialog = builder.create();
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+
+        alertDialog.getWindow().setType(LAYOUT_FLAG);
+        alertDialog.show();
     }
 }

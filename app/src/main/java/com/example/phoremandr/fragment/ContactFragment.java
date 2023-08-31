@@ -44,7 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ContactFragment extends BaseFragment {
-    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+
     FragmentContactsBinding contactsBinding;
 
     List<ContactListModel> contactList;

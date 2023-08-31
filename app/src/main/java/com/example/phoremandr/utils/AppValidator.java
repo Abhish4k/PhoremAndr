@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.api_request_model.RegisterRequestModel;
+import com.example.phoremandr.api_request_model.UpdateProfileRequestModel;
 
 import java.util.regex.Pattern;
 
@@ -88,5 +89,32 @@ public class AppValidator {
         }
 
         return  true;
+    }
+
+
+    public  static  boolean validateProfile(Context context,UpdateProfileRequestModel updateProfileRequestModel){
+
+         if (updateProfileRequestModel.getFirstName().isEmpty()){
+             showToast(context, context.getString(R.string.enter_first_name));
+             return false;
+         }
+
+         if (updateProfileRequestModel.getLastName().isEmpty()){
+             showToast(context, context.getString(R.string.enter_last_name));
+             return false;
+         }
+
+
+         if (updateProfileRequestModel.getEmail().isEmpty()){
+             showToast(context, context.getString(R.string.enter_email));
+             return false;
+         }
+
+        if(!isValid(updateProfileRequestModel.getEmail())){
+            showToast(context,context.getString(R.string.enter_valid_email));
+            return  false;
+        }
+
+        return true;
     }
 }
