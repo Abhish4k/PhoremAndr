@@ -26,9 +26,12 @@ public class CallReceiver extends PhoneCallReceiver {
         Toast.makeText(ctx,"New Incoming Call"+ number,Toast.LENGTH_LONG).show();
         context =   ctx;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            showAlertDialog(ctx, number);
+        if(!number.isEmpty()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                showAlertDialog(ctx, number);
+            }
         }
+
         Log.d("phoneNumber","" + number);
 
     }
@@ -44,9 +47,9 @@ public class CallReceiver extends PhoneCallReceiver {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showAlertDialog(Context context, String number) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
         builder.setTitle("Incoming Call");
-        builder.setIcon(R.drawable.ic_launcher_background);
+        builder.setIcon(R.mipmap.ic_launcher);
         builder.setMessage("You have an Incoming call! Pick Up." + number);
         builder.setPositiveButton("App Open", (dialog, which) -> {
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
@@ -59,7 +62,8 @@ public class CallReceiver extends PhoneCallReceiver {
         });
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+       alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+       alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alertDialog.show();
     }
 
