@@ -25,12 +25,18 @@ public class SettingsFragment extends BaseFragment {
 
     void initView(){
         settingsBinding.tvCreateMemo.setOnClickListener(v -> onClickCreateMemo());
+        settingsBinding.tvEditProfile.setOnClickListener(v -> onClickEditProfile());
         settingsBinding.tvContactList.setOnClickListener(v -> onClickContactList());
     }
 
 
     void  onClickCreateMemo(){
-        loadFragment(new CreateMemoFragment(), getString(R.string.create_memo));
+        loadFragment(new CreateMemoFragment(true, getString(R.string.create_memo)), getString(R.string.create_memo));
+    }
+
+
+    void  onClickEditProfile(){
+        loadFragment(new EditProfileFragment(), getString(R.string.edit_profile));
     }
     public void onClickContactList(){
         loadFragment(new ContactFragment(true, requireContext().getString(R.string.contact_list)), getString(R.string.contacts));

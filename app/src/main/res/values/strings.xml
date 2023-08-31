@@ -43,4 +43,8 @@
     <string name="set_sound">Set Sound</string>
     <string name="stop">Stop</string>
     <string name="start">Start</string>
+    <string name="edit_memo">Edit Memo</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
 </resources>
