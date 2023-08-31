@@ -28,7 +28,7 @@ public class CallReceiver extends PhoneCallReceiver {
 
         if(!number.isEmpty()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                showAlertDialog(ctx, number);
+
             }
         }
 
@@ -45,26 +45,5 @@ public class CallReceiver extends PhoneCallReceiver {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showAlertDialog(Context context, String number) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-        builder.setTitle("Incoming Call");
-        builder.setIcon(R.mipmap.ic_launcher);
-        builder.setMessage("You have an Incoming call! Pick Up." + number);
-        builder.setPositiveButton("App Open", (dialog, which) -> {
-            Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
-            context.startActivity(i);
-
-        });
-        builder.setNegativeButton("Decline", (dialog, which) -> {
-            // Code to decline the call by the alert dialog box will be here
-            dialog.dismiss();
-        });
-
-        AlertDialog alertDialog = builder.create();
-       alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-       alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        alertDialog.show();
-    }
 
 }

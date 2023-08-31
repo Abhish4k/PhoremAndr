@@ -2,12 +2,19 @@ package com.example.phoremandr;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -30,9 +37,12 @@ public class SplashScreen extends BaseActivity {
 
         splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
 
-        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(SplashScreen.this,
-                    new String[]{ Manifest.permission.READ_PHONE_STATE},100);
+
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            displayOverLauncher.launch(intent);
         }
 
         goToHome();
@@ -69,6 +79,15 @@ public class SplashScreen extends BaseActivity {
     }
 
 
+    ActivityResultLauncher<Intent> displayOverLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+
+                }
+            });
 
 
 }
