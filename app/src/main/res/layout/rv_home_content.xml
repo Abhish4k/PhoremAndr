@@ -5,54 +5,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/memoList"
+            android:id="@+id/cvMemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="25dp">
+            app:cardCornerRadius="@dimen/_15sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="@dimen/_5sdp"
                 android:background="@color/green_500"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/memoListTV1"
+                    android:id="@+id/tvName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:text="@string/demoText"
                     android:textColor="@color/black"
-                    android:textSize="22sp" />
+                    android:textSize="@dimen/_15ssp" />
                 <TextView
-                    android:id="@+id/memoListTV2"
+                    android:id="@+id/tvMemoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:textColor="@color/black"
                     android:text="@string/demoText"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12ssp" />
                 <TextView
-                    android:id="@+id/memoListTV3"
+                    android:id="@+id/tvNumber"
                     android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_height="wrap_content"
                     android:text="@string/demoText"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12ssp" />
                 <TextView
-                    android:id="@+id/memoListTV4"
+                    android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:text="@string/demoText"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
 

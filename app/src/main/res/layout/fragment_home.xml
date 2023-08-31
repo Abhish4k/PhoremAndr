@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/homeProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 
     <LinearLayout
@@ -19,12 +26,16 @@
             layout="@layout/toolbar"/>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/memoListRV"
-            android:layout_margin="10dp"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/memoListRV"
+                tools:listitem="@layout/rv_home_content"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -33,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+
         android:layout_alignParentEnd="true"
         android:src="@drawable/add"
         android:layout_margin="25dp"

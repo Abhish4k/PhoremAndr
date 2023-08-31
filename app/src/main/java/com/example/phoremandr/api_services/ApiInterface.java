@@ -2,6 +2,7 @@ package com.example.phoremandr.api_services;
 
 import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
+import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
 import com.example.phoremandr.api_model.update_user_profile.UpdateProfileResponse;
 
@@ -46,6 +47,11 @@ public interface ApiInterface {
     @POST("p_edit_profile")
     Call<UpdateProfileResponse> callUpdateProfile(@Field("id") String userId, @Field("firstname") String firstName, @Field("lastname") String lastName,
                                                   @Field("email")String email);
+
+
+    @FormUrlEncoded
+    @POST("get_all_memos")
+    Call<GetAllMemoResponse> callGetAllMemoApi(@Field("user_id") String userId);
 
 
 
