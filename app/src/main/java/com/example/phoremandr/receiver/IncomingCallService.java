@@ -37,6 +37,7 @@ public class IncomingCallService extends Service {
 
     public void onCreate() {
         super.onCreate();
+
         callReceiver = new IncomingCallReceiver(); // Instantiate the BroadcastReceiver
         registerReceiver(callReceiver, new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED));
 
@@ -66,9 +67,8 @@ public class IncomingCallService extends Service {
         builder.setMessage("You have an Incoming call! Pick Up.");
         builder.setPositiveButton("Answer", (dialog, which) -> {
 
-            Intent openAppIntent = new Intent(context, SplashScreen.class);
-            openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(openAppIntent);
+            Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
+            context.startActivity(i);
 
         });
         builder.setNegativeButton("Decline", (dialog, which) -> {

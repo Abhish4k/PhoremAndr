@@ -4,13 +4,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewbinding.ViewBinding;
@@ -19,6 +22,7 @@ import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
+import com.example.phoremandr.receiver.IncomingCallService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.karumi.dexter.Dexter;
@@ -37,7 +41,19 @@ public class SplashScreen extends BaseActivity {
     public ViewBinding getViewModel() {
 
         splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
+
+        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(SplashScreen.this,
+                    new String[]{ Manifest.permission.READ_PHONE_STATE},100);
+        }
+
         goToHome();
+
+
+        Intent intent = new Intent(this , IncomingCallService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+
         return splashBinding;
     }
 
