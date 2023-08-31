@@ -39,6 +39,7 @@ public class SplashScreen extends BaseActivity {
 
 
 
+
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
