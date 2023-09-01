@@ -47,4 +47,7 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
+    <string name="_00_00_00_">00:00:00/</string>
+    <string name="zero_text">00:00:00</string>
+    <string name="view_memo">View Memo</string>
 </resources>

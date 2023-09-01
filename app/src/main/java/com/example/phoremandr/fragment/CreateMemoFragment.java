@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,9 @@ public class CreateMemoFragment extends BaseFragment {
 
         memoBinding.memoToolbar.setVisibility(isVisible);
         memoBinding.memoToolbar.setNameData(name);
-
-        memoBinding.memoToolbar.ivBack.setOnClickListener(v -> getFragmentManager().popBackStack());
+        memoBinding.memoToolbar.ivBack.setOnClickListener(v -> {
+            Log.e("==========>","clickable" );
+        });
         return memoBinding;
 
     }

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+        <include
+            android:id="@+id/viewMemoToolbar"
+            layout="@layout/toolbar"/>
+
+        <ProgressBar
+            android:id="@+id/viewMemoProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnEditMemo"
+            android:layout_below="@+id/viewMemoToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="@string/edit_memo"/>
+
+       <include
+           android:id="@+id/tvName"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginHorizontal="@dimen/_5sdp"
+           android:layout_below="@id/btnEditMemo"
+           layout="@layout/view_memo_items_layout"
+           />
+
+        <include
+            android:id="@+id/tvPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            layout="@layout/view_memo_items_layout"
+            />
+
+
+        <include
+            android:id="@+id/tvMemoName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvPhone"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            layout="@layout/view_memo_items_layout"
+            />
+
+        <include
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMemoName"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            layout="@layout/view_memo_items_layout"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/llAudioDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDate"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/tvPlayTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:text="@string/_00_00_00_"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:text="@string/zero_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/llAudioDuration"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:text="@string/play"/>
+
+            <Button
+                android:id="@+id/btnPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="@string/pause"/>
+
+            <Button
+                android:id="@+id/btnResume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+
+                android:text="@string/resume"/>
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:text="@string/stop"/>
+
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>
