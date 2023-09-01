@@ -1,13 +1,19 @@
 package com.example.phoremandr.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.api_request_model.RegisterRequestModel;
 import com.example.phoremandr.api_request_model.UpdateProfileRequestModel;
+import com.example.phoremandr.helper.SharedPrefHelper;
 
 import java.util.regex.Pattern;
 
@@ -116,5 +122,33 @@ public class AppValidator {
         }
 
         return true;
+    }
+
+
+    public  static    void showLogoutPopup(Context context, SharedPrefHelper sharedPrefHelper) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.log_out));
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage(context.getString(R.string.want_to_logout));
+        builder.setPositiveButton(context.getString(R.string.log_out), (dialog, which) -> {
+            sharedPrefHelper.erseAllData();
+            context.startActivity(new Intent(context, SignInScreen.class));
+
+        });
+        builder.setNegativeButton("Decline", (dialog, which) -> {
+            // Code to decline the call by the alert dialog box will be here
+            dialog.dismiss();
+        });
+
+        AlertDialog alertDialog = builder.create();
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+
+        alertDialog.getWindow().setType(LAYOUT_FLAG);
+        alertDialog.show();
     }
 }
