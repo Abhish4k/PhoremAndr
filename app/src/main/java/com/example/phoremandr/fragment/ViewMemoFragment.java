@@ -44,7 +44,7 @@ public class ViewMemoFragment extends BaseFragment {
 
     void  initView(){
         viewMemoBinding.viewMemoToolbar.setVisibility(true);
-        viewMemoBinding.viewMemoToolbar.setNameData("");
+        viewMemoBinding.viewMemoToolbar.setNameData(requireContext().getString(R.string.view_memo));
         viewMemoBinding.viewMemoToolbar.ivBack.setOnClickListener(v -> requireFragmentManager().popBackStack());
 
 
@@ -57,7 +57,7 @@ public class ViewMemoFragment extends BaseFragment {
         });
 
 
-        viewMemoBinding.btnEditMemo.setOnClickListener(v ->  loadFragment(new CreateMemoFragment(true, requireContext().getString(R.string.create_memo)),getString(R.string.home)));
+        viewMemoBinding.btnEditMemo.setOnClickListener(v ->  loadFragment(new CreateMemoFragment(true, true, requireContext().getString(R.string.edit_memo), memoId),requireContext().getString(R.string.view_memo)));
 
 
         viewMemoBinding.btnPause.setOnClickListener(v -> {

@@ -31,7 +31,7 @@ public class SettingsFragment extends BaseFragment {
 
 
     void  onClickCreateMemo(){
-        loadFragment(new CreateMemoFragment(true, getString(R.string.create_memo)), requireContext().getString(R.string.create_memo));
+        loadFragment(new CreateMemoFragment(true, false, getString(R.string.create_memo), ""), requireContext().getString(R.string.create_memo));
     }
 
 

@@ -68,7 +68,7 @@ public class HomeFragment extends BaseFragment {
         apiInterface = APIClient.getClient();
 
 
-        fragmentHomeBinding.fbCreateMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, requireContext().getString(R.string.create_memo)), requireContext().getString(R.string.home) ));
+        fragmentHomeBinding.fbCreateMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, false, requireContext().getString(R.string.create_memo),""), requireContext().getString(R.string.home) ));
 
         homeAdapter = new HomeAdapter(getAllMemoDataResponseList);
         fragmentHomeBinding.memoListRV.setHasFixedSize(true);
@@ -90,8 +90,6 @@ public class HomeFragment extends BaseFragment {
 
                 GetAllMemoDataResponse deletedCourse = getAllMemoDataResponseList.get(viewHolder.getAdapterPosition());
                 callDeleteMemoId(deletedCourse.getId().toString(), viewHolder);
-
-
 
             }
         };

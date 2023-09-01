@@ -3,100 +3,106 @@ import android.Manifest;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewbinding.ViewBinding;
 import com.example.phoremandr.R;
+import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdDataResponse;
+import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentCreateMemoBinding;
+import com.example.phoremandr.utils.AppValidator;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CreateMemoFragment extends BaseFragment {
 
     private MediaRecorder recorder;
     private boolean isRecording = false;
-    //sdf
-    private final String recordPermission = Manifest.permission.RECORD_AUDIO;
-    // constant for storing audio permission
+
     public static final int PERMISSION_CODE = 1;
-    private Chronometer myChronometer;
+
     FragmentCreateMemoBinding memoBinding;
-    boolean isVisible;
-    String name;
-    CreateMemoFragment(boolean isVisible, String name){
+    boolean isVisible, isEdit;
+
+    String name, memoId;
+    String audioUrl = "";
+    CreateMemoFragment(boolean isVisible, boolean isEdit, String name, String memoId){
         this.isVisible = isVisible;
+        this.isEdit = isEdit;
         this.name = name;
+        this.memoId = memoId;
     }
     @Override
     public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
 
         memoBinding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_create_memo, container, false);
-
-        memoBinding.memoToolbar.setVisibility(isVisible);
-        memoBinding.memoToolbar.setNameData(name);
-        memoBinding.memoToolbar.ivBack.setOnClickListener(v -> {
-            Log.e("==========>","clickable" );
-        });
+        initView();
         return memoBinding;
 
     }
 
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_memo, container, false);
-
-        myChronometer = view.findViewById(R.id.chronometer);
-        Button buttonStart = view.findViewById(R.id.buttonStart);
 
 
 
+    void initView(){
 
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkRecordingPermission()) {
-                    if (!isRecording) {
-                        isRecording = true;
-                        myChronometer.setBase(SystemClock.elapsedRealtime());
-                        myChronometer.start();
-                        startRecording();
-                        buttonStart.setText("Stop");
-                    } else {
-                        isRecording = false;
-                        myChronometer.stop();
-                        myChronometer.setBase(SystemClock.elapsedRealtime());
-                        saveRecording();
-                        Toast.makeText(getContext(), "Recording Saved", Toast.LENGTH_SHORT).show();
-                        buttonStart.setText("Start");
-                    }
+        memoBinding.memoToolbar.setNameData(name);
+
+        memoBinding.memoToolbar.setVisibility(isVisible);
+
+        memoBinding.memoToolbar.ivBack.setOnClickListener(v -> {
+           requireFragmentManager().popBackStack();
+
+        });
+
+        if(isEdit){
+            callMemoView();
+        }
+
+        memoBinding.buttonStart.setOnClickListener(v -> {
+            if (checkRecordingPermission()) {
+                if (!isRecording) {
+                    isRecording = true;
+                    memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
+                    memoBinding.chronometer.start();
+                    startRecording();
+                    memoBinding.buttonStart.setText(requireContext().getString(R.string.stop));
                 } else {
-                    requestRecordingPermission();
+                    isRecording = false;
+                    memoBinding.chronometer.stop();
+                    memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
+                    saveRecording();
+                    Toast.makeText(getContext(), "Recording Saved", Toast.LENGTH_SHORT).show();
+                    memoBinding.buttonStart.setText(requireContext().getString(R.string.start));
                 }
+            } else {
+                requestRecordingPermission();
             }
         });
 
-
-        return view;
-
     }
 
+
+
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
     private void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -111,12 +117,9 @@ public class CreateMemoFragment extends BaseFragment {
         recorder.start();
 
         // Update the Chronometer UI on the main thread
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                myChronometer.setBase(SystemClock.elapsedRealtime());
-                myChronometer.start();
-            }
+        executorService.execute(() -> {
+            memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
+            memoBinding.chronometer.start();
         });
     }
 
@@ -128,12 +131,9 @@ public class CreateMemoFragment extends BaseFragment {
         recorder = null;
 
         // Update the Chronometer UI on the main thread
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                myChronometer.stop();
-                myChronometer.setBase(SystemClock.elapsedRealtime());
-            }
+        executorService.execute(() -> {
+            memoBinding.chronometer.stop();
+            memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
         });
     }
 
@@ -152,29 +152,44 @@ public class CreateMemoFragment extends BaseFragment {
         return true;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode== PERMISSION_CODE){
-            if (grantResults.length>0){
-                boolean permissionToRecord=grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                if (permissionToRecord){
-                    Toast.makeText(getContext() , "Permission Granted" , Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getContext() , "Permission Denied" , Toast.LENGTH_SHORT).show();
-                }
 
-            }
-
-        }
-
-    }
 
     private  String getRecordingFilePath(){
         ContextWrapper contextWrapper = new ContextWrapper(requireContext());
         File music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         File file = new File(music, "testfile"+".mp3");
         return  file.getPath();
+    }
+
+
+    void callMemoView(){
+        memoBinding.createMemoProgress.setVisibility(View.VISIBLE);
+        Call<GetMemoByIdResponse> call3 = apiInterface.callGetMemoById(memoId);
+
+        call3.enqueue(new Callback<GetMemoByIdResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<GetMemoByIdResponse> call, @NotNull Response<GetMemoByIdResponse> response) {
+                memoBinding.createMemoProgress.setVisibility(View.GONE);
+                assert response.body() != null;
+
+                if (response.body().getCode().equals("200")){
+                    GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
+
+                    memoBinding.etName.setText(getMemoByIdDataResponse.getName());
+                    memoBinding.etMemoName.setText(getMemoByIdDataResponse.getMemo());
+                    memoBinding.etPhone.setText(getMemoByIdDataResponse.getPhoneNumber());
+
+                    audioUrl = getMemoByIdDataResponse.getVoiceMemo();
+
+                }
+
+            }
+            @Override
+            public void onFailure(@NotNull  Call<GetMemoByIdResponse> call, @NotNull Throwable t) {
+                memoBinding.createMemoProgress.setVisibility(View.GONE);
+                AppValidator.logData("getMemoById",""+t.getMessage());
+            }
+        });
     }
 }
