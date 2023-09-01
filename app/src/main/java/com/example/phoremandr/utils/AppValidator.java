@@ -127,16 +127,15 @@ public class AppValidator {
 
     public  static    void showLogoutPopup(Context context, SharedPrefHelper sharedPrefHelper) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.log_out));
+        builder.setTitle(context.getString(R.string.logout));
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setMessage(context.getString(R.string.want_to_logout));
-        builder.setPositiveButton(context.getString(R.string.log_out), (dialog, which) -> {
+        builder.setPositiveButton(context.getString(R.string.logout), (dialog, which) -> {
             sharedPrefHelper.erseAllData();
             context.startActivity(new Intent(context, SignInScreen.class));
 
         });
-        builder.setNegativeButton("Decline", (dialog, which) -> {
-            // Code to decline the call by the alert dialog box will be here
+        builder.setNegativeButton(context.getString(R.string.cancel), (dialog, which) -> {
             dialog.dismiss();
         });
 

@@ -72,8 +72,6 @@ public class HomeFragment extends BaseFragment {
         sharedPrefHelper = new SharedPrefHelper();
         apiInterface = APIClient.getClient();
 
-
-
         homeAdapter = new HomeAdapter(getAllMemoDataResponseList);
         fragmentHomeBinding.memoListRV.setHasFixedSize(true);
         fragmentHomeBinding.memoListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -81,35 +79,36 @@ public class HomeFragment extends BaseFragment {
 
         if(isShow){
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.VISIBLE);
-            fragmentHomeBinding.fbCreateMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, false, requireContext().getString(R.string.create_memo),""), requireContext().getString(R.string.home) ));
-            homeAdapter.setOnClickListener((position, model) -> {
-                AppValidator.logData("getItemId", "" + model.getId());
-
-                loadFragment(new ViewMemoFragment(model.getId().toString()),getString(R.string.home));
-            });
-
-
-
-            SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(requireContext()) {
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-                    GetAllMemoDataResponse deletedCourse = getAllMemoDataResponseList.get(viewHolder.getAdapterPosition());
-                    callDeleteMemoId(deletedCourse.getId().toString(), viewHolder);
-
-                }
-            };
-
-            ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
-            itemTouchhelper.attachToRecyclerView(fragmentHomeBinding.memoListRV);
-
-
 
         }else {
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.GONE);
             fragmentHomeBinding.homeToolbar.ivBack.setOnClickListener(v -> requireFragmentManager().popBackStack());
-            homeAdapter.setOnClickListener((position, model) -> {});
+
         }
+
+        fragmentHomeBinding.fbCreateMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, false, requireContext().getString(R.string.create_memo),""), requireContext().getString(R.string.home) ));
+        homeAdapter.setOnClickListener((position, model) -> {
+            AppValidator.logData("getItemId", "" + model.getId());
+
+            loadFragment(new ViewMemoFragment(model.getId().toString()),getString(R.string.home));
+        });
+
+
+
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(requireContext()) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+                GetAllMemoDataResponse deletedCourse = getAllMemoDataResponseList.get(viewHolder.getAdapterPosition());
+                callDeleteMemoId(deletedCourse.getId().toString(), viewHolder);
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(fragmentHomeBinding.memoListRV);
+
+
 
 
 

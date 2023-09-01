@@ -1,4 +1,5 @@
 package com.example.phoremandr.receiver;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.phoremandr.R;
 
+import java.security.Permission;
 import java.util.Date;
 public class PhoneCallReceiver  extends BroadcastReceiver
 {
@@ -22,6 +24,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
+
         try
         {
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL"))

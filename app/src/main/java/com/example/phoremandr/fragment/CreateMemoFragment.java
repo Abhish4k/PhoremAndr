@@ -106,7 +106,7 @@ public class CreateMemoFragment extends BaseFragment {
     private void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // Change this line
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); // Change this line
         recorder.setOutputFile(getRecordingFilePath());
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
@@ -116,7 +116,7 @@ public class CreateMemoFragment extends BaseFragment {
         }
         recorder.start();
 
-        // Update the Chronometer UI on the main thread
+
         executorService.execute(() -> {
             memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
             memoBinding.chronometer.start();
@@ -157,7 +157,14 @@ public class CreateMemoFragment extends BaseFragment {
 
     private  String getRecordingFilePath(){
         ContextWrapper contextWrapper = new ContextWrapper(requireContext());
-        File music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        File music = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_AUDIOBOOKS);
+        }else {
+            music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        }
+
+        AppValidator.logData("musicDirectory============>","" + music);
         File file = new File(music, "testfile"+".mp3");
         return  file.getPath();
     }
