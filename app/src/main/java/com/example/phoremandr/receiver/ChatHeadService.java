@@ -26,7 +26,7 @@ public class ChatHeadService extends Service {
         int res = super.onStartCommand(intent, flags, startId);
 
 
-        return res;
+        return START_STICKY;
     }
     @Override
     public void onCreate() {
