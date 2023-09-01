@@ -111,13 +111,11 @@
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="@string/start" />
-<!--                   <Button-->
 <!--                       android:id="@+id/buttonStop"-->
 <!--                       android:layout_width="fill_parent"-->
 <!--                       android:layout_height="wrap_content"-->
 <!--                       android:layout_marginStart="@dimen/_16sdp"-->
 <!--                       android:text="@string/stop" />-->
-
 
                </LinearLayout>
 

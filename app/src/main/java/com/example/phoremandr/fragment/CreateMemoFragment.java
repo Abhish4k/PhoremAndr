@@ -33,6 +33,8 @@ public class CreateMemoFragment extends BaseFragment {
     private final String recordPermission = Manifest.permission.RECORD_AUDIO;
     // constant for storing audio permission
     public static final int PERMISSION_CODE = 1;
+
+    String path = null;
     private Chronometer myChronometer;
     FragmentCreateMemoBinding memoBinding;
     boolean isVisible;
@@ -100,6 +102,7 @@ public class CreateMemoFragment extends BaseFragment {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // Change this line
         recorder.setOutputFile(getRecordingFilePath());
+        path = getRecordingFilePath();
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
             recorder.prepare();

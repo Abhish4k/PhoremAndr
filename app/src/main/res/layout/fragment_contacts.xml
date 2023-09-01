@@ -16,8 +16,10 @@
         <SearchView
             android:id="@+id/contactSearch"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/green_500">
+            android:layout_height="@dimen/_45sdp"
+            android:queryHint="search here"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/custom_edit_text_rounded">
         </SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
