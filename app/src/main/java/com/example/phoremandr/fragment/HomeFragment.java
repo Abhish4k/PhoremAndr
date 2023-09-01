@@ -1,5 +1,10 @@
 package com.example.phoremandr.fragment;
 
+import static androidx.recyclerview.widget.ItemTouchHelper.*;
+
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,12 +12,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.bumptech.glide.Glide;
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.HomeAdapter;
+import com.example.phoremandr.api_model.RegisterResponse;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoDataResponse;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
@@ -21,6 +31,7 @@ import com.example.phoremandr.api_services.APIClient;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentHomeBinding;
 import com.example.phoremandr.helper.SharedPrefHelper;
+import com.example.phoremandr.helper.SwipeToDeleteCallback;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
@@ -54,7 +65,7 @@ public class HomeFragment extends BaseFragment {
 
     }
 
-    void  initValues(){
+    void  initValues() {
         fragmentHomeBinding.homeToolbar.setNameData(requireContext().getString(R.string.memos));
         fragmentHomeBinding.homeToolbar.setVisibility(true);
 
@@ -68,12 +79,35 @@ public class HomeFragment extends BaseFragment {
         fragmentHomeBinding.memoListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
         fragmentHomeBinding.memoListRV.setAdapter(homeAdapter);
 
-        if(!sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty() || sharedPrefHelper.getValue(SharedPreferencesKeys.userId) != null){
+        homeAdapter.setOnClickListener((position, model) -> {
+            AppValidator.logData("getItemId", "" + model.getId());
+        });
+
+
+
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(requireContext()) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+                final int position = viewHolder.getAdapterPosition();
+                GetAllMemoDataResponse deletedCourse = getAllMemoDataResponseList.get(viewHolder.getAdapterPosition());
+                callDeleteMemoId(deletedCourse.getId().toString(), viewHolder);
+
+
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(fragmentHomeBinding.memoListRV);
+
+
+        if (!sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty() || sharedPrefHelper.getValue(SharedPreferencesKeys.userId) != null) {
             callGetAllMemoApi();
         }
 
     }
-
 
 
     void callGetAllMemoApi(){
@@ -89,6 +123,7 @@ public class HomeFragment extends BaseFragment {
 
                 assert response.body() != null;
                 AppValidator.showToast(requireActivity(), response.body().getStatus());
+
                 if(!response.body().getData().isEmpty()){
                     getAllMemoDataResponseList.addAll(response.body().getData());
                     homeAdapter.notifyDataSetChanged();
@@ -106,5 +141,34 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+
+    void callDeleteMemoId(String memoId, RecyclerView.ViewHolder viewHolder){
+
+        fragmentHomeBinding.homeProgress.setVisibility(View.VISIBLE);
+        Call<RegisterResponse> call3 = apiInterface.callDeleteMemoApi(memoId);
+
+        call3.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
+                fragmentHomeBinding.homeProgress.setVisibility(View.GONE);
+                assert response.body() != null;
+                AppValidator.showToast(requireActivity(), response.body().getMessage());
+                if (response.body().getCode().equals("200")){
+                    getAllMemoDataResponseList.remove(viewHolder.getAdapterPosition());
+                    homeAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                }
+
+
+
+
+
+            }
+            @Override
+            public void onFailure(@NotNull  Call<RegisterResponse> call, @NotNull Throwable t) {
+                fragmentHomeBinding.homeProgress.setVisibility(View.GONE);
+                AppValidator.logData("deleteError",""+t.getMessage());
+            }
+        });
+    }
 
 }
