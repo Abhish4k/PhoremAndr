@@ -47,6 +47,8 @@ public class CreateMemoFragment extends BaseFragment {
 
     public static final int PERMISSION_CODE = 1;
 
+    String path = null;
+
     FragmentCreateMemoBinding memoBinding;
     boolean isVisible, isEdit;
 
@@ -193,6 +195,7 @@ public class CreateMemoFragment extends BaseFragment {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); // Change this line
         recorder.setOutputFile(getRecordingFilePath());
+        path = getRecordingFilePath();
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
             recorder.prepare();
@@ -236,9 +239,6 @@ public class CreateMemoFragment extends BaseFragment {
         }
         return true;
     }
-
-
-
 
     private  String getRecordingFilePath(){
         ContextWrapper contextWrapper = new ContextWrapper(requireContext());

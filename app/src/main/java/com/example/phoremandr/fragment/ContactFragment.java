@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +48,7 @@ import java.util.List;
 
 public class ContactFragment extends BaseFragment {
 
+    ContactAdapter adapter;
     FragmentContactsBinding contactsBinding;
 
     List<ContactListModel> contactList;
@@ -58,17 +62,45 @@ public class ContactFragment extends BaseFragment {
 
     @Override
     public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
-        contactsBinding  = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_contacts, container, false);
+        contactsBinding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_contacts, container, false);
         contactsBinding.contactToolbar.setNameData(name);
         contactsBinding.contactToolbar.setVisibility(isView);
         contactList = new ArrayList<>();
         checkContactPermission();
-
         contactsBinding.contactToolbar.ivBack.setOnClickListener(v -> getFragmentManager().popBackStack());
+
+        SearchView searchContact = contactsBinding.contactSearch;
+        searchContact.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ContactAdapter adapter = new ContactAdapter(contactList);
+                contactsBinding.contactListRV.setHasFixedSize(true);
+                contactsBinding.contactListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
+                contactsBinding.contactListRV.setAdapter(adapter);
+                    List<ContactListModel>filteredList= new ArrayList<>();
+                    for (ContactListModel contact : contactList){
+                        if (contact.getName().toLowerCase().contains(newText.toLowerCase())){
+                            filteredList.add(contact);
+                        }
+                    }
+                    if (filteredList.isEmpty()){
+                        Toast.makeText(getContext() , "No data Found" , Toast.LENGTH_SHORT).show();
+                    }else{
+                        adapter.updateData(filteredList);
+                    }
+
+                return true;
+            }
+        });
+
+
         return contactsBinding;
     }
-
-
 
     void checkContactPermission(){
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED &&
@@ -172,6 +204,9 @@ public class ContactFragment extends BaseFragment {
 
         return  photo;
     }
+
+
+
 
 
 }
