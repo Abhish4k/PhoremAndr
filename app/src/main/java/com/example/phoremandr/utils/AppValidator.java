@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.phoremandr.R;
 import com.example.phoremandr.activities.SignInScreen;
+import com.example.phoremandr.api_request_model.CreateMemoRequestModel;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.api_request_model.RegisterRequestModel;
 import com.example.phoremandr.api_request_model.UpdateProfileRequestModel;
@@ -149,5 +150,31 @@ public class AppValidator {
 
         alertDialog.getWindow().setType(LAYOUT_FLAG);
         alertDialog.show();
+    }
+
+
+    public static boolean validateCreateMemo(Context context,CreateMemoRequestModel createMemoRequestModel){
+
+         if(createMemoRequestModel.getName().isEmpty()){
+             showToast(context, context.getString(R.string.enter_name));
+             return false;
+         }
+
+         if(createMemoRequestModel.getPhoneNumber().isEmpty()){
+             showToast(context, context.getString(R.string.enter_phone_number));
+             return false;
+         }
+
+         if(createMemoRequestModel.getMemoName().isEmpty()){
+             showToast(context, context.getString(R.string.enter_memo_name));
+             return  false;
+         }
+
+         if(createMemoRequestModel.getReminder().isEmpty() || createMemoRequestModel.getReminder().contains(context.getString(R.string.set_reminder))){
+             showToast(context, context.getString(R.string.select_reminder));
+             return  false;
+         }
+
+         return  true;
     }
 }
