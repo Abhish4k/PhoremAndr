@@ -87,7 +87,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.bnHome:
-                loadFragment(new HomeFragment(), getString(R.string.home));
+                loadFragment(new HomeFragment(true), getString(R.string.home));
                 break;
             case R.id.bnContacts:
 

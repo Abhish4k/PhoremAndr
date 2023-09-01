@@ -21,7 +21,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private List<GetAllMemoDataResponse> listData;
 
-    private OnClickListener onClickListener;
+    public static OnClickListener onClickListener;
     Context context;
 
     public HomeAdapter(List<GetAllMemoDataResponse> listData) {
@@ -44,6 +44,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.tvName.setText(myListData.getName());
         holder.tvDate.setText(myListData.getReminder());
 
+        holder.cvMemo.setOnClickListener(v ->     {
+            if (onClickListener != null) {
+                onClickListener.onClick(position, myListData);}
+        });
 
 
     }
@@ -68,8 +72,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
     }
 
-    public void setOnClickListener(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+    public  void  setOnClickListener(OnClickListener onClickListener) {
+       this.onClickListener = onClickListener;
     }
 
     public interface OnClickListener {

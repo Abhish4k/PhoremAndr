@@ -4,10 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -28,6 +31,9 @@ import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends BaseActivity {
     ActivitySplashBinding splashBinding;
@@ -40,12 +46,14 @@ public class SplashScreen extends BaseActivity {
 
 
 
+
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             displayOverLauncher.launch(intent);
         }
 
+        checkPermission();
         goToHome();
 
 
@@ -89,6 +97,19 @@ public class SplashScreen extends BaseActivity {
 
                 }
             });
+
+    void checkPermission(){
+        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+        ){
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]),101);
+
+        }
+
+    }
+
 
 
 }

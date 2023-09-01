@@ -44,7 +44,6 @@
                 android:text="@{nameData}"
                 android:fontFamily="@font/abel"
                 android:textColor="@color/white"
-
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />
 

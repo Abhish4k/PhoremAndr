@@ -3,6 +3,7 @@ package com.example.phoremandr.api_services;
 import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
+import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
 import com.example.phoremandr.api_model.update_user_profile.UpdateProfileResponse;
 
@@ -52,6 +53,30 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("get_all_memos")
     Call<GetAllMemoResponse> callGetAllMemoApi(@Field("user_id") String userId);
+
+    @FormUrlEncoded
+    @POST("get_memo")
+    Call<GetMemoByIdResponse> callGetMemoById(@Field("memo_id") String memo_id);
+
+    @FormUrlEncoded
+    @POST("get_memo")
+    Call<RegisterResponse> callCreateMemoApi(@Field("name") String name, @Field("user_id") String user_id,
+                                             @Field("phone_number") String phone_number, @Field("memo") String memo,
+                                             @Field("reminder") String reminder, @Field("voice_memo") String voice_memo);
+
+
+
+
+    @FormUrlEncoded
+    @POST("edit_memo")
+    Call<GetMemoByIdResponse> callEditMemoApi(@Field("id") String id, @Field("name") String name, @Field("user_id") String user_id,
+                                              @Field("phone_number") String phone_number, @Field("memo") String memo,
+                                              @Field("voice_memo") String voice_memo, @Field("reminder") String reminder);
+
+
+    @FormUrlEncoded
+    @POST("delete_memo")
+    Call<RegisterResponse> callDeleteMemoApi(@Field("memo_id") String memo_id);
 
 
 
