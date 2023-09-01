@@ -119,15 +119,6 @@
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="@string/start" />
-<<<<<<< HEAD
-<!--                       android:id="@+id/buttonStop"-->
-<!--                       android:layout_width="fill_parent"-->
-<!--                       android:layout_height="wrap_content"-->
-<!--                       android:layout_marginStart="@dimen/_16sdp"-->
-<!--                       android:text="@string/stop" />-->
-=======
->>>>>>> 5a6a5a320996eba2ec8d72c499e0a6720b2d6882
-
                </LinearLayout>
 
             </LinearLayout>

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -81,20 +82,18 @@ public class ContactFragment extends BaseFragment {
                 contactsBinding.contactListRV.setHasFixedSize(true);
                 contactsBinding.contactListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
                 contactsBinding.contactListRV.setAdapter(adapter);
-
-                if (newText.isEmpty()){
-
-                    adapter.updateData(contactList);
-
-                }else{
                     List<ContactListModel>filteredList= new ArrayList<>();
                     for (ContactListModel contact : contactList){
                         if (contact.getName().toLowerCase().contains(newText.toLowerCase())){
                             filteredList.add(contact);
                         }
                     }
-                    adapter.updateData(filteredList);
-                }
+                    if (filteredList.isEmpty()){
+                        Toast.makeText(getContext() , "No data Found" , Toast.LENGTH_SHORT).show();
+                    }else{
+                        adapter.updateData(filteredList);
+                    }
+
                 return true;
             }
         });

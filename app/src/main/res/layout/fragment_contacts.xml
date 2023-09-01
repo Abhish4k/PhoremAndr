@@ -19,7 +19,7 @@
             android:layout_height="@dimen/_45sdp"
             android:queryHint="search here"
             android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/custom_edit_text_rounded">
+            android:background="@drawable/search_box_bg">
         </SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
