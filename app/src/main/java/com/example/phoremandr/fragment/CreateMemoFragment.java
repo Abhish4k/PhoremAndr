@@ -375,9 +375,6 @@ public class CreateMemoFragment extends BaseFragment {
             }
         });
 
-
-
-
     }
 
 

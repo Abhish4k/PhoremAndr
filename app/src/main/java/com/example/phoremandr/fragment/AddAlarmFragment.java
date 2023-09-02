@@ -1,6 +1,7 @@
 package com.example.phoremandr.fragment;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
@@ -9,14 +10,25 @@ import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.AddAlarmAdapter;
+import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentAddAlarmBinding;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddAlarmFragment extends BaseFragment {
     FragmentAddAlarmBinding addAlarmBinding;
@@ -24,7 +36,7 @@ public class AddAlarmFragment extends BaseFragment {
     AddAlarmAdapter addAlarmAdapter;
     String sound = "", channel = "";
 
-    int position;
+    int position = -1;
 
 
     @Override
@@ -51,7 +63,7 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmBinding.rvAddAlarm.setAdapter(addAlarmAdapter);
 
         addAlarmAdapter.setOnClickListener((position, model) -> {
-            AppValidator.logData("getSelectedSound", "" + model.getSoundName());
+            AppValidator.logData("getSelectedSound", "" + model.getChannelName());
             sound = model.getSound();
             channel =model.getChannelName();
             this.position  = position;
@@ -75,12 +87,61 @@ public class AddAlarmFragment extends BaseFragment {
 
     void onClickButton(){
         if(sound.isEmpty()){
+            if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
+                channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
+                sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+            }
+        }
+
+        if(sound.isEmpty() ){
             AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
         }else {
-            sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
-            requireFragmentManager().popBackStack();
+
+           callSettingApi();
         }
     }
 
+
+
+    void callSettingApi(){
+        addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
+
+        File file = new File(sound);
+
+        RequestBody name = RequestBody.create(channel, MediaType.parse("text/plain"));
+        RequestBody userId = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
+        RequestBody requestFile = RequestBody.create(file,MediaType.parse("audio/mp3"));
+        MultipartBody.Part body = MultipartBody.Part.createFormData("voice_memo", file.getName(), requestFile);
+
+        AppValidator.logData("requestFile","" + body);
+
+        Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
+                 userId,name, body
+        );
+
+        call3.enqueue(new Callback<AddAlarmRequestModel>() {
+            @Override
+            public void onResponse(@NotNull Call<AddAlarmRequestModel> call, @NotNull Response<AddAlarmRequestModel> response) {
+
+                addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
+
+                assert response.body() != null;
+                AppValidator.showToast(requireActivity(), response.body().getMessage());
+                if(response.body().getCode().equals("200")){
+                    sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
+                    requireFragmentManager().popBackStack();
+                }
+
+
+
+            }
+            @Override
+            public void onFailure(@NotNull  Call<AddAlarmRequestModel> call,@NotNull Throwable t) {
+                addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
+                AppValidator.logData("addAlarmError",""+t.getMessage()+ " "+ call.request());
+            }
+        });
+
+    }
 
 }

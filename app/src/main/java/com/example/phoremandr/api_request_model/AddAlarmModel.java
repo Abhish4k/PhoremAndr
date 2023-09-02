@@ -6,6 +6,7 @@ public class AddAlarmModel {
     public AddAlarmModel(String soundName, String sound, String channelName) {
         this.soundName = soundName;
         this.sound = sound;
+        this.channelName = channelName;
     }
 
     public String getSoundName() {
