@@ -15,10 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_request_model.ContactListModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>{
-    private List<ContactListModel> listData;
+    private static List<ContactListModel> listData;
     Context context;
 
     // RecyclerView recyclerView;
@@ -70,4 +71,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             this.llContacts = itemView.findViewById(R.id.llContacts);
         }
     }
+
+  public void updateData(List<ContactListModel> newList){
+        listData.clear();
+        listData.addAll(newList);
+//       this.notifyDataSetChanged();
+  }
 }

@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,10 +47,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ContactFragment extends BaseFragment {
-    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+
+    ContactAdapter adapter;
     FragmentContactsBinding contactsBinding;
 
     List<ContactListModel> contactList;
+
 
     public  boolean isView;
     public String name;
@@ -63,12 +68,56 @@ public class ContactFragment extends BaseFragment {
         contactsBinding.contactToolbar.setVisibility(isView);
         contactList = new ArrayList<>();
         checkContactPermission();
-
         contactsBinding.contactToolbar.ivBack.setOnClickListener(v -> getFragmentManager().popBackStack());
+
+
+        adapter = new ContactAdapter(contactList);
+        contactsBinding.contactListRV.setHasFixedSize(true);
+        contactsBinding.contactListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
+        contactsBinding.contactListRV.setAdapter(adapter);
+
+
+        SearchView searchContact = contactsBinding.contactSearch;
+        searchContact.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean  onQueryTextChange(String newText) {
+                List<ContactListModel>filteredList= new ArrayList<>();
+                if(!newText.isEmpty()){
+                    for (ContactListModel contact : contactList){
+                        if (contact.getName().toLowerCase().contains(newText.toLowerCase())){
+                            filteredList.add(contact);
+                        }
+                    }
+                    if (filteredList.isEmpty()){
+                        contactsBinding.contactListRV.setVisibility(View.INVISIBLE);
+                        contactsBinding.noResultsTV.setVisibility(View.VISIBLE);
+                    }else{
+
+                        contactsBinding.contactListRV.setVisibility(View.VISIBLE);
+                        contactsBinding.noResultsTV.setVisibility(View.INVISIBLE);
+                        adapter.updateData(filteredList);
+                        adapter.notifyDataSetChanged();
+                    }
+
+
+                }else {
+                    contactsBinding.contactListRV.setVisibility(View.INVISIBLE);
+                    contactsBinding.noResultsTV.setVisibility(View.VISIBLE);
+                    adapter.updateData(contactList);
+                }
+                return true;
+            }
+        });
+
+
         return contactsBinding;
     }
-
-
 
     void checkContactPermission(){
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED &&
@@ -78,7 +127,7 @@ public class ContactFragment extends BaseFragment {
             listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
             listPermissionsNeeded.add(Manifest.permission.WRITE_CONTACTS);
             ActivityCompat.requestPermissions(requireActivity(),listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]),REQUEST_ID_MULTIPLE_PERMISSIONS);
+                    (new String[listPermissionsNeeded.size()]),90);
         }else {
             if(contactList.size() > 0){
                 contactList.clear();
@@ -87,11 +136,10 @@ public class ContactFragment extends BaseFragment {
             getContactList();
 
             AppValidator.logData("ContactList","" + contactList.size());
+            if(contactList.size()> 0){
 
-            ContactAdapter adapter = new ContactAdapter(contactList);
-            contactsBinding.contactListRV.setHasFixedSize(true);
-            contactsBinding.contactListRV.setLayoutManager(new LinearLayoutManager(requireContext()));
-            contactsBinding.contactListRV.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
 
         }
     }
@@ -172,6 +220,9 @@ public class ContactFragment extends BaseFragment {
 
         return  photo;
     }
+
+
+
 
 
 }

@@ -27,5 +27,13 @@
             android:layout_margin="10dp">
         </androidx.recyclerview.widget.RecyclerView>
 
+        <TextView
+            android:id="@+id/noResultsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result_found"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"/>
+
     </LinearLayout>
 </layout>
