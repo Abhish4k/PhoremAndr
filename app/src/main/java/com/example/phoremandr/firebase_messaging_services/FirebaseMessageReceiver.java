@@ -6,6 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.widget.RemoteViews;
 
@@ -52,8 +55,7 @@ public class FirebaseMessageReceiver
                 R.layout.notification_layout);
         remoteViews.setTextViewText(R.id.tvTitle, title);
         remoteViews.setTextViewText(R.id.tvMsg, message);
-        remoteViews.setImageViewResource(R.id.ivNoti,
-                R.drawable.app_logo);
+
         return remoteViews;
     }
     // Method to display the notifications
@@ -67,19 +69,56 @@ public class FirebaseMessageReceiver
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Pass the intent to PendingIntent to start the
         // next Activity
-        PendingIntent pendingIntent
-                = PendingIntent.getActivity(
-                this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity
+                    (this, 0, intent, PendingIntent.FLAG_MUTABLE);
+        }
+        else
+        {
+            pendingIntent = PendingIntent.getActivity
+                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+
 
         // Create a Builder object using NotificationCompat
         // class. This will allow control over all the flags
+        Uri uri = null;
+        AppValidator.logData("channelId","" + channelId);
+        if(channelId != null){
+            String appPackage = "android.resource://com.example.phoremandr/";
+            switch (channelId) {
+                case "emergencyAlarmChannel":
+                    uri = Uri.parse(appPackage+ R.raw.emergency_alarm);
+                    break;
+                case "alarmChannel":
+                    uri = Uri.parse(appPackage + R.raw.alarm);
+                    break;
+                case "alarmToneChannel":
+                    uri = Uri.parse(appPackage + R.raw.alarm_tone);
+                    break;
+                case "alertAlarmChannel":
+                    uri = Uri.parse(appPackage + R.raw.alert_alarm);
+                    break;
+            }
+        }else {
+             uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+
+        AppValidator.logData("uri","" + uri);
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
+
         NotificationCompat.Builder builder
                 = new NotificationCompat
                 .Builder(getApplicationContext(),
                 channelId)
+
                 .setSmallIcon(R.drawable.app_logo)
                 .setAutoCancel(true)
+                .setSound(uri)
                 .setVibrate(new long[] { 1000, 1000, 1000,
                         1000, 1000 })
                 .setOnlyAlertOnce(true)

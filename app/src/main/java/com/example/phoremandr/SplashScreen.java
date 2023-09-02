@@ -67,6 +67,12 @@ public class SplashScreen extends BaseActivity {
         FirebaseApp.initializeApp(SplashScreen.this);
 
 
+        FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
+        firebaseMessaging.getToken().addOnCompleteListener(task -> {
+            AppValidator.logData("getToken","" + task.getResult());
+        });
+
+
 
         return splashBinding;
     }
