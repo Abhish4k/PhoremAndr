@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoDataResponse;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
+import com.example.phoremandr.helper.SharedPrefHelper;
+import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +32,11 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
     public int selectedPosition = -1;
     Context context;
     MediaPlayer mediaPlayer;
+    SharedPrefHelper sharedPrefHelper;
 
-    public AddAlarmAdapter(List<AddAlarmModel> listData) {
+    public AddAlarmAdapter(List<AddAlarmModel> listData, SharedPrefHelper sharedPrefHelper) {
         this.listData = listData;
+        this.sharedPrefHelper = sharedPrefHelper;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,8 +51,13 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
     public void onBindViewHolder(ViewHolder holder, int  position) {
         final AddAlarmModel myListData = listData.get(position);
 
-        holder.llSound.setOnClickListener(v -> {
 
+        if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1 && selectedPosition == -1 ){
+            AppValidator.logData("alarmSelected","" + sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm));
+            selectedPosition = sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm);
+        }
+
+        holder.llSound.setOnClickListener(v -> {
             selectedPosition = holder.getAdapterPosition();
             holder.rbSound.setChecked(position == selectedPosition);
             notifyDataSetChanged();
@@ -63,8 +73,8 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
         holder.rbSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
                 selectedPosition = holder.getAdapterPosition();
+                holder.rbSound.setChecked(position == selectedPosition);
                 onClickListener.onClick(holder.getAdapterPosition(), myListData);
-
                 notifyDataSetChanged();
             }
         });

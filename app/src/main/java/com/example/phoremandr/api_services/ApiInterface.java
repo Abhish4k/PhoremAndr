@@ -2,6 +2,7 @@ package com.example.phoremandr.api_services;
 
 import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
+import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
 import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
@@ -92,6 +93,15 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("delete_memo")
     Call<RegisterResponse> callDeleteMemoApi(@Field("memo_id") String memo_id);
+
+
+    @Multipart
+    @POST("settings")
+    Call<AddAlarmRequestModel> callAddAlarmApi(@Part("user_id") RequestBody user_id,
+                                               @Part("channel_id") RequestBody channel_id,
+                                               @Part MultipartBody.Part custom_sound);
+
+
 
 
 

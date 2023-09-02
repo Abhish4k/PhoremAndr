@@ -13,6 +13,7 @@ import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentAddAlarmBinding;
 import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,9 @@ public class AddAlarmFragment extends BaseFragment {
     FragmentAddAlarmBinding addAlarmBinding;
     List<AddAlarmModel> addAlarmModelList;
     AddAlarmAdapter addAlarmAdapter;
-    String sound = "";
+    String sound = "", channel = "";
+
+    int position;
 
 
     @Override
@@ -42,7 +45,7 @@ public class AddAlarmFragment extends BaseFragment {
 
 
 
-        addAlarmAdapter = new AddAlarmAdapter(addAlarmModelList);
+        addAlarmAdapter = new AddAlarmAdapter(addAlarmModelList, sharedPrefHelper);
         addAlarmBinding.rvAddAlarm.setHasFixedSize(true);
         addAlarmBinding.rvAddAlarm.setLayoutManager(new LinearLayoutManager(requireContext()));
         addAlarmBinding.rvAddAlarm.setAdapter(addAlarmAdapter);
@@ -50,6 +53,8 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmAdapter.setOnClickListener((position, model) -> {
             AppValidator.logData("getSelectedSound", "" + model.getSoundName());
             sound = model.getSound();
+            channel =model.getChannelName();
+            this.position  = position;
 
         });
 
@@ -62,16 +67,17 @@ public class AddAlarmFragment extends BaseFragment {
 
     void addAllAlarm(){
 
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3", "alarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav", "alarmToneChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav", "alertAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
     }
 
     void onClickButton(){
         if(sound.isEmpty()){
             AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
         }else {
+            sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
             requireFragmentManager().popBackStack();
         }
     }

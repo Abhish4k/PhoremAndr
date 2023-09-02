@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "126456521747",
+    "project_id": "ringmemos-f184c",
+    "storage_bucket": "ringmemos-f184c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126456521747:android:ec2afb904744ba64714be6",
+        "android_client_info": {
+          "package_name": "com.example.phoremandr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126456521747-j2mse1tlrtjorq9nupuv8fan92t52vkv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.phoremandr",
+            "certificate_hash": "79c870d403f3362be6cbee680ce9b5e3e58821ff"
+          }
+        },
+        {
+          "client_id": "126456521747-shcnfqb910fldsfk53fb3q1i1va89inv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYBRp-ecyUnCYJvJ8i6pTm-ppfoHcSkOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126456521747-shcnfqb910fldsfk53fb3q1i1va89inv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

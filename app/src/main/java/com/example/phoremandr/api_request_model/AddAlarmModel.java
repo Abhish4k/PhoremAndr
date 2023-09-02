@@ -1,9 +1,9 @@
 package com.example.phoremandr.api_request_model;
 
 public class AddAlarmModel {
-    String soundName, sound;
+    String soundName, sound, channelName;
 
-    public AddAlarmModel(String soundName, String sound) {
+    public AddAlarmModel(String soundName, String sound, String channelName) {
         this.soundName = soundName;
         this.sound = sound;
     }
@@ -22,5 +22,13 @@ public class AddAlarmModel {
 
     public void setSound(String sound) {
         this.sound = sound;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }
