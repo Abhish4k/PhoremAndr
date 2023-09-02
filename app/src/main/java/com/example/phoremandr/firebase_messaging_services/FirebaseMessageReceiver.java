@@ -28,18 +28,18 @@ public class FirebaseMessageReceiver
     {
         AppValidator.logData("messagingToken", "Refreshed token: " + token);
     }
-    // Override onMessageReceived() method to extract the
-    // title and
-    // body from the message passed in FCM
+
     @Override
     public void
     onMessageReceived(RemoteMessage remoteMessage)
     {
 
+        AppValidator.logData("receiveNotification","" + remoteMessage.getNotification());
         if (remoteMessage.getNotification() != null) {
             showNotification(
                     remoteMessage.getNotification().getTitle(),
-                    remoteMessage.getNotification().getBody());
+                    remoteMessage.getNotification().getBody(),
+                    remoteMessage.getNotification().getChannelId());
         }
     }
 
@@ -58,16 +58,12 @@ public class FirebaseMessageReceiver
     }
     // Method to display the notifications
     public void showNotification(String title,
-                                 String message)
+                                 String message, String channelId)
     {
         // Pass the intent to switch to the MainActivity
         Intent intent
                 = new Intent(this, DashboardActivity.class);
         // Assign channel ID
-        String channel_id = "notification_channel";
-        // Here FLAG_ACTIVITY_CLEAR_TOP flag is set to clear
-        // the activities present in the activity stack,
-        // on the top of the Activity that is to be launched
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Pass the intent to PendingIntent to start the
         // next Activity
@@ -81,7 +77,7 @@ public class FirebaseMessageReceiver
         NotificationCompat.Builder builder
                 = new NotificationCompat
                 .Builder(getApplicationContext(),
-                channel_id)
+                channelId)
                 .setSmallIcon(R.drawable.app_logo)
                 .setAutoCancel(true)
                 .setVibrate(new long[] { 1000, 1000, 1000,
@@ -101,7 +97,7 @@ public class FirebaseMessageReceiver
                 >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel
                     = new NotificationChannel(
-                    channel_id, "web_app",
+                    channelId, "web_app",
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(
                     notificationChannel);

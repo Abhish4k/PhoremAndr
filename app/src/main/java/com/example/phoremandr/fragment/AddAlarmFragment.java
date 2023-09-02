@@ -79,10 +79,10 @@ public class AddAlarmFragment extends BaseFragment {
 
     void addAllAlarm(){
 
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3", "alarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav", "alarmToneChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav", "alertAlarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm", "alarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone", "alarmToneChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm", "alertAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm", "emergencyAlarmChannel"));
     }
 
     void onClickButton(){
@@ -96,7 +96,6 @@ public class AddAlarmFragment extends BaseFragment {
         if(sound.isEmpty() ){
             AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
         }else {
-
            callSettingApi();
         }
     }
@@ -106,17 +105,8 @@ public class AddAlarmFragment extends BaseFragment {
     void callSettingApi(){
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
-        File file = new File(sound);
-
-        RequestBody name = RequestBody.create(channel, MediaType.parse("text/plain"));
-        RequestBody userId = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
-        RequestBody requestFile = RequestBody.create(file,MediaType.parse("audio/mp3"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("voice_memo", file.getName(), requestFile);
-
-        AppValidator.logData("requestFile","" + body);
-
         Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
-                 userId,name, body
+                sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound
         );
 
         call3.enqueue(new Callback<AddAlarmRequestModel>() {

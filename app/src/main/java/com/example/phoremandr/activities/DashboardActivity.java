@@ -1,6 +1,7 @@
 package com.example.phoremandr.activities;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,11 +22,15 @@ import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.security.AccessControlContext;
+
 
 public class DashboardActivity extends BaseActivity   implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private static  final String READ_CALL_LOGS = Manifest.permission.READ_CALL_LOG;
     private static  final String PHONE = Manifest.permission.CALL_PHONE;
+
+    private static final  String NOTIFICATION = Manifest.permission.POST_NOTIFICATIONS;
     private static  final int REQUEST_CODE = 200;
     ActivityDashboardBinding dashboardBinding;
 
@@ -36,7 +41,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
             Toast.makeText(this , "Permissions Already Granted !", Toast.LENGTH_SHORT).show();
         }else {
             ActivityCompat.requestPermissions(this ,
-                    new String[]{PHONE,READ_CALL_LOGS} ,REQUEST_CODE );
+                    new String[]{PHONE,READ_CALL_LOGS, NOTIFICATION} ,REQUEST_CODE );
         }
 
     }
@@ -104,8 +109,9 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     public  boolean checkPermission(){
        int callLogPermission =  ActivityCompat.checkSelfPermission(this , READ_CALL_LOGS );
        int phonePermission = ActivityCompat.checkSelfPermission(this , PHONE);
+       int notification  = ActivityCompat.checkSelfPermission(this, NOTIFICATION);
 
-       return callLogPermission ==PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED;
+       return callLogPermission ==PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED;
     }
 
 }

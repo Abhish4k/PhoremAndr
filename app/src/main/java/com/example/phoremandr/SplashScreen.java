@@ -27,9 +27,12 @@ import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
+import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
 import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,10 @@ public class SplashScreen extends BaseActivity {
         Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
+
+        FirebaseApp.initializeApp(SplashScreen.this);
+
+
 
         return splashBinding;
     }

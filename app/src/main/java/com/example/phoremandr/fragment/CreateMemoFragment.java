@@ -314,7 +314,8 @@ public class CreateMemoFragment extends BaseFragment {
                if(createMemoRequestModel.getVoiceMemo().isEmpty()){
                    callApiWithoutVoiceMemo(createMemoRequestModel);
                }else {
-                   callApiWithVoiceMemo(createMemoRequestModel);
+                   callApiWithoutVoiceMemo(createMemoRequestModel);
+                //   callApiWithVoiceMemo(createMemoRequestModel);
                }
            }else if(isEdit){
                if(!audioUrl.isEmpty()){
@@ -325,7 +326,8 @@ public class CreateMemoFragment extends BaseFragment {
                if(createMemoRequestModel.getVoiceMemo().isEmpty()){
                    callApiEditWithoutVoiceMemo(createMemoRequestModel);
                }else {
-                   callEditApiWithVoiceMemo(createMemoRequestModel);
+                   callApiEditWithoutVoiceMemo(createMemoRequestModel);
+               //    callEditApiWithVoiceMemo(createMemoRequestModel);
                }
            }
         }

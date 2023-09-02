@@ -95,11 +95,11 @@ public interface ApiInterface {
     Call<RegisterResponse> callDeleteMemoApi(@Field("memo_id") String memo_id);
 
 
-    @Multipart
+    @FormUrlEncoded
     @POST("settings")
-    Call<AddAlarmRequestModel> callAddAlarmApi(@Part("user_id") RequestBody user_id,
-                                               @Part("channel_id") RequestBody channel_id,
-                                               @Part MultipartBody.Part custom_sound);
+    Call<AddAlarmRequestModel> callAddAlarmApi(@Field("user_id") String user_id,
+                                               @Field("channel_id") String channel_id,
+                                               @Field("custom_sound") String custom_sound);
 
 
 

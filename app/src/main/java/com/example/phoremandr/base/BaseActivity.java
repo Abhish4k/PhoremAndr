@@ -12,11 +12,14 @@ import com.example.phoremandr.R;
 import com.example.phoremandr.api_services.ApiInterface;
 import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.api_services.APIClient;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public abstract class BaseActivity extends AppCompatActivity {
     public  static ViewBinding viewBinding;
     public  static ApiInterface apiInterface;
     public static SharedPrefHelper sharedPrefHelper;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
