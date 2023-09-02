@@ -61,5 +61,10 @@
     <string name="enter_memo_name">Please enter memo name</string>
     <string name="enter_phone_number">Please enter Phone number</string>
     <string name="select_reminder">Please select reminder</string>
+    <string name="select_alarm">Select Alarm</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarm_tone">Alarm tone</string>
+    <string name="alert_alarm">Alert Alarm</string>
+    <string name="emergency_alarm">Emergency Alarm</string>
 
 </resources>

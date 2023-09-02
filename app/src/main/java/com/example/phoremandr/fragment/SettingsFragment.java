@@ -60,6 +60,7 @@ public class SettingsFragment extends BaseFragment {
 
 
     public void onClickAddAlarm(){
+        loadFragment(new AddAlarmFragment(), requireContext().getString(R.string.select_alarm));
 
     }
 

@@ -231,7 +231,6 @@ public class CreateMemoFragment extends BaseFragment {
         AppValidator.logData("file","" + audioPath);
         executorService.execute(() -> {
             memoBinding.chronometer.stop();
-         //   memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
         });
     }
 
