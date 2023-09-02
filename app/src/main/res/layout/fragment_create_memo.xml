@@ -59,6 +59,8 @@
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:textSize="@dimen/_12ssp"
+                        android:maxLength="15"
+                        android:inputType="phone"
                         android:layout_height="match_parent"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

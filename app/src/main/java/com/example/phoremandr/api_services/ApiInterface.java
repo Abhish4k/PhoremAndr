@@ -59,10 +59,17 @@ public interface ApiInterface {
     Call<GetMemoByIdResponse> callGetMemoById(@Field("memo_id") String memo_id);
 
     @FormUrlEncoded
-    @POST("get_memo")
+    @POST("create_memo")
     Call<RegisterResponse> callCreateMemoApi(@Field("name") String name, @Field("user_id") String user_id,
                                              @Field("phone_number") String phone_number, @Field("memo") String memo,
-                                             @Field("reminder") String reminder, @Field("voice_memo") String voice_memo);
+                                             @Field("reminder") String reminder);
+
+
+    @Multipart
+    @POST("create_memo")
+    Call<RegisterResponse> callCreateMemoWithVoiceApi(@Part("name") RequestBody name, @Part("user_id") RequestBody user_id,
+                                             @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
+                                             @Part("reminder") RequestBody reminder, @Part MultipartBody.Part voice_memo);
 
 
 
@@ -71,7 +78,15 @@ public interface ApiInterface {
     @POST("edit_memo")
     Call<GetMemoByIdResponse> callEditMemoApi(@Field("id") String id, @Field("name") String name, @Field("user_id") String user_id,
                                               @Field("phone_number") String phone_number, @Field("memo") String memo,
-                                              @Field("voice_memo") String voice_memo, @Field("reminder") String reminder);
+                                              @Field("reminder") String reminder);
+
+
+    @Multipart
+    @POST("edit_memo")
+    Call<GetMemoByIdResponse> callEditMemoWithVoiceApi(@Part("id") RequestBody id, @Part("name") RequestBody name,
+                                                       @Part("user_id") RequestBody user_id,
+                                              @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
+                                              @Part("reminder") RequestBody reminder,@Part MultipartBody.Part voice_memo);
 
 
     @FormUrlEncoded

@@ -95,19 +95,22 @@ public class ViewMemoFragment extends BaseFragment {
             @Override
             public void onResponse(@NotNull Call<GetMemoByIdResponse> call, @NotNull Response<GetMemoByIdResponse> response) {
                 viewMemoBinding.viewMemoProgress.setVisibility(View.GONE);
-                assert response.body() != null;
+                if(response.body() != null){
+                    if (response.body().getCode().equals("200")){
+                        GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
 
-                if (response.body().getCode().equals("200")){
-                    GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
+                        AppValidator.logData("getReminder","" + getMemoByIdDataResponse.getReminder());
+                        viewMemoBinding.tvName.setGetName(getMemoByIdDataResponse.getName());
+                        viewMemoBinding.tvMemoName.setGetName(getMemoByIdDataResponse.getMemo());
+                        viewMemoBinding.tvDate.setGetName(getMemoByIdDataResponse.getReminder());
+                        viewMemoBinding.tvPhone.setGetName(getMemoByIdDataResponse.getPhoneNumber());
 
-                    viewMemoBinding.tvName.setGetName(getMemoByIdDataResponse.getName());
-                    viewMemoBinding.tvMemoName.setGetName(getMemoByIdDataResponse.getMemo());
-                    viewMemoBinding.tvDate.setGetName(getMemoByIdDataResponse.getReminder());
-                    viewMemoBinding.tvPhone.setGetName(getMemoByIdDataResponse.getPhoneNumber());
+                        audioUrl = getMemoByIdDataResponse.getVoiceMemo();
 
-                    audioUrl = getMemoByIdDataResponse.getVoiceMemo();
-
+                    }
                 }
+
+
 
 
 
