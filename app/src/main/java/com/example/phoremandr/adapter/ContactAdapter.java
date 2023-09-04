@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_request_model.ContactListModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>{
@@ -73,9 +74,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
     }
 
-  public void updateData(List<ContactListModel> newList){
-        listData.clear();
-        listData.addAll(newList);
-        notifyDataSetChanged();
-  }
+    public void filterList(ArrayList<ContactListModel> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        listData = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        this.notifyDataSetChanged();
+    }
+
 }
