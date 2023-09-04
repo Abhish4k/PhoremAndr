@@ -75,15 +75,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                 onClickLoginBtn();
                 break;
 
-            case R.id.etPass:
-                if(signInBinding.etPass.getTransformationMethod() == PasswordTransformationMethod.getInstance()){
-                    signInBinding.etPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    signInBinding.etPass.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.eye_off,0);
-                } else{
-                    signInBinding.etPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    signInBinding.etPass.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.eye,0);
-                }
-                break;
         }
 
     }

@@ -86,11 +86,7 @@ public class SignUpScreen extends BaseActivity {
             }
         });
 
-
-
     }
-
-
 
     void goToSignInPage(){
         startActivity(new Intent(SignUpScreen.this, SignInScreen.class));

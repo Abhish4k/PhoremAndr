@@ -32,7 +32,6 @@
         android:name="android.permission.MODIFY_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -43,7 +42,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PhoremAndr"
         android:roundIcon="@mipmap/ic_launcher_round"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu"
+        android:enableOnBackInvokedCallback="true">
+
+
+
         <activity
             android:name=".SplashScreen"
             android:exported="true">
