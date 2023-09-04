@@ -10,31 +10,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_request_model.ContactListModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder>{
     private static List<ContactListModel> listData;
+    private List<ContactListModel>filteredList;
     Context context;
 
     // RecyclerView recyclerView;
     public ContactAdapter(List<ContactListModel> listData) {
-        ContactAdapter.listData = listData;
+        this.listData = listData;
+        this.filteredList = new ArrayList<>(listData);
     }
-    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem= layoutInflater.inflate(R.layout.rv_contact_content, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
-
         return viewHolder;
     }
 
@@ -75,14 +73,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
     }
 
-    public void filterList(ArrayList<ContactListModel> filterlist) {
-        // below line is to add our filtered
-        // list in our course array list.
-        listData = filterlist;
-        // below line is to notify our adapter
-        // as change in recycler view data.
-         this.notifyDataSetChanged();
-    }
-
-
+  public void updateData(List<ContactListModel> newList){
+        listData.clear();
+        listData.addAll(newList);
+        notifyDataSetChanged();
+  }
 }

@@ -2,15 +2,23 @@ package com.example.phoremandr;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewbinding.ViewBinding;
@@ -19,14 +27,14 @@ import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
+import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
+import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("CustomSplashScreen")
@@ -37,7 +45,35 @@ public class SplashScreen extends BaseActivity {
     public ViewBinding getViewModel() {
 
         splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
+
+
+
+
+
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            displayOverLauncher.launch(intent);
+        }
+
+        checkPermission();
         goToHome();
+
+
+        Intent intent = new Intent(this , ChatHeadService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+
+        FirebaseApp.initializeApp(SplashScreen.this);
+
+
+        FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
+        firebaseMessaging.getToken().addOnCompleteListener(task -> {
+            AppValidator.logData("getToken","" + task.getResult());
+        });
+
+
+
         return splashBinding;
     }
 
@@ -64,6 +100,28 @@ public class SplashScreen extends BaseActivity {
         }
     }
 
+
+    ActivityResultLauncher<Intent> displayOverLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+
+                }
+            });
+
+    void checkPermission(){
+        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+        ){
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]),101);
+
+        }
+
+    }
 
 
 

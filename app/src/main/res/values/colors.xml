@@ -6,6 +6,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#373636</color>
+    <color name="light_grey">#99747373</color>
     <color name="changeAvatar">#2D97ED</color>
     <color name="stopBtnColor">#650707</color>
+    <color name="red">#E62121</color>
 </resources>

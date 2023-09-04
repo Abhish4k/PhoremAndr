@@ -8,4 +8,6 @@ public class SharedPreferencesKeys {
    public static String deviceToken = "deviceToken";
   public static String userId = "userId";
 
+  public static String alarm = "alarm";
+
 }

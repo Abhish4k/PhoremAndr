@@ -52,4 +52,9 @@ public class SharedPrefHelper {
         myEdit.commit();
     }
 
+    public void erseAllData(){
+        myEdit.clear();
+        myEdit.commit();
+    }
+
 }

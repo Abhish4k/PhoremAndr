@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="getName"
+            type="String" />
+
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewMemoItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:background="@drawable/rounded_background"
+        android:text="@{getName}"
+        android:textSize="@dimen/_15ssp"
+        android:textAlignment="center">
+    </TextView>
+</layout>

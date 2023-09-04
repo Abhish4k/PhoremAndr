@@ -27,6 +27,7 @@
     <string name="change_avatar">Change Avatar</string>
     <string name="name">Name</string>
     <string name="update_profile">Update profile</string>
+    <string name="submit">Submit</string>
     <string name="enter_email">Please enter your email</string>
     <string name="enter_password">Please enter your password</string>
     <string name="enter_valid_email">Please enter valid email</string>
@@ -43,6 +44,29 @@
     <string name="set_sound">Set Sound</string>
     <string name="stop">Stop</string>
     <string name="start">Start</string>
+    <string name="edit_memo">Edit Memo</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="_00_00_00_">00:00:00/</string>
+    <string name="zero_text">00:00:00</string>
+    <string name="view_memo">View Memo</string>
+    <string name="continue_text">Continue</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="logout">Logout</string>
+    <string name="want_to_logout">Do you want to Logout?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_name">Please enter name</string>
+    <string name="enter_memo_name">Please enter memo name</string>
+    <string name="enter_phone_number">Please enter Phone number</string>
+    <string name="select_reminder">Please select reminder</string>
+    <string name="select_alarm">Select Alarm</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarm_tone">Alarm tone</string>
+    <string name="alert_alarm">Alert Alarm</string>
+    <string name="emergency_alarm">Emergency Alarm</string>
+
     <string name="no_result_found">No Result Found</string>
     <string name="search_here">Search here...</string>
 </resources>

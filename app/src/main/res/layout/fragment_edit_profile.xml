@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+
+        <ProgressBar
+            android:id="@+id/progressEdit"
+             android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+        <include
+            android:id="@+id/editProfileToolbar"
+            layout="@layout/toolbar"/>
+
+      <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@id/editProfileToolbar">
+          <LinearLayout
+
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingHorizontal="20dp"
+              android:gravity="center">
+
+              <androidx.cardview.widget.CardView
+                  android:id="@+id/artist_Container"
+                  android:layout_width="@dimen/_100sdp"
+                  android:layout_margin="20dp"
+                  android:layout_height="120dp"
+                  app:cardCornerRadius="150dp" >
+
+                  <ImageView
+                      android:id="@+id/ivUser"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:src="@drawable/default_image"
+                      android:scaleType="centerCrop"
+                      android:background="#FFFFFF"/>
+              </androidx.cardview.widget.CardView>
+
+              <TextView
+                  android:id="@+id/tvChangeAvatar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_horizontal"
+                  android:text="@string/change_avatar"
+                  android:textSize="22sp"
+                  android:textColor="@color/changeAvatar"/>
+
+              <com.google.android.material.textfield.TextInputLayout
+                  android:id="@+id/epNameTL"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/name"
+                  style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                  android:layout_marginTop="30dp">
+
+                  <com.google.android.material.textfield.TextInputEditText
+                      android:id="@+id/etFirstName"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"/>
+              </com.google.android.material.textfield.TextInputLayout>
+
+
+              <com.google.android.material.textfield.TextInputLayout
+                  android:id="@+id/epLastNameTL"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/last_name"
+                  style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                  android:layout_marginTop="30dp">
+
+                  <com.google.android.material.textfield.TextInputEditText
+                      android:id="@+id/etLastName"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"/>
+              </com.google.android.material.textfield.TextInputLayout>
+
+              <com.google.android.material.textfield.TextInputLayout
+                  android:id="@+id/epEmailTL"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/email"
+                  style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                  android:layout_marginTop="30dp">
+
+                  <com.google.android.material.textfield.TextInputEditText
+                      android:id="@+id/etEmail"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"/>
+              </com.google.android.material.textfield.TextInputLayout>
+
+
+              <Button
+                  android:id="@+id/btnUpdateProfile"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginVertical="20dp"
+                  android:background="@drawable/custom_button"
+                  android:text="@string/update_profile"
+                  android:textAllCaps="false"
+                  android:textSize="@dimen/_18ssp" />
+
+
+          </LinearLayout>
+      </ScrollView>
+
+
+
+    </RelativeLayout>
+</layout>

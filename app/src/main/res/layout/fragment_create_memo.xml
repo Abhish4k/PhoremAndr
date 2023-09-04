@@ -2,16 +2,26 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/custom_toolbar"/>
+        <include
+            android:id="@+id/memoToolbar"
+            layout="@layout/toolbar"/>
 
+
+        <ProgressBar
+            android:id="@+id/createMemoProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
 
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_below="@id/memoToolbar"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -30,10 +40,10 @@
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/cmNameTF"
+                        android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="20sp"/>
+                        android:textSize="@dimen/_12ssp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -46,9 +56,11 @@
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/cmPhoneTF"
+                        android:id="@+id/etPhone"
                         android:layout_width="match_parent"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/_12ssp"
+                        android:maxLength="15"
+                        android:inputType="phone"
                         android:layout_height="match_parent"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,20 +75,22 @@
                     android:layout_marginTop="30dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/cmMemoTF"
+                        android:id="@+id/etMemoName"
                         android:layout_width="match_parent"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/_12ssp"
                         android:gravity="top"
                         android:layout_height="200dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                <EditText
-                    android:id="@+id/cmBtn"
+                <TextView
+                    android:id="@+id/tvDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginVertical="20dp"
-                    android:text="Continue"
+                    android:text="@string/set_reminder"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textAlignment="center"
                     android:background="@drawable/custom_edit_text_rounded"
                     android:editable="false"
@@ -104,26 +118,29 @@
                    android:layout_gravity="center_horizontal"
                    android:orientation="horizontal">
 
-                   <Button
-                       android:id="@+id/buttonStart"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:text="@string/start" />
-<!--                   <Button-->
-<!--                       android:id="@+id/buttonStop"-->
-<!--                       android:layout_width="fill_parent"-->
-<!--                       android:layout_height="wrap_content"-->
-<!--                       android:layout_marginStart="@dimen/_16sdp"-->
-<!--                       android:text="@string/stop" />-->
-
-
+                   <ImageView
+                       android:id="@+id/ivMic"
+                       android:layout_width="@dimen/_50sdp"
+                       android:layout_height="@dimen/_50sdp"
+                       android:src="@drawable/mic" />
                </LinearLayout>
-
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/custom_button"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_18ssp" />
             </LinearLayout>
+
+
+
 
         </ScrollView>
 
 
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
