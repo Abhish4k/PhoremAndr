@@ -2,6 +2,7 @@ package com.example.phoremandr.activities;
 
 import android.Manifest;
 import android.app.Notification;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,8 +19,10 @@ import com.example.phoremandr.R;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivityDashboardBinding;
 import com.example.phoremandr.fragment.ContactFragment;
+import com.example.phoremandr.fragment.CreateMemoFragment;
 import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
+import com.example.phoremandr.utils.AppValidator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.security.AccessControlContext;
@@ -33,6 +36,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     private static final  String NOTIFICATION = Manifest.permission.POST_NOTIFICATIONS;
     private static  final int REQUEST_CODE = 200;
     ActivityDashboardBinding dashboardBinding;
+    boolean isDashboard;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +78,18 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
         dashboardBinding.bottomNavigation
                 .setOnNavigationItemSelectedListener(this);
         dashboardBinding.bottomNavigation.setSelectedItemId(R.id.bnHome);
+
+        Intent intent = getIntent();
+         isDashboard = intent.getBooleanExtra("isDashboard", false);
+
+        AppValidator.logData("isDashboard","" + isDashboard);
+
+        if(isDashboard){
+            loadFragment(new CreateMemoFragment(true, false, getString(R.string.create_memo), ""), getString(R.string.create_memo));
+        }else {
+
+            loadFragment(new HomeFragment(true), getString(R.string.home));
+        }
         return dashboardBinding;
     }
 
@@ -92,6 +108,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.bnHome:
+
                 loadFragment(new HomeFragment(true), getString(R.string.home));
                 break;
             case R.id.bnContacts:

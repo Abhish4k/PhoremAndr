@@ -31,7 +31,7 @@ public class ChatHeadService extends Service {
         super.onCreate();
 
         callReceiver = new CallReceiver(); // Instantiate the BroadcastReceiver
-        registerReceiver(callReceiver, new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED));
+        registerReceiver( callReceiver, new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED));
     }
 
     @Override

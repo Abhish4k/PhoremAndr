@@ -60,7 +60,7 @@ public class CreateMemoFragment extends BaseFragment {
     String name, memoId;
     String selectedDate, time;
     String audioUrl = "", audioPath = "";
-    CreateMemoFragment(boolean isVisible, boolean isEdit, String name, String memoId){
+    public CreateMemoFragment(boolean isVisible, boolean isEdit, String name, String memoId){
         this.isVisible = isVisible;
         this.isEdit = isEdit;
         this.name = name;
@@ -74,9 +74,6 @@ public class CreateMemoFragment extends BaseFragment {
         return memoBinding;
 
     }
-
-
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     void initView(){
@@ -104,7 +101,6 @@ public class CreateMemoFragment extends BaseFragment {
                     memoBinding.chronometer.start();
                     startRecording();
                     memoBinding.ivMic.setImageDrawable(requireContext().getDrawable(R.drawable.stop));
-
                     Handler handler = new Handler();
                     handler.postDelayed(this::stopRecording, 30000);
 
@@ -158,8 +154,6 @@ public class CreateMemoFragment extends BaseFragment {
 
     @SuppressLint("SetTextI18n")
     private  void showTimePickerDialog() {
-
-
         Calendar mCurrentTime = Calendar.getInstance();
         int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mCurrentTime.get(Calendar.MINUTE);
@@ -174,10 +168,7 @@ public class CreateMemoFragment extends BaseFragment {
 
         mTimePicker.show();
 
-
     }
-
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     void  stopRecording(){
@@ -190,8 +181,6 @@ public class CreateMemoFragment extends BaseFragment {
           memoBinding.ivMic.setImageDrawable(requireContext().getDrawable(R.drawable.mic));
       }
     }
-
-
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     private void startRecording() {
         executorService.execute(() -> {
@@ -210,12 +199,7 @@ public class CreateMemoFragment extends BaseFragment {
             throw new RuntimeException(e);
         }
         recorder.start();
-
-
-
     }
-
-
 
     private void saveRecording() {
         if(isRecording){
@@ -224,8 +208,6 @@ public class CreateMemoFragment extends BaseFragment {
             recorder = null;
         }
 
-
-
         audioPath = getRecordingFilePath();
 
         AppValidator.logData("file","" + audioPath);
@@ -233,8 +215,6 @@ public class CreateMemoFragment extends BaseFragment {
             memoBinding.chronometer.stop();
         });
     }
-
-
 
     private void  requestRecordingPermission()
     {
@@ -283,9 +263,7 @@ public class CreateMemoFragment extends BaseFragment {
                     memoBinding.tvDateTime.setText(getMemoByIdDataResponse.getReminder());
 
                     audioUrl = getMemoByIdDataResponse.getVoiceMemo();
-
                 }
-
             }
             @Override
             public void onFailure(@NotNull  Call<GetMemoByIdResponse> call, @NotNull Throwable t) {

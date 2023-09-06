@@ -1,7 +1,10 @@
 package com.example.phoremandr.receiver;
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,6 +14,10 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.activities.DashboardActivity;
+import com.example.phoremandr.fragment.CreateMemoFragment;
+import com.example.phoremandr.fragment.ViewMemoFragment;
+import com.example.phoremandr.utils.AppValidator;
 
 import java.security.Permission;
 import java.util.Date;
@@ -104,15 +111,19 @@ public class PhoneCallReceiver  extends BroadcastReceiver
 
     private void showAlertDialog(Context context, String number) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Incoming Call");
+        builder.setTitle(R.string.inc_call);
         builder.setIcon(R.mipmap.ic_launcher);
-        builder.setMessage("You have an Incoming call! Pick Up." + number);
-        builder.setPositiveButton("App Open", (dialog, which) -> {
+        builder.setMessage("Write memo for this incoming number" + number +"?");
+        builder.setPositiveButton(R.string.yess, (dialog, which) -> {
+
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
+            i.setComponent(new ComponentName("com.example.phoremandr", "com.example.phoremandr.activities.DashboardActivity"));
+            i.putExtra("isDashboard" , true);
             context.startActivity(i);
 
         });
-        builder.setNegativeButton("Decline", (dialog, which) -> {
+
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
             // Code to decline the call by the alert dialog box will be here
             dialog.dismiss();
         });

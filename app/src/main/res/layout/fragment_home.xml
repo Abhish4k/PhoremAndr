@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -28,6 +28,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/memoListRV"
                 tools:listitem="@layout/rv_home_content"
@@ -43,12 +44,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-
         android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
+        app:backgroundTint="@color/white"
         android:contentDescription="@string/create_memo"
         android:src="@drawable/add" />
 
