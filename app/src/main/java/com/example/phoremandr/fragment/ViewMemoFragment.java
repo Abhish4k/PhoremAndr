@@ -45,7 +45,13 @@ public class ViewMemoFragment extends BaseFragment {
     void  initView(){
         viewMemoBinding.viewMemoToolbar.setVisibility(true);
         viewMemoBinding.viewMemoToolbar.setNameData(requireContext().getString(R.string.view_memo));
-        viewMemoBinding.viewMemoToolbar.ivBack.setOnClickListener(v -> requireFragmentManager().popBackStack());
+        viewMemoBinding.viewMemoToolbar.ivBack.setOnClickListener(v ->{
+            if (mediaPlayer != null && mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+                mediaPlayer.reset();
+                mediaPlayer.release();
+            }
+            requireFragmentManager().popBackStack();});
 
 
 
