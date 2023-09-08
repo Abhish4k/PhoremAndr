@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,14 +61,16 @@ public class CreateMemoFragment extends BaseFragment {
     boolean isVisible, isEdit;
 
     String name, memoId;
-    String selectedDate, time;
+    String selectedDate = "", time = "";
     String audioUrl = "", audioPath = "";
-    public CreateMemoFragment(boolean isVisible, boolean isEdit, String name, String memoId){
+
+    public CreateMemoFragment(boolean isVisible, boolean isEdit, String name, String memoId) {
         this.isVisible = isVisible;
         this.isEdit = isEdit;
         this.name = name;
         this.memoId = memoId;
     }
+
     @Override
     public ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container) {
 
@@ -78,18 +81,19 @@ public class CreateMemoFragment extends BaseFragment {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    void initView(){
+    void initView() {
 
         memoBinding.memoToolbar.setNameData(name);
 
         memoBinding.memoToolbar.setVisibility(isVisible);
 
         memoBinding.memoToolbar.ivBack.setOnClickListener(v -> {
-           requireFragmentManager().popBackStack();
+            stopRecording();
+            requireFragmentManager().popBackStack();
 
         });
 
-        if(isEdit){
+        if (isEdit) {
             callMemoView();
         }
 
@@ -135,7 +139,6 @@ public class CreateMemoFragment extends BaseFragment {
                         Date date = formatter.parse(dateInString);
 
 
-
                         formatter = new SimpleDateFormat("yyyy-MM-dd");
 
                         assert date != null;
@@ -155,16 +158,16 @@ public class CreateMemoFragment extends BaseFragment {
     }
 
     @SuppressLint("SetTextI18n")
-    private  void showTimePickerDialog() {
+    private void showTimePickerDialog() {
         Calendar mCurrentTime = Calendar.getInstance();
         int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mCurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(requireContext(), (timePicker, selectedHour, selectedMinute) -> {
-            time = selectedHour + ":" + selectedMinute ;
+            time = selectedHour + ":" + selectedMinute;
             memoBinding.tvDateTime.setText(selectedDate + " " + time);
         }
-             , hour, minute, true);//Yes 24 hour time
+                , hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
 
         mTimePicker.show();
@@ -172,20 +175,22 @@ public class CreateMemoFragment extends BaseFragment {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    void  stopRecording(){
-      if(isRecording){
-          saveRecording();
-          isRecording = false;
-          memoBinding.chronometer.stop();
-         // memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
+    void stopRecording() {
+        if (isRecording) {
+            saveRecording();
+            isRecording = false;
+            memoBinding.chronometer.stop();
+            // memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
 
          /* recorder.stop();
           recorder.release();*/
-          Toast.makeText(getContext(), "Recording Saved", Toast.LENGTH_SHORT).show();
-          memoBinding.ivMic.setImageDrawable(requireContext().getDrawable(R.drawable.mic));
-      }
+            Toast.makeText(getContext(), "Recording Saved", Toast.LENGTH_SHORT).show();
+            memoBinding.ivMic.setImageDrawable(requireContext().getDrawable(R.drawable.mic));
+        }
     }
+
     ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     private void startRecording() {
         executorService.execute(() -> {
             memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
@@ -206,50 +211,49 @@ public class CreateMemoFragment extends BaseFragment {
     }
 
     private void saveRecording() {
-        if(isRecording){
+        if (isRecording) {
             recorder.stop();
             recorder.release();
-           recorder = null;
+            recorder = null;
 
         }
 
         audioPath = getRecordingFilePath();
 
-        AppValidator.logData("file","" + audioPath);
+        AppValidator.logData("file", "" + audioPath);
         executorService.execute(() -> {
             memoBinding.chronometer.stop();
         });
     }
 
-    private void  requestRecordingPermission()
-    {
-        ActivityCompat.requestPermissions(requireActivity() , new String[]{Manifest.permission.RECORD_AUDIO} ,PERMISSION_CODE );
+    private void requestRecordingPermission() {
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_CODE);
     }
 
     public boolean checkRecordingPermission() {
-        if (ContextCompat.checkSelfPermission( requireContext() ,Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED) {
             requestRecordingPermission();
             return false;
         }
         return true;
     }
 
-    private  String getRecordingFilePath(){
+    private String getRecordingFilePath() {
         ContextWrapper contextWrapper = new ContextWrapper(requireContext());
         File music = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_AUDIOBOOKS);
-        }else {
+        } else {
             music = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
         }
 
-        AppValidator.logData("musicDirectory","" + music);
-        File file = new File(music, "audio"+".mp3");
-        return  file.getPath();
+        AppValidator.logData("musicDirectory", "" + music);
+        File file = new File(music, "audio" + ".mp3");
+        return file.getPath();
     }
 
 
-    void callMemoView(){
+    void callMemoView() {
         memoBinding.createMemoProgress.setVisibility(View.VISIBLE);
         Call<GetMemoByIdResponse> call3 = apiInterface.callGetMemoById(memoId);
 
@@ -259,7 +263,7 @@ public class CreateMemoFragment extends BaseFragment {
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
                 assert response.body() != null;
 
-                if (response.body().getCode().equals("200")){
+                if (response.body().getCode().equals("200")) {
                     GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
 
                     memoBinding.etName.setText(getMemoByIdDataResponse.getName());
@@ -270,20 +274,22 @@ public class CreateMemoFragment extends BaseFragment {
                     audioUrl = getMemoByIdDataResponse.getVoiceMemo();
                 }
             }
+
             @Override
-            public void onFailure(@NotNull  Call<GetMemoByIdResponse> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<GetMemoByIdResponse> call, @NotNull Throwable t) {
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
-                AppValidator.logData("getMemoById",""+t.getMessage());
+                AppValidator.logData("getMemoById", "" + t.getMessage());
             }
         });
     }
 
-    void onClickSubmitButton(){
-        if(isRecording){
+    void onClickSubmitButton() {
+        if (isRecording) {
             stopRecording();
         }
 
-        AppValidator.logData("dateTime","" + memoBinding.tvDateTime.getText().toString());
+        AppValidator.logData("dateTime", "" + memoBinding.tvDateTime.getText().toString());
+
         CreateMemoRequestModel createMemoRequestModel = new CreateMemoRequestModel(
                 memoBinding.etName.getText().toString().trim(),
                 memoBinding.etMemoName.getText().toString().trim(),
@@ -292,29 +298,46 @@ public class CreateMemoFragment extends BaseFragment {
                 audioPath
         );
 
-        if(AppValidator.validateCreateMemo(requireContext(), createMemoRequestModel)){
-           if(!isEdit){
-               if(createMemoRequestModel.getVoiceMemo().isEmpty()){
-                   callApiWithoutVoiceMemo(createMemoRequestModel);
-               }else {
-                   //    callApiWithoutVoiceMemo(createMemoRequestModel);
-                  callApiWithVoiceMemo(createMemoRequestModel);
-               }
-           }else if(isEdit){
-               if(!audioUrl.isEmpty()){
+        if (AppValidator.validateCreateMemo(requireContext(), createMemoRequestModel)) {
+            if (!isEdit) {
+                if (createMemoRequestModel.getVoiceMemo().isEmpty()) {
+                    callApiWithoutVoiceMemo(createMemoRequestModel);
+                } else {
+                    //    callApiWithoutVoiceMemo(createMemoRequestModel);
+                    callApiWithVoiceMemo(createMemoRequestModel);
+                }
+            } else if (isEdit) {
+               /*if(!audioUrl.isEmpty()){
                    createMemoRequestModel.setVoiceMemo(audioUrl);
-               }
+               }*/
 
-               AppValidator.logData("audioUrl", "" + createMemoRequestModel.getVoiceMemo());
-               if(createMemoRequestModel.getVoiceMemo().isEmpty()){
-                   callApiEditWithoutVoiceMemo(createMemoRequestModel);
-               }else {
+                AppValidator.logData("audioUrl", "" + createMemoRequestModel.getVoiceMemo());
+                if (selectedDate.equals("") && time.equals("")) {
+                    try {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                        Date date = formatter.parse(createMemoRequestModel.getReminder());
 
-                 callEditApiWithVoiceMemo(createMemoRequestModel);
-               }
-           }
+
+                        formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                        createMemoRequestModel.setReminder(formatter.format(date));
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+
+                if (createMemoRequestModel.getVoiceMemo().isEmpty()) {
+                    callApiEditWithoutVoiceMemo(createMemoRequestModel);
+                } else {
+
+                    callEditApiWithVoiceMemo(createMemoRequestModel);
+                }
+            }
         }
     }
+
+
 
 
     void callApiWithVoiceMemo(CreateMemoRequestModel createMemoRequestModel){
@@ -405,6 +428,14 @@ public class CreateMemoFragment extends BaseFragment {
 
         File file = new File(createMemoRequestModel.getVoiceMemo());
 
+        AppValidator.logData("memoId","" + memoId);
+        AppValidator.logData("name",""  + createMemoRequestModel.getName());
+        AppValidator.logData("userId", "" + sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
+        AppValidator.logData("phoneNumber","" + createMemoRequestModel.getPhoneNumber());
+        AppValidator.logData("memo","" + createMemoRequestModel.getMemoName());
+        AppValidator.logData("reminder","" + createMemoRequestModel.getReminder());
+
+
         RequestBody memoRequestId = RequestBody.create(memoId, MediaType.parse("text/plain"));
         RequestBody name = RequestBody.create(createMemoRequestModel.getName(), MediaType.parse("text/plain"));
         RequestBody userId = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
@@ -427,11 +458,19 @@ public class CreateMemoFragment extends BaseFragment {
 
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
-                if(response.body().getCode().equals("200")){
-                    getFragmentManager().popBackStack();
+                AppValidator.logData("editMemo","" + response.body() + "" + response.code());
+                if(response.code() == 200){
+
+                    if(response.body() != null){
+                        AppValidator.showToast(requireActivity(), response.body().getStatus());
+                        if(response.body().getCode().equals("200")){
+                            getFragmentManager().popBackStack();
+                        }
+                    }
+
                 }
+
+
 
 
 
@@ -467,11 +506,17 @@ public class CreateMemoFragment extends BaseFragment {
 
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
-                if(response.body().getCode().equals("200")){
-                    getFragmentManager().popBackStack();
+                AppValidator.logData("getEditMemoWithoutVoice","" + response.code() + "," + response.body() + ""+ call.request());
+
+                if(response.code() == 200){
+                    assert response.body() != null;
+                    AppValidator.showToast(requireActivity(), response.body().getStatus());
+                    if(response.body().getCode().equals("200")){
+                        getFragmentManager().popBackStack();
+                    }
                 }
+
+
 
 
 
