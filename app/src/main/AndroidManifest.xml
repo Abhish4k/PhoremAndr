@@ -31,6 +31,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <uses-permission
         android:name="android.permission.MODIFY_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
@@ -41,6 +42,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage ="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.PhoremAndr"
@@ -61,25 +63,29 @@
 
         <activity android:name=".activities.SignUpScreen"/>
         <activity android:name=".activities.SignInScreen"/>
-        <activity android:name=".activities.DashboardActivity"/>
-
+        <activity android:name=".activities.DashboardActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <receiver android:name=".receiver.CallReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter >
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />    </intent-filter></receiver>
+
 
 
         <service
             android:name=".receiver.ChatHeadService"
             android:exported="true"
-            android:enabled="true"/>
+            android:enabled="true"
+            android:stopWithTask="false"/>
 
 
         <service

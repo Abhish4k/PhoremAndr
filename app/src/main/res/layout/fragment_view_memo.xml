@@ -4,10 +4,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-
-
         <include
             android:id="@+id/viewMemoToolbar"
             layout="@layout/toolbar"/>
@@ -21,12 +17,16 @@
 
         <Button
             android:id="@+id/btnEditMemo"
-            android:layout_below="@+id/viewMemoToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/viewMemoToolbar"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_10sdp"
-            android:text="@string/edit_memo"/>
+            android:backgroundTint="@color/green_500"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/edit_memo" />
 
        <include
            android:id="@+id/tvName"
@@ -95,6 +95,8 @@
             android:layout_below="@+id/llAudioDuration"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_2sdp"
             android:layout_height="wrap_content">
 
             <Button
@@ -102,7 +104,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginHorizontal="@dimen/_1sdp"
+                android:backgroundTint="@color/green_500"
                 android:text="@string/play"/>
 
             <Button
@@ -110,23 +114,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginHorizontal="@dimen/_1sdp"
+                android:backgroundTint="@color/green_500"
                 android:text="@string/pause"/>
 
             <Button
                 android:id="@+id/btnResume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-
+                android:layout_weight="1"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginHorizontal="@dimen/_1sdp"
+                android:backgroundTint="@color/green_500"
                 android:text="@string/resume"/>
 
             <Button
                 android:id="@+id/btnStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/_10ssp"
                 android:layout_weight="1"
-                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_1sdp"
+                android:backgroundTint="@color/green_500"
                 android:text="@string/stop"/>
 
 

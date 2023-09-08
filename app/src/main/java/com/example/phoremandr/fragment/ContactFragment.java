@@ -125,7 +125,7 @@ public class ContactFragment extends BaseFragment {
         if (filteredlist.isEmpty()) {
             // if no item is added in filtered list we are
             // displaying a toast message as no data found.
-            Toast.makeText(requireContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(requireContext(), "No Data Found..", Toast.LENGTH_SHORT).show();
             getContactList();
         } else {
             // at last we are passing that filtered
