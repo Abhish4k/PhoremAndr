@@ -67,4 +67,10 @@
     <string name="alert_alarm">Alert Alarm</string>
     <string name="emergency_alarm">Emergency Alarm</string>
 
+    <string name="no_result_found">No Result Found</string>
+    <string name="search_here">Search here...</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="yess">Yes</string>
+    <string name="inc_call">Incoming Call</string>
 </resources>

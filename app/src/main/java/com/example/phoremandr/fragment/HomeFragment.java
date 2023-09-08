@@ -80,25 +80,24 @@ public class HomeFragment extends BaseFragment {
         if(isShow){
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.VISIBLE);
 
+
         }else {
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.GONE);
             fragmentHomeBinding.homeToolbar.ivBack.setOnClickListener(v -> requireFragmentManager().popBackStack());
 
         }
 
-        fragmentHomeBinding.fbCreateMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, false, requireContext().getString(R.string.create_memo),""), requireContext().getString(R.string.home) ));
+        fragmentHomeBinding.fbCreateMemo.setOnClickListener(v ->
+                loadFragment(new CreateMemoFragment(true, false, requireContext().getString(R.string.create_memo),""), requireContext().getString(R.string.home) ));
         homeAdapter.setOnClickListener((position, model) -> {
             AppValidator.logData("getItemId", "" + model.getId());
 
             loadFragment(new ViewMemoFragment(model.getId().toString()),getString(R.string.home));
         });
 
-
-
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(requireContext()) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
                 GetAllMemoDataResponse deletedCourse = getAllMemoDataResponseList.get(viewHolder.getAdapterPosition());
                 callDeleteMemoId(deletedCourse.getId().toString(), viewHolder);
 
@@ -107,10 +106,6 @@ public class HomeFragment extends BaseFragment {
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchhelper.attachToRecyclerView(fragmentHomeBinding.memoListRV);
-
-
-
-
 
         if (!sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty() || sharedPrefHelper.getValue(SharedPreferencesKeys.userId) != null) {
             callGetAllMemoApi();
@@ -167,10 +162,6 @@ public class HomeFragment extends BaseFragment {
                     getAllMemoDataResponseList.remove(viewHolder.getAdapterPosition());
                     homeAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                 }
-
-
-
-
 
             }
             @Override

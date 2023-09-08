@@ -28,7 +28,6 @@ public abstract class BaseFragment<ViewDataBinding> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         viewBinding =  getViewModel(inflater, container);
         SharedPrefHelper.getInstance(requireContext());
         sharedPrefHelper = new SharedPrefHelper();
@@ -40,7 +39,6 @@ public abstract class BaseFragment<ViewDataBinding> extends Fragment {
 
 
     public abstract ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container);
-
 
     public  void  loadFragment(Fragment fragment, String name){
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).addToBackStack(name).commit();

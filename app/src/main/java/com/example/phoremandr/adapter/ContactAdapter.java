@@ -74,9 +74,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
     }
 
-  public void updateData(List<ContactListModel> newList){
-        listData.clear();
-        listData.addAll(newList);
-        notifyDataSetChanged();
-  }
+    public void filterList(ArrayList<ContactListModel> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        listData = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        this.notifyDataSetChanged();
+    }
+
 }
