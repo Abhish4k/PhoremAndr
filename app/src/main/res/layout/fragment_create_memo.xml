@@ -93,7 +93,6 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:background="@drawable/custom_edit_text_rounded"
-                    android:editable="false"
                     android:focusable="true" />
 
                 <TextView
@@ -124,6 +123,7 @@
                        android:layout_height="@dimen/_50sdp"
                        android:src="@drawable/mic" />
                </LinearLayout>
+
                 <Button
                     android:id="@+id/btnSubmit"
                     android:layout_width="match_parent"
@@ -134,13 +134,6 @@
                     android:textAllCaps="false"
                     android:textSize="@dimen/_18ssp" />
             </LinearLayout>
-
-
-
-
         </ScrollView>
-
-
-
     </RelativeLayout>
 </layout>

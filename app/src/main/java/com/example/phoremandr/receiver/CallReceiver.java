@@ -15,7 +15,6 @@ public class CallReceiver extends PhoneCallReceiver {
     {
         context =   ctx;
 
-
     }
 
     @Override

@@ -30,6 +30,7 @@
                android:layout_toStartOf="@id/btnStop"
                android:layout_width="wrap_content"
                android:layout_marginEnd="@dimen/_5sdp"
+               android:backgroundTint="@color/green_700"
                android:text="@string/play"
                android:layout_height="wrap_content"/>
            <Button

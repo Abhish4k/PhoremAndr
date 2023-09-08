@@ -61,6 +61,7 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
             selectedPosition = holder.getAdapterPosition();
             holder.rbSound.setChecked(position == selectedPosition);
             notifyDataSetChanged();
+            stopSound();
             if (onClickListener != null) {
                 onClickListener.onClick(position, myListData);
             }
@@ -74,9 +75,11 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
             if(isChecked){
                 selectedPosition = holder.getAdapterPosition();
                 holder.rbSound.setChecked(position == selectedPosition);
+                stopSound();
                 onClickListener.onClick(holder.getAdapterPosition(), myListData);
                 notifyDataSetChanged();
             }
+
         });
 
 
@@ -84,11 +87,7 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
         holder.btnStop.setOnClickListener(v -> stopSound());
         holder.btnPlay.setOnClickListener(v -> playSound(myListData.getSound()));
 
-
-
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -104,7 +103,6 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             rbSound = itemView.findViewById(R.id.rbSound);
             tvSound = itemView.findViewById(R.id.tvSound);
             btnPlay = itemView.findViewById(R.id.btnPlay);
@@ -125,14 +123,14 @@ public class AddAlarmAdapter  extends RecyclerView.Adapter<AddAlarmAdapter.ViewH
 
 
 
-    void stopSound(){
+    public void stopSound(){
         if(mediaPlayer.isPlaying()){
             mediaPlayer.stop();
         }
     }
 
     void  playSound(String sound){
-
+        stopSound();
         mediaPlayer = new MediaPlayer();
         AssetFileDescriptor afd;
         try {

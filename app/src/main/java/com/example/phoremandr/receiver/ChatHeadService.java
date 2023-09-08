@@ -1,6 +1,13 @@
 package com.example.phoremandr.receiver;
 
+import static android.os.SystemClock.elapsedRealtime;
+
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
@@ -16,7 +23,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+
 import com.example.phoremandr.R;
+import com.example.phoremandr.activities.DashboardActivity;
+import com.example.phoremandr.utils.AppValidator;
 
 public class ChatHeadService extends Service {
 
@@ -24,14 +35,20 @@ public class ChatHeadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int res = super.onStartCommand(intent, flags, startId);
+
         return START_STICKY;
     }
     @Override
     public void onCreate() {
         super.onCreate();
 
-        callReceiver = new CallReceiver(); // Instantiate the BroadcastReceiver
-        registerReceiver( callReceiver, new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED));
+        callReceiver = new CallReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_LOCKED_BOOT_COMPLETED);
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);// Instantiate the BroadcastReceiver
+        registerReceiver( callReceiver, filter);
     }
 
     @Override
@@ -44,5 +61,19 @@ public class ChatHeadService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Toast.makeText(getApplicationContext(),"Kill", Toast.LENGTH_SHORT).show();
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent restartServicePendingIntent = PendingIntent.getService(
+                getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(AlarmManager.ELAPSED_REALTIME, elapsedRealtime() + 500,
+                restartServicePendingIntent);
+        Log.d("taskremoved", "task removed ");
+        super.onTaskRemoved(rootIntent);
     }
 }

@@ -55,8 +55,6 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmModelList = new ArrayList<>();
         addAllAlarm();
 
-
-
         addAlarmAdapter = new AddAlarmAdapter(addAlarmModelList, sharedPrefHelper);
         addAlarmBinding.rvAddAlarm.setHasFixedSize(true);
         addAlarmBinding.rvAddAlarm.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -69,20 +67,16 @@ public class AddAlarmFragment extends BaseFragment {
             this.position  = position;
 
         });
-
-
         addAlarmBinding.btnSubmit.setOnClickListener(v -> onClickButton());
-
 
     }
 
 
     void addAllAlarm(){
-
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm", "alarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone", "alarmToneChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm", "alertAlarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm", "emergencyAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3", "alarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav", "alarmToneChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav", "alertAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
     }
 
     void onClickButton(){

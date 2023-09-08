@@ -1,4 +1,6 @@
 package com.example.phoremandr.fragment;
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -165,7 +167,6 @@ public class CreateMemoFragment extends BaseFragment {
              , hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
 
-
         mTimePicker.show();
 
     }
@@ -173,10 +174,13 @@ public class CreateMemoFragment extends BaseFragment {
     @SuppressLint("UseCompatLoadingForDrawables")
     void  stopRecording(){
       if(isRecording){
+          saveRecording();
           isRecording = false;
           memoBinding.chronometer.stop();
          // memoBinding.chronometer.setBase(SystemClock.elapsedRealtime());
-          saveRecording();
+
+         /* recorder.stop();
+          recorder.release();*/
           Toast.makeText(getContext(), "Recording Saved", Toast.LENGTH_SHORT).show();
           memoBinding.ivMic.setImageDrawable(requireContext().getDrawable(R.drawable.mic));
       }
@@ -189,23 +193,24 @@ public class CreateMemoFragment extends BaseFragment {
         });
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); // Change this line
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); // Change this line
         recorder.setOutputFile(getRecordingFilePath());
-
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
         try {
             recorder.prepare();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         recorder.start();
+
     }
 
     private void saveRecording() {
         if(isRecording){
             recorder.stop();
             recorder.release();
-            recorder = null;
+           recorder = null;
+
         }
 
         audioPath = getRecordingFilePath();
@@ -292,8 +297,8 @@ public class CreateMemoFragment extends BaseFragment {
                if(createMemoRequestModel.getVoiceMemo().isEmpty()){
                    callApiWithoutVoiceMemo(createMemoRequestModel);
                }else {
-                   callApiWithoutVoiceMemo(createMemoRequestModel);
-                //   callApiWithVoiceMemo(createMemoRequestModel);
+                   //    callApiWithoutVoiceMemo(createMemoRequestModel);
+                  callApiWithVoiceMemo(createMemoRequestModel);
                }
            }else if(isEdit){
                if(!audioUrl.isEmpty()){
@@ -304,8 +309,8 @@ public class CreateMemoFragment extends BaseFragment {
                if(createMemoRequestModel.getVoiceMemo().isEmpty()){
                    callApiEditWithoutVoiceMemo(createMemoRequestModel);
                }else {
-                   callApiEditWithoutVoiceMemo(createMemoRequestModel);
-               //    callEditApiWithVoiceMemo(createMemoRequestModel);
+
+                 callEditApiWithVoiceMemo(createMemoRequestModel);
                }
            }
         }
@@ -317,15 +322,17 @@ public class CreateMemoFragment extends BaseFragment {
         memoBinding.createMemoProgress.setVisibility(View.VISIBLE);
 
         File file = new File(createMemoRequestModel.getVoiceMemo());
-        AppValidator.logData("voiceMemoFile","" +file.getAbsoluteFile());
+        long fileSize = file.length();
+        Log.d(TAG, "callApiWithVoiceMemo: ============================>>>>"+createMemoRequestModel.getName());
 
+        AppValidator.logData("voiceMemoFile",file.getAbsolutePath());
         RequestBody name = RequestBody.create(createMemoRequestModel.getName(), MediaType.parse("text/plain"));
         RequestBody userId = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
         RequestBody phoneNumber = RequestBody.create(createMemoRequestModel.getPhoneNumber(),MediaType.parse("text/plain"));
         RequestBody memo = RequestBody.create(createMemoRequestModel.getMemoName(),MediaType.parse("text/plain"));
         RequestBody reminder = RequestBody.create(createMemoRequestModel.getReminder(),MediaType.parse("text/plain"));
-        RequestBody requestFile = RequestBody.create(file,MediaType.parse("audio/mp3"));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("voice_memo", file.getName(), requestFile);
+        RequestBody requestFile = RequestBody.create(file,MediaType.parse("audio/*"));
+        MultipartBody.Part body = MultipartBody.Part.createFormData("voice_memo", file.getName(),requestFile);
 
         AppValidator.logData("requestFile","" + body);
 
@@ -345,9 +352,8 @@ public class CreateMemoFragment extends BaseFragment {
                     getFragmentManager().popBackStack();
                 }
 
-
-
             }
+
             @Override
             public void onFailure(@NotNull  Call<RegisterResponse> call,@NotNull Throwable t) {
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
