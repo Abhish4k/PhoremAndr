@@ -141,14 +141,14 @@ public class AppValidator {
         });
 
         AlertDialog alertDialog = builder.create();
-        int LAYOUT_FLAG;
+      /*  int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        alertDialog.getWindow().setType(LAYOUT_FLAG);
+        alertDialog.getWindow().setType(LAYOUT_FLAG);*/
         alertDialog.show();
     }
 

@@ -3,14 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ProgressBar
                 android:id="@+id/signUpProgress"
@@ -119,7 +118,6 @@
                     android:text="@string/Sign_up"
                     android:textSize="@dimen/_18ssp"
                     android:onClick="onClickSignUpBtn"
-                    android:clickable="true"
                     android:background="@drawable/custom_button"
                     android:textAllCaps="false"/>
 
@@ -149,9 +147,7 @@
             </LinearLayout>
 
 
-
         </RelativeLayout>
-
 
 
     </ScrollView>

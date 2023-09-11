@@ -7,10 +7,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.widget.RemoteViews;
@@ -18,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.example.phoremandr.R;
 import com.example.phoremandr.activities.DashboardActivity;
-import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.utils.AppValidator;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -39,13 +35,13 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     public void
     onMessageReceived(RemoteMessage remoteMessage)
     {
-
         AppValidator.logData("receiveNotification","" + remoteMessage.getNotification());
         if (remoteMessage.getNotification() != null) {
             showNotification(
                     remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody(),
                     remoteMessage.getNotification().getChannelId());
+
         }
     }
 
