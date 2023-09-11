@@ -66,14 +66,6 @@ public class ChatHeadService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         Toast.makeText(getApplicationContext(),"Kill", Toast.LENGTH_SHORT).show();
-        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
-
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent restartServicePendingIntent = PendingIntent.getService(
-                getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmService = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(AlarmManager.ELAPSED_REALTIME, elapsedRealtime() + 500,
-                restartServicePendingIntent);
-        Log.d("taskremoved", "task removed ");
         super.onTaskRemoved(rootIntent);
     }
 }

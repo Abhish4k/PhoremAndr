@@ -86,9 +86,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
 
     void  onClickLoginBtn(){
-        String timezoneid = TimeZone.getDefault().getID();
-        Log.d(TAG, "onClickLoginBtn: ======================"+ timezoneid);
-        LoginRequestModel loginRequestModel = new LoginRequestModel(signInBinding.etEmail.getText().toString().trim(),signInBinding.etPass.getText().toString().trim(), sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken), timezoneid);
+        String timeZoneId = TimeZone.getDefault().getID();
+        AppValidator.logData("timeZoneID","" +  timeZoneId);
+        LoginRequestModel loginRequestModel = new LoginRequestModel(signInBinding.etEmail.getText().toString().trim(),signInBinding.etPass.getText().toString().trim(), sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken), timeZoneId);
         if(AppValidator.validateLogin(this,loginRequestModel)){
             signInBinding.loginProgress.setVisibility(View.VISIBLE);
             callLoginApi(loginRequestModel);
