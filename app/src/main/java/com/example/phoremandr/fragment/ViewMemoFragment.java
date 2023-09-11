@@ -20,6 +20,7 @@ import com.example.phoremandr.utils.AppValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +64,7 @@ public class ViewMemoFragment extends BaseFragment {
         });
 
 
-        viewMemoBinding.btnEditMemo.setOnClickListener(v ->  loadFragment(new CreateMemoFragment(true, true, requireContext().getString(R.string.edit_memo), memoId),requireContext().getString(R.string.view_memo)));
+        viewMemoBinding.btnEditMemo.setOnClickListener(v -> loadFragment(new CreateMemoFragment(true, true, requireContext().getString(R.string.edit_memo), memoId),requireContext().getString(R.string.view_memo)));
 
 
         viewMemoBinding.btnPause.setOnClickListener(v -> {
@@ -115,11 +116,6 @@ public class ViewMemoFragment extends BaseFragment {
 
                     }
                 }
-
-
-
-
-
 
 
             }

@@ -31,7 +31,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("p_login")
-    Call<LoginResponse> callLoginApi( @Field("email") String email, @Field("password") String password, @Field("device_token") String device_token);
+    Call<LoginResponse> callLoginApi( @Field("email") String email, @Field("password") String password, @Field("device_token") String device_token, @Field("timezone") String timeZone);
 
 
     @FormUrlEncoded

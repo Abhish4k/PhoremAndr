@@ -28,6 +28,7 @@ import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
 import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
+import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
@@ -71,6 +72,7 @@ public class SplashScreen extends BaseActivity {
         FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
         firebaseMessaging.getToken().addOnCompleteListener(task -> {
             AppValidator.logData("getToken","" + task.getResult());
+            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, task.getResult());
         });
 
 
