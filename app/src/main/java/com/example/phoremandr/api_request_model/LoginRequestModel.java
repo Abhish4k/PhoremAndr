@@ -1,13 +1,14 @@
 package com.example.phoremandr.api_request_model;
 
 public class LoginRequestModel {
-    String email, password, deviceToken;
+    String email, password, deviceToken, timeZone;
 
 
-    public LoginRequestModel(String email, String password, String deviceToken) {
+    public LoginRequestModel(String email, String password, String deviceToken, String timeZone) {
         this.email = email;
         this.password = password;
         this.deviceToken = deviceToken;
+        this.timeZone = timeZone;
     }
 
 
@@ -33,5 +34,13 @@ public class LoginRequestModel {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
     }
 }

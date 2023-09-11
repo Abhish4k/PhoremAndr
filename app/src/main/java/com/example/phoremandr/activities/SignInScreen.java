@@ -1,5 +1,7 @@
 package com.example.phoremandr.activities;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +32,8 @@ import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,16 +86,19 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
 
     void  onClickLoginBtn(){
-        LoginRequestModel loginRequestModel = new LoginRequestModel(signInBinding.etEmail.getText().toString().trim(),signInBinding.etPass.getText().toString().trim(), "");
+        String timezoneid = TimeZone.getDefault().getID();
+        Log.d(TAG, "onClickLoginBtn: ======================"+ timezoneid);
+        LoginRequestModel loginRequestModel = new LoginRequestModel(signInBinding.etEmail.getText().toString().trim(),signInBinding.etPass.getText().toString().trim(), sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken), timezoneid);
         if(AppValidator.validateLogin(this,loginRequestModel)){
             signInBinding.loginProgress.setVisibility(View.VISIBLE);
             callLoginApi(loginRequestModel);
+
         }
 
     }
 
     void  callLoginApi(LoginRequestModel loginRequestModel){
-        Call<LoginResponse> call3 = apiInterface.callLoginApi(loginRequestModel.getEmail(),loginRequestModel.getPassword(), loginRequestModel.getDeviceToken());
+        Call<LoginResponse> call3 = apiInterface.callLoginApi(loginRequestModel.getEmail(),loginRequestModel.getPassword(), loginRequestModel.getDeviceToken(), loginRequestModel.getTimeZone());
 
         call3.enqueue(new Callback<LoginResponse>() {
             @Override

@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,8 +15,8 @@ import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.example.phoremandr.R;
-import com.example.phoremandr.SplashScreen;
 import com.example.phoremandr.activities.DashboardActivity;
+import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.utils.AppValidator;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -26,7 +27,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token)
     {
+
+
         AppValidator.logData("messagingToken", "Refreshed token: " + token);
+
     }
 
     @Override
