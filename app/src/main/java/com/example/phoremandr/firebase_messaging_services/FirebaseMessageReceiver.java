@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -86,32 +88,34 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         // Create a Builder object using NotificationCompat
         // class. This will allow control over all the flags
         Uri uri = null;
-        AppValidator.logData("channelId","" + channelId);
+
+        String appPackage = "android.resource://com.example.phoremandr/";
         if(channelId != null){
-            String appPackage = "android.resource://com.example.phoremandr/";
+
             switch (channelId) {
                 case "emergencyAlarmChannel":
-                    uri = Uri.parse(appPackage+ R.raw.emergency_alarm);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.emergency_alarm);
                     break;
                 case "alarmChannel":
-                    uri = Uri.parse(appPackage + R.raw.alarm);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.alarm);
                     break;
                 case "alarmToneChannel":
-                    uri = Uri.parse(appPackage + R.raw.alarm_tone);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.alarm_tone);
                     break;
                 case "alertAlarmChannel":
-                    uri = Uri.parse(appPackage + R.raw.alert_alarm);
+                    uri =Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
                     break;
             }
         }else {
-             uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-             channelId = "alarmChannel";
+            channelId = "alarmChannel";
+             uri=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
+
         }
 
+
+        AppValidator.logData("channelId","" + channelId);
         AppValidator.logData("uri","" + uri);
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .build();
+
 
         NotificationCompat.Builder builder
                 = new NotificationCompat
@@ -120,7 +124,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
                 .setSmallIcon(R.drawable.app_logo)
                 .setAutoCancel(true)
-                .setSound(uri)
+                .setSound(uri, AudioManager.STREAM_NOTIFICATION)
                 .setVibrate(new long[] { 1000, 1000, 1000,
                         1000, 1000 })
                 .setOnlyAlertOnce(true)

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.api_model.LoginResponse;
+import com.example.phoremandr.api_model.RegisterResponse;
+import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivityDashboardBinding;
 import com.example.phoremandr.fragment.ContactFragment;
@@ -24,9 +28,17 @@ import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
 import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.security.AccessControlContext;
+import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DashboardActivity extends BaseActivity   implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -92,6 +104,13 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
 
             loadFragment(new HomeFragment(true), getString(R.string.home));
         }
+
+        String timeZoneId = TimeZone.getDefault().getID();
+
+        if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId) != null){
+
+            callUpdateTimeZoneApi(sharedPrefHelper.getValue(SharedPreferencesKeys.userId), timeZoneId);
+        }
         return dashboardBinding;
     }
 
@@ -144,6 +163,34 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
         startService(intent);
 
         super.onDestroy();
+    }
+
+
+    void  callUpdateTimeZoneApi(String userId, String timeZone){
+        Call<RegisterResponse> call3 = apiInterface.callUpdateTimeZoneApi(userId, timeZone);
+
+        call3.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
+
+
+                assert response.body() != null;
+                AppValidator.showToast(DashboardActivity.this, response.body().getMessage());
+                if(response.body().getCode().contains("200")){
+                    AppValidator.logData("key","callTimeZoneApi");
+
+                }
+
+
+            }
+            @Override
+            public void onFailure(@NotNull  Call<RegisterResponse> call,@NotNull Throwable t) {
+                AppValidator.logData("updateTimeZone",""+t.getMessage());
+            }
+        });
+
+
+
     }
 }
 

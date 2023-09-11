@@ -105,6 +105,10 @@ public interface ApiInterface {
 
 
 
+    @FormUrlEncoded
+    @POST("update_timezone")
+    Call<RegisterResponse> callUpdateTimeZoneApi(@Field("user_id") String userId, @Field("timezone") String timeZone);
+
 
 
 }
