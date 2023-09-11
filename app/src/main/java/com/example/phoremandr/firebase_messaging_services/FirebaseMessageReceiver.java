@@ -79,7 +79,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         else
         {
             pendingIntent = PendingIntent.getActivity
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
 
@@ -105,6 +105,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             }
         }else {
              uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+             channelId = "alarmChannel";
         }
 
         AppValidator.logData("uri","" + uri);
