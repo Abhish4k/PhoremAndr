@@ -1,6 +1,7 @@
 package com.example.phoremandr.firebase_messaging_services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,8 +26,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token)
     {
-
-
         AppValidator.logData("messagingToken", "Refreshed token: " + token);
 
     }
@@ -45,22 +44,20 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         }
     }
 
-    @SuppressLint("RemoteViewLayout")
+//    @SuppressLint("RemoteViewLayout")
     private RemoteViews getCustomDesign(String title,
                                         String message)
     {
-       RemoteViews remoteViews = new RemoteViews(
-                getApplicationContext().getPackageName(),
-                R.layout.notification_layout);
+       RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.notification_layout);
         remoteViews.setTextViewText(R.id.tvTitle, title);
         remoteViews.setTextViewText(R.id.tvMsg, message);
 
         return remoteViews;
     }
+
+
     // Method to display the notifications
-    public void showNotification(String title,
-                                 String message, String channelId)
-    {
+    public void showNotification(String title, String message, String channelId) {
         // Pass the intent to switch to the MainActivity
         Intent intent
                 = new Intent(this, DashboardActivity.class);
@@ -70,80 +67,70 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         // next Activity
 
         PendingIntent pendingIntent;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             pendingIntent = PendingIntent.getActivity
                     (this, 0, intent, PendingIntent.FLAG_MUTABLE);
-        }
-        else
-        {
+        } else {
             pendingIntent = PendingIntent.getActivity
                     (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
 
-        // Create a Builder object using NotificationCompat
-        // class. This will allow control over all the flags
         Uri uri = null;
 
-        String appPackage = "android.resource://com.example.phoremandr/";
-        if(channelId != null){
+        String appPackage = "android.resource://com.example.phoremandr";
+        if (channelId != null) {
 
             switch (channelId) {
                 case "emergencyAlarmChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.emergency_alarm);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
                     break;
                 case "alarmChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.alarm);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
                     break;
                 case "alarmToneChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" +R.raw.alarm_tone);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm_tone);
                     break;
                 case "alertAlarmChannel":
-                    uri =Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
+                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
                     break;
             }
-        }else {
+        } else {
             channelId = "alarmChannel";
-             uri=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
-
+            uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
         }
 
-
-        AppValidator.logData("channelId","" + channelId);
-        AppValidator.logData("uri","" + uri);
-
+        AppValidator.logData("channelId", "" + channelId);
+        AppValidator.logData("uri", "" + uri);
 
         NotificationCompat.Builder builder
                 = new NotificationCompat
-                .Builder(getApplicationContext(),
+                .Builder( this.getApplicationContext(),
                 channelId)
-
-                .setSmallIcon(R.drawable.app_logo)
                 .setAutoCancel(true)
-                .setSound(uri, AudioManager.STREAM_NOTIFICATION)
-                .setVibrate(new long[] { 1000, 1000, 1000,
-                        1000, 1000 })
-                .setOnlyAlertOnce(true)
+                .setSmallIcon(R.drawable.app_logo)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .setContentIntent(pendingIntent);
 
-
-        builder = builder.setContent(
-                getCustomDesign(title, message));
-
+      //  builder.setContent( getCustomDesign(title, message));
         NotificationManager notificationManager
                 = (NotificationManager)getSystemService(
                 Context.NOTIFICATION_SERVICE);
+
         // Check if the Android Version is greater than Oreo
+
         if (Build.VERSION.SDK_INT
                 >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel
                     = new NotificationChannel(
                     channelId, "web_app",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(
-                    notificationChannel);
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            notificationManager.createNotificationChannel(notificationChannel);
         }
-
         notificationManager.notify(0, builder.build());
     }
-}
+    }
