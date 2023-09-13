@@ -115,7 +115,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .setContentIntent(pendingIntent);
 
-      //  builder.setContent( getCustomDesign(title, message));
+        builder.setContent( getCustomDesign(title, message));
         NotificationManager notificationManager
                 = (NotificationManager)getSystemService(
                 Context.NOTIFICATION_SERVICE);
