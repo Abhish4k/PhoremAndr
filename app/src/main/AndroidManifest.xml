@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -18,8 +17,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -37,11 +34,12 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
+        android:allowClearUserData="true"
         android:requestLegacyExternalStorage ="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -68,24 +66,27 @@
 
         <receiver android:name=".receiver.CallReceiver"
             android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
             <intent-filter >
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
+
             <intent-filter>
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />    </intent-filter></receiver>
-
-
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter></receiver>
 
         <service
             android:name=".receiver.ChatHeadService"
             android:exported="true"
             android:enabled="true"
-            android:stopWithTask="false"/>
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.example.phoremandr.receiver.ChatHeadService"/>
+            </intent-filter>
+        </service>
 
 
         <service
@@ -102,10 +103,12 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:value="@mipmap/ic_launcher" />
+            android:value="@mipmap/ic_launcher"
+            android:resource="@drawable/app_logo"/>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:value="@mipmap/ic_launcher" />
+            android:value="@mipmap/ic_launcher"
+            android:resource="@drawable/app_logo"/>
     </application>
 
 </manifest>

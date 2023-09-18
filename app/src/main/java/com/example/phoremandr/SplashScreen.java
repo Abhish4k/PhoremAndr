@@ -44,37 +44,34 @@ public class SplashScreen extends BaseActivity {
 
     @Override
     public ViewBinding getViewModel() {
-
         splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
-
-
-
-
 
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             displayOverLauncher.launch(intent);
+
         }
 
         checkPermission();
         goToHome();
 
 
+
+
+
         Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         startService(intent);
 
-        FirebaseApp.initializeApp(SplashScreen.this);
-
-
-        FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
-        firebaseMessaging.getToken().addOnCompleteListener(task -> {
-            AppValidator.logData("getToken","" + task.getResult());
-            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, task.getResult());
-        });
-
+//        FirebaseApp.initializeApp(SplashScreen.this);
+//
+//
+//        FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
+//        firebaseMessaging.getToken().addOnCompleteListener(task -> {
+//            AppValidator.logData("getToken","" + task.getResult());
+//            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, task.getResult());
+//        });
 
 
         return splashBinding;
@@ -122,10 +119,9 @@ public class SplashScreen extends BaseActivity {
             ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
                     (new String[listPermissionsNeeded.size()]),101);
 
+
         }
 
     }
-
-
 
 }

@@ -24,8 +24,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/_5sdp">
+            android:layout_height="@dimen/_50sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            >
 
             <ImageView
                 android:id="@+id/ivBack"
@@ -41,8 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@{nameData}"
                 android:fontFamily="@font/abel"
+                android:text="@{nameData}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15ssp"
                 android:textStyle="bold" />

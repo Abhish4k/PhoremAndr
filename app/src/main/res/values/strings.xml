@@ -73,4 +73,12 @@
     <string name="yes">Yes</string>
     <string name="yess">Yes</string>
     <string name="inc_call">Incoming Call</string>
+    <string name="forget_password_text">Forget Password</string>
+    <string name="go_to_sign_in">Go to Sign In</string>
+    <string name="enter_your_otp">Enter your OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="verify">verify</string>
+    <string name="didn_t_receive_any_code">Didn\'t receive any code?</string>
+    <string name="resend">Resend</string>
+    <string name="back_to_sign_in">Back to Sign in</string>
 </resources>

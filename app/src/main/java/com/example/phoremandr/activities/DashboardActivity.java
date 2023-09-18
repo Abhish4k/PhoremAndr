@@ -150,17 +150,17 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
        int notification  = ActivityCompat.checkSelfPermission(this, NOTIFICATION);
         int read_contacts  = ActivityCompat.checkSelfPermission(this, READ_CONTACTS);
 
-       return callLogPermission ==PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED && read_contacts == PackageManager.PERMISSION_GRANTED;
+       return callLogPermission == PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED && read_contacts == PackageManager.PERMISSION_GRANTED;
     }
 
 
     @Override
     protected void onDestroy() {
 
-        Intent intent = new Intent(this , ChatHeadService.class);
+        /*Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-        startService(intent);
+        startService(intent);*/
 
         super.onDestroy();
     }
@@ -173,23 +173,18 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
             @Override
             public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
 
-
                 assert response.body() != null;
                 AppValidator.showToast(DashboardActivity.this, response.body().getMessage());
                 if(response.body().getCode().contains("200")){
                     AppValidator.logData("key","callTimeZoneApi");
 
                 }
-
-
             }
             @Override
             public void onFailure(@NotNull  Call<RegisterResponse> call,@NotNull Throwable t) {
                 AppValidator.logData("updateTimeZone",""+t.getMessage());
             }
         });
-
-
 
     }
 }

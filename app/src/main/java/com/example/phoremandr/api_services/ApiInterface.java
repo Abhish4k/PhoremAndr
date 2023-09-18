@@ -88,8 +88,8 @@ public interface ApiInterface {
     @POST("edit_memo")
     Call<GetMemoByIdResponse> callEditMemoWithVoiceApi(@Part("id") RequestBody id, @Part("name") RequestBody name,
                                                        @Part("user_id") RequestBody user_id,
-                                              @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
-                                              @Part("reminder") RequestBody reminder,@Part MultipartBody.Part voice_memo);
+                                                       @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
+                                                       @Part("reminder") RequestBody reminder,@Part MultipartBody.Part voice_memo);
 
 
     @FormUrlEncoded

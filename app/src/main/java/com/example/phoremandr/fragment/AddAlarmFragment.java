@@ -1,5 +1,6 @@
 package com.example.phoremandr.fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.AddAlarmAdapter;
+import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestDataModel;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
@@ -19,13 +21,9 @@ import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,42 +77,63 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
     }
 
+
+
     void onClickButton(){
-        if(sound.isEmpty()){
-            if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
-                channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
-                sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+        try {
+
+                if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
+                    channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
+                    sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+                }
+
+            if(sound.isEmpty() ){
+                AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
+            }else {
+                callSettingApi();
             }
+
+        }catch(Exception e) {
+
+             e.printStackTrace();
+
+
         }
 
-        if(sound.isEmpty() ){
-            AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
-        }else {
-           callSettingApi();
-        }
     }
 
 
 
-    void callSettingApi(){
+ void callSettingApi(){
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
         Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
                 sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound
         );
 
+        AppValidator.logData("callAlarmUserId",sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
+        AppValidator.logData("channel","" + channel);
+        AppValidator.logData("sound","" + sound);
+
+
         call3.enqueue(new Callback<AddAlarmRequestModel>() {
             @Override
             public void onResponse(@NotNull Call<AddAlarmRequestModel> call, @NotNull Response<AddAlarmRequestModel> response) {
+                AppValidator.logData("Response" , "This is Alarm Response=======================>>>"+ response.message());
 
-                addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                    sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
-                    requireFragmentManager().popBackStack();
-                }
+                    addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
+                    if(response.body() != null){
+                        AppValidator.showToast(requireActivity(), response.body().getMessage());
+                        if(response.body().getCode().equals("200")){
+
+                            sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
+                            requireFragmentManager().popBackStack();
+                        }
+                    }else {
+                        AppValidator.showToast(requireContext(), response.message());
+                    }
+
 
 
 

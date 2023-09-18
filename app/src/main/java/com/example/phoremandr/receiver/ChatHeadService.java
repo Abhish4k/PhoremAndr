@@ -36,12 +36,6 @@ public class ChatHeadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         int res = super.onStartCommand(intent, flags, startId);
 
-        return START_STICKY;
-    }
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
         callReceiver = new CallReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
@@ -49,13 +43,23 @@ public class ChatHeadService extends Service {
         filter.addAction(Intent.ACTION_LOCKED_BOOT_COMPLETED);
         filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);// Instantiate the BroadcastReceiver
         registerReceiver( callReceiver, filter);
+
+        return START_STICKY;
+    }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         unregisterReceiver(callReceiver);
+        super.onDestroy();
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -65,7 +69,12 @@ public class ChatHeadService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Toast.makeText(getApplicationContext(),"Kill", Toast.LENGTH_SHORT).show();
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, CallReceiver.class);
+        this.sendBroadcast(broadcastIntent);
         super.onTaskRemoved(rootIntent);
     }
+
+
 }

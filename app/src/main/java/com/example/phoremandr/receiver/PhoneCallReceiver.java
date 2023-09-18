@@ -106,7 +106,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
 
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
             i.setComponent(new ComponentName("com.example.phoremandr", "com.example.phoremandr.activities.DashboardActivity"));
-            i.putExtra("isDashboard" , true);
+           i.putExtra("isDashboard" , true);
             context.startActivity(i);
 
         });
