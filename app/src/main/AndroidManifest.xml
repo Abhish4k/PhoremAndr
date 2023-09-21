@@ -60,7 +60,10 @@
         </activity>
 
         <activity android:name=".activities.SignUpScreen"/>
+        <activity android:name=".activities.ForgotPass"/>
+        <activity android:name=".activities.Otp_Verify"/>
         <activity android:name=".activities.SignInScreen"/>
+        <activity android:name=".activities.CreateNewPass"/>
         <activity android:name=".activities.DashboardActivity"
             android:windowSoftInputMode="adjustPan"/>
 

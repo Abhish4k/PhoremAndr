@@ -1,12 +1,10 @@
 package com.example.phoremandr.activities;
 
 import android.Manifest;
-import android.app.Notification;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,26 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
-import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
-import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivityDashboardBinding;
+import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.fragment.ContactFragment;
 import com.example.phoremandr.fragment.CreateMemoFragment;
 import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
-import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.AccessControlContext;
 import java.util.TimeZone;
 
 import retrofit2.Call;
@@ -87,7 +81,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     }
 
     @Override
-    public ViewBinding getViewModel() {
+    public ActivityDashboardBinding getViewModel() {
         dashboardBinding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         dashboardBinding.bottomNavigation
                 .setOnNavigationItemSelectedListener(this);

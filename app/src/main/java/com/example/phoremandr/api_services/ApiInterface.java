@@ -1,12 +1,16 @@
 package com.example.phoremandr.api_services;
 
+import com.example.phoremandr.api_model.ForgetPassResponse;
 import com.example.phoremandr.api_model.LoginResponse;
+import com.example.phoremandr.api_model.NewPassResponse;
+import com.example.phoremandr.api_model.OtpVerifResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
 import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
 import com.example.phoremandr.api_model.update_user_profile.UpdateProfileResponse;
+import com.example.phoremandr.api_request_model.ForgetPassRequestModel;
 
 import java.security.SecureRandom;
 
@@ -109,6 +113,18 @@ public interface ApiInterface {
     @POST("update_timezone")
     Call<RegisterResponse> callUpdateTimeZoneApi(@Field("user_id") String userId, @Field("timezone") String timeZone);
 
+    @FormUrlEncoded
+    @POST("forgot_password")
+    Call<ForgetPassResponse> callForgotPasswordApi (@Field("email") String email );
+
+    @FormUrlEncoded
+    @POST("verify_otp")
+    Call<OtpVerifResponse>callOtpVerifyApi(@Field("email")String email , @Field("verification_code") String verification_code);
+
+    @FormUrlEncoded
+    @POST("reset_password")
+    Call<NewPassResponse>callResetPassApi(@Field("email")String email ,
+                                          @Field("new_password") String new_password);
 
 
 }

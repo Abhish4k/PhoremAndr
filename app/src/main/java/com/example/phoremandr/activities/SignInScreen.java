@@ -1,34 +1,18 @@
 package com.example.phoremandr.activities;
 
-import static android.service.controls.ControlsProviderService.TAG;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
-import com.example.phoremandr.SplashScreen;
 import com.example.phoremandr.api_model.LoginResponse;
-import com.example.phoremandr.api_model.LoginResponse;
-import com.example.phoremandr.api_model.LoginResponseData;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySigninBinding;
+import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.google.firebase.FirebaseApp;
@@ -49,7 +33,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
     ActivitySigninBinding signInBinding;
 
     @Override
-    public ViewBinding getViewModel() {
+    public ActivitySigninBinding getViewModel() {
         signInBinding = DataBindingUtil.setContentView(this, R.layout.activity_signin);
 
         initView();
@@ -65,6 +49,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
     public void initView() {
         signInBinding.tvSignUp.setOnClickListener(this);
         signInBinding.etPass.setOnClickListener(this);
+        signInBinding.etForgot.setOnClickListener(this);
         signInBinding.btnSignIn.setOnClickListener(this);
 
 
@@ -82,9 +67,16 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void goToSignUp() {
+    public void goToSignUp() {
         startActivity(new Intent(SignInScreen.this, SignUpScreen.class));
     }
+
+
+    private void goToForgotPass() {
+        startActivity(new Intent(SignInScreen.this, ForgotPass.class));
+    }
+
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -95,6 +87,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btnSignIn:
                 onClickLoginBtn();
+                break;
+            case R.id.etForgot :
+                goToForgotPass();
                 break;
 
         }

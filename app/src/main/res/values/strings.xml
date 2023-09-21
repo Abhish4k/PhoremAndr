@@ -81,4 +81,7 @@
     <string name="didn_t_receive_any_code">Didn\'t receive any code?</string>
     <string name="resend">Resend</string>
     <string name="back_to_sign_in">Back to Sign in</string>
+    <string name="create_new_password">Create New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="this_is_user_email">This is user email</string>
 </resources>

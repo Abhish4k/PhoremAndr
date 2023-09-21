@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding;
 import com.example.phoremandr.R;
 import com.example.phoremandr.api_services.APIClient;
 import com.example.phoremandr.api_services.ApiInterface;
+import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.receiver.CallReceiver;
 
