@@ -45,7 +45,6 @@ public class Otp_Verify extends BaseActivity {
     public  void onClickVerifyBtn(View v){
         VerifOtpRequestModel verifOtpRequestModel = new VerifOtpRequestModel(otpVerifBinding.verifEmail.getText().toString().trim() ,
                 otpVerifBinding.pinview.getText().toString().trim());
-        callOtpVerifyApi(verifOtpRequestModel);
         if (AppValidator.validateOtpVerify(Otp_Verify.this , verifOtpRequestModel)){
             otpVerifBinding.verifyProgress.setVisibility(View.VISIBLE);
             callOtpVerifyApi(verifOtpRequestModel);
@@ -82,8 +81,6 @@ public class Otp_Verify extends BaseActivity {
         intent.putExtra("ConfirmedEmail", email);
         startActivity(intent);
     }
-
-
 
 
 }

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+
 import com.example.phoremandr.R;
 import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.utils.AppValidator;
@@ -74,10 +75,8 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
 
         Uri uri = null;
-
-        String appPackage = "android.resource://com.example.phoremandr/";
+        AppValidator.logData("channelIdRetrieve","" + channelId);
         if (channelId != null) {
-
             switch (channelId) {
                 case "emergencyAlarmChannel":
                     uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
@@ -97,8 +96,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
         }
 
-        AppValidator.logData("channelId", "" + channelId);
-        AppValidator.logData("uri", "" + uri);
+
+
+        AppValidator.logData("channelId", "This is my Channel id" + channelId);
+        AppValidator.logData("uri", "This is uri response" + uri);
 
         NotificationCompat.Builder builder
                 = new NotificationCompat
@@ -116,17 +117,19 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         NotificationManager notificationManager
                 = (NotificationManager)getSystemService(
                 Context.NOTIFICATION_SERVICE);
-
         // Check if the Android Version is greater than Oreo
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT
+                >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel
                     = new NotificationChannel(
                     channelId, "web_app",
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            notificationManager.createNotificationChannel(notificationChannel);
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(
+                    notificationChannel);
         }
+
         notificationManager.notify(0, builder.build());
     }
+
     }

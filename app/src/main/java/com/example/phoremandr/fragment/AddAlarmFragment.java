@@ -1,17 +1,13 @@
 package com.example.phoremandr.fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
-
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.AddAlarmAdapter;
-import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestDataModel;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
@@ -64,18 +60,20 @@ public class AddAlarmFragment extends BaseFragment {
             channel =model.getChannelName();
             this.position  = position;
 
+
         });
         addAlarmBinding.btnSubmit.setOnClickListener(v -> onClickButton());
 
     }
 
 
-    void addAllAlarm(){
+    public  void addAllAlarm(){
         addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3", "alarmChannel"));
         addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav", "alarmToneChannel"));
         addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav", "alertAlarmChannel"));
         addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
     }
+
 
 
 
@@ -108,8 +106,8 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
         Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
-                sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound
-        );
+                sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound );
+
 
         AppValidator.logData("callAlarmUserId",sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
         AppValidator.logData("channel","" + channel);
@@ -121,20 +119,16 @@ public class AddAlarmFragment extends BaseFragment {
             public void onResponse(@NotNull Call<AddAlarmRequestModel> call, @NotNull Response<AddAlarmRequestModel> response) {
                 AppValidator.logData("Response" , "This is Alarm Response=======================>>>"+ response.message());
 
-
                     addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
-                    if(response.body() != null){
+                    if( response.body() != null){
                         AppValidator.showToast(requireActivity(), response.body().getMessage());
                         if(response.body().getCode().equals("200")){
-
                             sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
                             requireFragmentManager().popBackStack();
                         }
                     }else {
                         AppValidator.showToast(requireContext(), response.message());
                     }
-
-
 
 
             }

@@ -307,7 +307,7 @@ public class CreateMemoFragment extends BaseFragment {
                     callApiWithVoiceMemo(createMemoRequestModel);
                 }
             } else if (isEdit) {
-               /*if(!audioUrl.isEmpty()){
+              /* if(!audioUrl.isEmpty()){
                    createMemoRequestModel.setVoiceMemo(audioUrl);
                }*/
 

@@ -48,9 +48,10 @@ public class CreateNewPass extends BaseActivity {
     }
 
     public void onClickResetPassBtn(View v){
-        NewPassRequestModel newPassRequestModel = new NewPassRequestModel(createnewpassbinding.etConfEmail.getText().toString().trim() ,
-                createnewpassbinding.etNewPass.getText().toString().trim());
-        callResetPassApi(newPassRequestModel);
+        NewPassRequestModel newPassRequestModel = new NewPassRequestModel(
+                createnewpassbinding.etConfEmail.getText().toString().trim() ,
+                createnewpassbinding.etNewPass.getText().toString().trim() ,
+                createnewpassbinding.etConfPass.getText().toString().trim());
         if (AppValidator.validateResetPass(CreateNewPass.this , newPassRequestModel)){
             createnewpassbinding.resetPassProgress.setVisibility(View.VISIBLE);
             callResetPassApi(newPassRequestModel);
@@ -61,28 +62,32 @@ public class CreateNewPass extends BaseActivity {
 
 
     void  callResetPassApi(NewPassRequestModel newPassRequestModel){
-        Call<NewPassResponse> call3 = apiInterface.callResetPassApi(newPassRequestModel.getEmail(), newPassRequestModel.getNew_password());
+        if (newPassRequestModel.getConf_Pass().equals(newPassRequestModel.getNew_password())) {
+            Call<NewPassResponse> call3 = apiInterface.callResetPassApi(newPassRequestModel.getEmail(), newPassRequestModel.getNew_password());
 
-        call3.enqueue(new Callback<NewPassResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<NewPassResponse> call, @NotNull Response<NewPassResponse> response) {
-                createnewpassbinding.resetPassProgress.setVisibility(View.GONE);
+            call3.enqueue(new Callback<NewPassResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<NewPassResponse> call, @NotNull Response<NewPassResponse> response) {
+                    createnewpassbinding.resetPassProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(CreateNewPass.this, response.body().getMessage());
-                if(response.body().getCode().contains("200")){
+                    assert response.body() != null;
+                    AppValidator.showToast(CreateNewPass.this, response.body().getMessage());
+                    if(response.body().getCode().contains("200")){
 
-                    goToSignInScreen();
+                        goToSignInScreen();
+
+                    }
 
                 }
+                @Override
+                public void onFailure(@NotNull  Call<NewPassResponse> call,@NotNull Throwable t) {
+                    createnewpassbinding.resetPassProgress.setVisibility(View.GONE);
+                    AppValidator.logData("otpVerificationError",""+t.getMessage());
+                }
+            });
+        }
 
-            }
-            @Override
-            public void onFailure(@NotNull  Call<NewPassResponse> call,@NotNull Throwable t) {
-                createnewpassbinding.resetPassProgress.setVisibility(View.GONE);
-                AppValidator.logData("otpVerificationError",""+t.getMessage());
-            }
-        });
+
 
     }
 

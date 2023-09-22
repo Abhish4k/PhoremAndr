@@ -84,4 +84,5 @@
     <string name="create_new_password">Create New Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="this_is_user_email">This is user email</string>
+    <string name="password_unmatched">Password does not match</string>
 </resources>

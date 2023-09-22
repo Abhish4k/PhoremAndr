@@ -133,6 +133,9 @@ public class AppValidator {
         if(newPassRequestModel.getNew_password().isEmpty()){
             showToast(context, context.getString(R.string.enter_password));
             return false;
+        }if (!newPassRequestModel.getConf_Pass().equals(newPassRequestModel.getNew_password())) {
+            showToast(context, context.getString(R.string.password_unmatched));
+            return false;
         }
 
         return  true;

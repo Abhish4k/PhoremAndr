@@ -36,7 +36,7 @@ public class ForgotPass extends BaseActivity {
 
     public void goToVerify(View v) {
         ForgetPassRequestModel forgetPassRequestModel = new ForgetPassRequestModel(forgetPassBinding.forgetEmail.getText().toString().trim());
-        callForgotPasswordApi(forgetPassRequestModel);
+//        callForgotPasswordApi(forgetPassRequestModel);
         if (AppValidator.validateForgetPass(this , forgetPassRequestModel)){
             forgetPassBinding.forgotProgress.setVisibility(View.VISIBLE);
             callForgotPasswordApi(forgetPassRequestModel);

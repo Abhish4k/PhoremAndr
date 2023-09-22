@@ -102,16 +102,16 @@
         </service>
 
 
-
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:value="@mipmap/ic_launcher"
             android:resource="@drawable/app_logo"/>
+
+
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:value="@mipmap/ic_launcher"
-            android:resource="@drawable/app_logo"/>
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="channelId" />
+
     </application>
 
 </manifest>
