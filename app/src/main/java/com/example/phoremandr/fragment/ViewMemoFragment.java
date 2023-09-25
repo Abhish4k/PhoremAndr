@@ -54,8 +54,6 @@ public class ViewMemoFragment extends BaseFragment {
             }
             requireFragmentManager().popBackStack();});
 
-
-
         viewMemoBinding.btnPlay.setOnClickListener(v -> {
             if(!audioUrl.isEmpty()){
 
@@ -105,7 +103,6 @@ public class ViewMemoFragment extends BaseFragment {
                 if(response.body() != null){
                     if (response.body().getCode().equals("200")){
                         GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
-
                         AppValidator.logData("getReminder","" + getMemoByIdDataResponse.getReminder());
                         viewMemoBinding.tvName.setGetName(getMemoByIdDataResponse.getName());
                         viewMemoBinding.tvMemoName.setGetName(getMemoByIdDataResponse.getMemo());

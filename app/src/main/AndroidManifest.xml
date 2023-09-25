@@ -108,9 +108,12 @@
             android:resource="@drawable/app_logo"/>
 
 
+
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="channelId" />
+            android:value="web_app" />
+
 
     </application>
 

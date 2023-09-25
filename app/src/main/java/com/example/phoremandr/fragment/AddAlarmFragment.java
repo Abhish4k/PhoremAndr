@@ -78,12 +78,17 @@ public class AddAlarmFragment extends BaseFragment {
 
 
     void onClickButton(){
+
+        AppValidator.logData("ALARM TONES" , "This is Alarm add response" +sound + channel);
         try {
 
-                if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
-                    channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
-                    sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
-                }
+//                if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
+//                    channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
+//                    sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+//
+//                    AppValidator.logData("SOUND VALUE" , "This is Sound Value "+sound);
+//                }
+            AppValidator.logData("SOUND VALUE" , "This is Sound Value "+sound);
 
             if(sound.isEmpty() ){
                 AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));

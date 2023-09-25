@@ -7,12 +7,13 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-
 import com.example.phoremandr.R;
 import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.utils.AppValidator;
@@ -35,19 +36,21 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     {
         AppValidator.logData("receiveNotification","" + remoteMessage.getNotification());
         if (remoteMessage.getNotification() != null) {
-            showNotification(
-                    remoteMessage.getNotification().getTitle(),
-                    remoteMessage.getNotification().getBody(),
-                    remoteMessage.getNotification().getChannelId());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                showNotification(
+                        remoteMessage.getNotification().getTitle(),
+                        remoteMessage.getNotification().getBody(),
+                        remoteMessage.getNotification().getChannelId());
+            }
 
         }
     }
 
     @SuppressLint("RemoteViewLayout")
     private RemoteViews getCustomDesign(String title,
-                                        String message)
+                                        String message )
     {
-       RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.notification_layout);
+       RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification_layout);
         remoteViews.setTextViewText(R.id.tvTitle, title);
         remoteViews.setTextViewText(R.id.tvMsg, message);
 
@@ -55,11 +58,12 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     // Method to display the notifications
-    public void showNotification(String title, String message, String channelId) {
+
+    // Method to display the notifications
+    public void showNotification(String title, String message, String channel_Id) {
+
         // Pass the intent to switch to the MainActivity
-        Intent intent
-                = new Intent(this, DashboardActivity.class);
-        // Assign channel ID
+        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Pass the intent to PendingIntent to start the
         // next Activity
@@ -74,62 +78,79 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         }
 
 
-        Uri uri = null;
-        AppValidator.logData("channelIdRetrieve","" + channelId);
-        if (channelId != null) {
-            switch (channelId) {
+
+        AppValidator.logData("channelIdRetrieve","" + channel_Id);
+
+
+        Uri sound = null;
+        if (channel_Id != null) {
+            switch (channel_Id) {
                 case "emergencyAlarmChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
                     break;
                 case "alarmChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
                     break;
                 case "alarmToneChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm_tone);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm_tone);
                     break;
                 case "alertAlarmChannel":
-                    uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
                     break;
             }
-        } else {
-            channelId = "alarmChannel";
-            uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
+        }
+        else {
+            channel_Id = "alarmChannel";
+            sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
         }
 
 
 
-        AppValidator.logData("channelId", "This is my Channel id" + channelId);
-        AppValidator.logData("uri", "This is uri response" + uri);
+        AppValidator.logData("channelId", "This is my Channel id " + channel_Id);
+        AppValidator.logData("uri", "This is uri response " + sound);
 
-        NotificationCompat.Builder builder
-                = new NotificationCompat
-                .Builder( this.getApplicationContext(),
-                channelId)
-                .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-                .setContentIntent(pendingIntent);
 
-        builder.setContent(getCustomDesign(title, message));
-        NotificationManager notificationManager
-                = (NotificationManager)getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        // Check if the Android Version is greater than Oreo
+        if (sound!=null){
+            NotificationCompat.Builder builder
+                    = new NotificationCompat
+                    .Builder( this.getApplicationContext(), channel_Id)
+                    .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setOngoing(true)
+                    .setAutoCancel(true)
+                    .setSound(sound)
+                    .setContentIntent(pendingIntent);
 
-        if (Build.VERSION.SDK_INT
-                >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel
-                    = new NotificationChannel(
-                    channelId, "web_app",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(
-                    notificationChannel);
+            builder.setContent(getCustomDesign(title, message));
+            NotificationManager notificationManager
+                    = (NotificationManager)getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            AppValidator.logData("check" , "Hello" + sound);
+            // Check if the Android Version is greater than Oreo
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel
+                        = new NotificationChannel(
+                        channel_Id, "web_app",
+                        NotificationManager.IMPORTANCE_HIGH );
+
+                AudioAttributes att = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build();
+                notificationChannel.enableVibration(true);
+                notificationChannel.setVibrationPattern(new long[] { 1000, 1000, 1000, 1000 , 1000 });
+                notificationChannel.setSound(sound , att);
+
+
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            notificationManager.notify(0, builder.build());
+
+        }else{
+            AppValidator.logData("uriError", "The URI for the sound is null or invalid");
         }
 
-        notificationManager.notify(0, builder.build());
+
     }
 
     }
