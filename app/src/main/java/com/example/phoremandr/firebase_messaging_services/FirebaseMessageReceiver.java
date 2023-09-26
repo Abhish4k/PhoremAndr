@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -117,8 +116,8 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                     .setPriority(NotificationManager.IMPORTANCE_HIGH)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setOngoing(true)
+                    .setVibrate( new long []{ 1000 , 1000 , 1000 , 1000 , 1000 })
                     .setAutoCancel(true)
-                    .setSound(sound)
                     .setContentIntent(pendingIntent);
 
             builder.setContent(getCustomDesign(title, message));

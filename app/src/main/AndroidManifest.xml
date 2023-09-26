@@ -99,6 +99,11 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="default_notification_channel_id" />
+
         </service>
 
 
@@ -107,12 +112,6 @@
             android:value="@mipmap/ic_launcher"
             android:resource="@drawable/app_logo"/>
 
-
-
-
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="web_app" />
 
 
     </application>

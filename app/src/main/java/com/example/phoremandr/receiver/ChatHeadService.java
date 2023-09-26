@@ -1,33 +1,11 @@
 package com.example.phoremandr.receiver;
 
-import static android.os.SystemClock.elapsedRealtime;
-
-import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.IBinder;
-import android.telecom.Call;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
-import com.example.phoremandr.R;
-import com.example.phoremandr.activities.DashboardActivity;
-import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.fragment.CreateMemoFragment;
 
 public class ChatHeadService extends Service {
 
@@ -71,7 +49,7 @@ public class ChatHeadService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("restartservice");
-        broadcastIntent.setClass(this, CallReceiver.class);
+        broadcastIntent.setClass(getApplicationContext(), CallReceiver.class);
         this.sendBroadcast(broadcastIntent);
         super.onTaskRemoved(rootIntent);
     }

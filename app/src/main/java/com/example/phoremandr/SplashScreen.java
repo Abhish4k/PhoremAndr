@@ -36,20 +36,27 @@ public class SplashScreen extends BaseActivity {
 
     @Override
     public ViewBinding getViewModel() {
-        splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
-
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             displayOverLauncher.launch(intent);
-
         }
 
-        checkPermission();
-        goToHome();
+            if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+            ){
+                List<String> listPermissionsNeeded = new ArrayList<>();
+                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+                ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
+                        (new String[listPermissionsNeeded.size()]),101);
 
 
+            }else {
+                splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
+                goToHome();
+            }
 
+
+//        checkPermission();
 
 
         Intent intent = new Intent(this , ChatHeadService.class);
@@ -79,7 +86,7 @@ public class SplashScreen extends BaseActivity {
 
 
     public  void goToHome(){
-        new Handler().postDelayed(this::validateUserDetails, 2000);
+        new Handler().postDelayed(this::validateUserDetails, 1000);
     }
 
 
@@ -103,17 +110,17 @@ public class SplashScreen extends BaseActivity {
                 }
             });
 
-    void checkPermission(){
-        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-        ){
-            List<String> listPermissionsNeeded = new ArrayList<>();
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]),101);
+//    void checkPermission(){
+//        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+//        ){
+//            List<String> listPermissionsNeeded = new ArrayList<>();
+//            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+//            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
+//                    (new String[listPermissionsNeeded.size()]),101);
+//
+//
+//        }
 
-
-        }
-
-    }
+//    }
 
 }

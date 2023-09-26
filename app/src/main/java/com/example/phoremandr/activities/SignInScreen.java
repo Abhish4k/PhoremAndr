@@ -91,9 +91,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             case R.id.etForgot :
                 goToForgotPass();
                 break;
-
         }
-
     }
 
 
@@ -108,8 +106,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             callLoginApi(loginRequestModel);
 
         }
-
     }
+
 
     void callLoginApi(LoginRequestModel loginRequestModel) {
         Call<LoginResponse> call3 = apiInterface.callLoginApi(loginRequestModel.getEmail(), loginRequestModel.getPassword(),  sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken), loginRequestModel.getTimeZone());
@@ -136,9 +134,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
                     goToDashboard();
                 }
-                Log.d("Device Token", "This is device token=================>>" + response.body().getData().getToken());
-
-
             }
 
             @Override

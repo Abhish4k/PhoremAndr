@@ -130,6 +130,8 @@ public class AddAlarmFragment extends BaseFragment {
                         if(response.body().getCode().equals("200")){
                             sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
                             requireFragmentManager().popBackStack();
+
+
                         }
                     }else {
                         AppValidator.showToast(requireContext(), response.message());

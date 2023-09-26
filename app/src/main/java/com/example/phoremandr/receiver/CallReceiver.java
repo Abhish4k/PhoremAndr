@@ -1,10 +1,7 @@
 package com.example.phoremandr.receiver;
 
-
 import android.content.Context;
 import android.content.Intent;
-
-
 import java.util.Date;
 
 public class CallReceiver extends PhoneCallReceiver {
