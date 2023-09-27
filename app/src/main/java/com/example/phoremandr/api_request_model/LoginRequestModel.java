@@ -1,10 +1,10 @@
 package com.example.phoremandr.api_request_model;
 
 public class LoginRequestModel {
-    String email, password, deviceToken, timeZone;
+    String email, password, deviceToken, timeZone ;
 
 
-    public LoginRequestModel(String email, String password, String deviceToken, String timeZone) {
+    public LoginRequestModel(String email, String password, String deviceToken, String timeZone ) {
         this.email = email;
         this.password = password;
         this.deviceToken = deviceToken;

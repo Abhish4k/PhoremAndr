@@ -34,9 +34,12 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     onMessageReceived(RemoteMessage remoteMessage)
     {
         AppValidator.logData("receiveNotification","" + remoteMessage.getNotification());
+
+
         if (remoteMessage.getNotification() != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 showNotification(
+                        getApplicationContext(),
                         remoteMessage.getNotification().getTitle(),
                         remoteMessage.getNotification().getBody(),
                         remoteMessage.getNotification().getChannelId());
@@ -46,10 +49,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     @SuppressLint("RemoteViewLayout")
-    private RemoteViews getCustomDesign(String title,
-                                        String message )
+    public  RemoteViews getCustomDesign(Context context,String title, String message )
     {
-       RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification_layout);
+       RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_layout);
         remoteViews.setTextViewText(R.id.tvTitle, title);
         remoteViews.setTextViewText(R.id.tvMsg, message);
 
@@ -57,12 +59,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     // Method to display the notifications
-
-    // Method to display the notifications
-    public void showNotification(String title, String message, String channel_Id) {
+ public void showNotification(Context context,String title, String message, String channel_Id) {
 
         // Pass the intent to switch to the MainActivity
-        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+        Intent intent = new Intent(context, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Pass the intent to PendingIntent to start the
         // next Activity
@@ -70,13 +70,11 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         PendingIntent pendingIntent;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             pendingIntent = PendingIntent.getActivity
-                    (this, 0, intent, PendingIntent.FLAG_MUTABLE);
+                    (context, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {
             pendingIntent = PendingIntent.getActivity
-                    (this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+                    (context, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
-
-
 
         AppValidator.logData("channelIdRetrieve","" + channel_Id);
 
@@ -85,65 +83,71 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         if (channel_Id != null) {
             switch (channel_Id) {
                 case "emergencyAlarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.emergency_alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
                     break;
                 case "alarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
                     break;
                 case "alarmToneChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm_tone);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm_tone);
                     break;
                 case "alertAlarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alert_alarm);
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alert_alarm);
+                    break;
+
+                case "new_email_arrived_channel":
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
                     break;
             }
-        }
-        else {
+        } else {
             channel_Id = "alarmChannel";
-            sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.alarm);
+            sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
         }
 
 
 
         AppValidator.logData("channelId", "This is my Channel id " + channel_Id);
+
         AppValidator.logData("uri", "This is uri response " + sound);
 
 
-        if (sound!=null){
-            NotificationCompat.Builder builder
-                    = new NotificationCompat
-                    .Builder( this.getApplicationContext(), channel_Id)
-                    .setPriority(NotificationManager.IMPORTANCE_HIGH)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setOngoing(true)
-                    .setVibrate( new long []{ 1000 , 1000 , 1000 , 1000 , 1000 })
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent);
-
-            builder.setContent(getCustomDesign(title, message));
-            NotificationManager notificationManager
-                    = (NotificationManager)getSystemService(
-                    Context.NOTIFICATION_SERVICE);
-            AppValidator.logData("check" , "Hello" + sound);
+        if (sound!=null) {
             // Check if the Android Version is greater than Oreo
+                NotificationCompat.Builder builder
+                        = new NotificationCompat
+                        .Builder(context, channel_Id)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent);
+
+                builder.setContent(getCustomDesign(context,title, message));
+                NotificationManager notificationManager
+                        = (NotificationManager) context.getSystemService(
+                        Context.NOTIFICATION_SERVICE);
+                AppValidator.logData("check", "Hello" + sound);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel notificationChannel
                         = new NotificationChannel(
-                        channel_Id, "web_app",
-                        NotificationManager.IMPORTANCE_HIGH );
+                        channel_Id,"web_app",
+                        NotificationManager.IMPORTANCE_HIGH);
 
                 AudioAttributes att = new AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                         .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build();
                 notificationChannel.enableVibration(true);
-                notificationChannel.setVibrationPattern(new long[] { 1000, 1000, 1000, 1000 , 1000 });
-                notificationChannel.setSound(sound , att);
+                notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
+                notificationChannel.setSound(sound, att);
 
 
                 notificationManager.createNotificationChannel(notificationChannel);
+
             }
             notificationManager.notify(0, builder.build());
+
 
         }else{
             AppValidator.logData("uriError", "The URI for the sound is null or invalid");

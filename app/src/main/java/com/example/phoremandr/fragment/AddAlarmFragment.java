@@ -108,6 +108,7 @@ public class AddAlarmFragment extends BaseFragment {
 
 
  void callSettingApi(){
+
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
         Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(

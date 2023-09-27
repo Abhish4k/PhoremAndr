@@ -10,21 +10,15 @@ import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
 import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
 import com.example.phoremandr.api_model.update_user_profile.UpdateProfileResponse;
-import com.example.phoremandr.api_request_model.ForgetPassRequestModel;
-
-import java.security.SecureRandom;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -101,11 +95,11 @@ public interface ApiInterface {
     Call<RegisterResponse> callDeleteMemoApi(@Field("memo_id") String memo_id);
 
 
-    @FormUrlEncoded
+    @Multipart
     @POST("settings")
     Call<AddAlarmRequestModel> callAddAlarmApi(@Field("user_id") String user_id,
-                                               @Field("channel_id") String channel_id,
-                                               @Field("custom_sound") String custom_sound);
+                                               @Part("custom_sound") String custom_sound,
+                                               @Field("channel_id") String channel_id);
 
 
 

@@ -13,10 +13,12 @@ import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySigninBinding;
 import com.example.phoremandr.databinding.ActivitySignupBinding;
+import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -104,6 +106,10 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         if (AppValidator.validateLogin(this, loginRequestModel)) {
             signInBinding.loginProgress.setVisibility(View.VISIBLE);
             callLoginApi(loginRequestModel);
+
+            FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
+            firebaseMessageReceiver.showNotification(SignInScreen.this,"Welcome to Ring Memos","Login Successfully","alertAlarmChannel");
+
 
         }
     }

@@ -113,8 +113,6 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
 
     }
 
-
-
     public  void  loadFragment(Fragment fragment, String name){
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).addToBackStack(name).commit();
     }

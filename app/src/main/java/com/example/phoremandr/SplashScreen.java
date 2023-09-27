@@ -85,7 +85,7 @@ public class SplashScreen extends BaseActivity {
     }
 
 
-    public  void goToHome(){
+    public  void goToHome() {
         new Handler().postDelayed(this::validateUserDetails, 1000);
     }
 
