@@ -97,9 +97,9 @@ public interface ApiInterface {
 
     @Multipart
     @POST("settings")
-    Call<AddAlarmRequestModel> callAddAlarmApi(@Field("user_id") String user_id,
-                                               @Part("custom_sound") String custom_sound,
-                                               @Field("channel_id") String channel_id);
+    Call<AddAlarmRequestModel> callAddAlarmApi(@Part("user_id") RequestBody user_id,
+                                               @Part  MultipartBody.Part custom_sound,
+                                               @Part("channel_id") RequestBody channel_id);
 
 
 

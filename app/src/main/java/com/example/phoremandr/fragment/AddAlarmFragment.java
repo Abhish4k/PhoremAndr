@@ -1,5 +1,7 @@
 package com.example.phoremandr.fragment;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.AddAlarmAdapter;
+import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestDataModel;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
@@ -17,9 +20,13 @@ import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +66,6 @@ public class AddAlarmFragment extends BaseFragment {
             sound = model.getSound();
             channel =model.getChannelName();
             this.position  = position;
-
 
         });
         addAlarmBinding.btnSubmit.setOnClickListener(v -> onClickButton());
@@ -111,13 +117,23 @@ public class AddAlarmFragment extends BaseFragment {
 
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
-        Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
-                sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound );
+//custom_sound
 
+     RequestBody user_id = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
+     RequestBody channel_id = RequestBody.create(channel,MediaType.parse("text/plain"));
+
+     // Converting to MultiPart body acceptable form
+
+     Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + File.pathSeparator + File.separator + requireContext().getPackageName() + "/raw/" + sound);
+     RequestBody requestFile = RequestBody.create(uri.toString(),MediaType.parse("audio/*"));
+     MultipartBody.Part custom_sound = MultipartBody.Part.createFormData("custom_sound", sound,requestFile);
+
+        Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(user_id, custom_sound, channel_id);
 
         AppValidator.logData("callAlarmUserId",sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
         AppValidator.logData("channel","" + channel);
         AppValidator.logData("sound","" + sound);
+     AppValidator.logData("FILE VALUE" , "THIS IS FILE RESPONSE"  + uri);
 
 
         call3.enqueue(new Callback<AddAlarmRequestModel>() {

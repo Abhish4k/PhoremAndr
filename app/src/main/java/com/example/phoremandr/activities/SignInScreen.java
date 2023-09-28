@@ -108,7 +108,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             callLoginApi(loginRequestModel);
 
             FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
-            firebaseMessageReceiver.showNotification(SignInScreen.this,"Welcome to Ring Memos","Login Successfully","alertAlarmChannel");
+            firebaseMessageReceiver.showNotification(SignInScreen.this,"Welcome to Ring Memos","Login Successfully","alarmChannel");
 
 
         }
@@ -116,7 +116,10 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
 
     void callLoginApi(LoginRequestModel loginRequestModel) {
-        Call<LoginResponse> call3 = apiInterface.callLoginApi(loginRequestModel.getEmail(), loginRequestModel.getPassword(),  sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken), loginRequestModel.getTimeZone());
+        Call<LoginResponse> call3 = apiInterface.callLoginApi(loginRequestModel.getEmail(),
+                loginRequestModel.getPassword(),
+                sharedPrefHelper.getValue(SharedPreferencesKeys.deviceToken),
+                loginRequestModel.getTimeZone());
 
         call3.enqueue(new Callback<LoginResponse>() {
             @Override

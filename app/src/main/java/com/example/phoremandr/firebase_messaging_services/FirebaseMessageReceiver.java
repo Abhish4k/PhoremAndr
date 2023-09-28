@@ -82,36 +82,39 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         Uri sound = null;
         if (channel_Id != null) {
             switch (channel_Id) {
-                case "emergencyAlarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
-                    break;
                 case "alarmChannel":
                     sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
                     break;
+
+                case "emergencyAlarmChannel":
+                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
+                    break;
+
                 case "alarmToneChannel":
                     sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm_tone);
                     break;
+
                 case "alertAlarmChannel":
                     sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alert_alarm);
                     break;
-
-                case "new_email_arrived_channel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
-                    break;
+//                case "new_email_arrived_channel":
+//                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+//                    break;
             }
         } else {
-            channel_Id = "alarmChannel";
+            channel_Id = getString(R.string.default_notification_channel_id);
             sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
         }
 
 
+       // AppValidator.showToast(context, channel_Id);
 
         AppValidator.logData("channelId", "This is my Channel id " + channel_Id);
 
         AppValidator.logData("uri", "This is uri response " + sound);
 
 
-        if (sound!=null) {
+        if ( sound!=null) {
             // Check if the Android Version is greater than Oreo
                 NotificationCompat.Builder builder
                         = new NotificationCompat
@@ -149,9 +152,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             notificationManager.notify(0, builder.build());
 
 
-        }else{
-            AppValidator.logData("uriError", "The URI for the sound is null or invalid");
         }
+//            AppValidator.logData("uriError", "The URI for the sound is null or invalid");
+
 
 
     }
