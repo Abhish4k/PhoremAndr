@@ -125,6 +125,7 @@ public class AddAlarmFragment extends BaseFragment {
      // Converting to MultiPart body acceptable form
 
      Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + File.pathSeparator + File.separator + requireContext().getPackageName() + "/raw/" + sound);
+
      RequestBody requestFile = RequestBody.create(uri.toString(),MediaType.parse("audio/*"));
      MultipartBody.Part custom_sound = MultipartBody.Part.createFormData("custom_sound", sound,requestFile);
 
@@ -133,7 +134,7 @@ public class AddAlarmFragment extends BaseFragment {
         AppValidator.logData("callAlarmUserId",sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
         AppValidator.logData("channel","" + channel);
         AppValidator.logData("sound","" + sound);
-     AppValidator.logData("FILE VALUE" , "THIS IS FILE RESPONSE"  + uri);
+     AppValidator.logData("FILE VALUE" , "THIS IS FILE RESPONSE"  + uri.toString());
 
 
         call3.enqueue(new Callback<AddAlarmRequestModel>() {

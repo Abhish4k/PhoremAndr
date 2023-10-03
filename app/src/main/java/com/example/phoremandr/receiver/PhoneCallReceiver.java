@@ -105,8 +105,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
         builder.setPositiveButton(R.string.yess, (dialog, which) -> {
 
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
-            i.setComponent(new ComponentName("com.example.phoremandr", "com.example.phoremandr.activities.DashboardActivity"));
-           i.putExtra("isDashboard" , true);
+            i.setComponent(new ComponentName("com.example.phoremandr", "com.example.phoremandr.activities.CreateMemoActivity"));
             context.startActivity(i);
 
         });

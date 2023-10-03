@@ -1,13 +1,19 @@
 package com.example.phoremandr.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.SplashScreen;
 import com.example.phoremandr.api_model.LoginResponse;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
 import com.example.phoremandr.base.BaseActivity;
@@ -22,6 +28,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 import retrofit2.Call;
@@ -53,6 +61,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         signInBinding.etPass.setOnClickListener(this);
         signInBinding.etForgot.setOnClickListener(this);
         signInBinding.btnSignIn.setOnClickListener(this);
+
+        checkPermission();
 
 
         FirebaseApp.initializeApp(SignInScreen.this);
@@ -107,12 +117,26 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             signInBinding.loginProgress.setVisibility(View.VISIBLE);
             callLoginApi(loginRequestModel);
 
-            FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
-            firebaseMessageReceiver.showNotification(SignInScreen.this,"Welcome to Ring Memos","Login Successfully","alarmChannel");
-
+            createChannel();
 
         }
     }
+
+
+
+    void checkPermission(){
+        if(ContextCompat.checkSelfPermission(SignInScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+        ){
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            ActivityCompat.requestPermissions(SignInScreen.this,listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]),101);
+
+
+        }
+
+    }
+
 
 
     void callLoginApi(LoginRequestModel loginRequestModel) {
