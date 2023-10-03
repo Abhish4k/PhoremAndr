@@ -4,18 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
@@ -26,8 +22,8 @@ import androidx.viewbinding.ViewBinding;
 import com.example.phoremandr.activities.DashboardActivity;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
+import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
-import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
 import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
@@ -43,21 +39,32 @@ public class SplashScreen extends BaseActivity {
 
     @Override
     public ViewBinding getViewModel() {
-
-        splashBinding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
-
-
-
-
-
-        if (!Settings.canDrawOverlays(this)) {
+        splashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
+      /*  if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             displayOverLauncher.launch(intent);
-        }
 
-        checkPermission();
+
+            if (ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+            ) {
+                List<String> listPermissionsNeeded = new ArrayList<>();
+                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+                ActivityCompat.requestPermissions(SplashScreen.this, listPermissionsNeeded.toArray
+                        (new String[listPermissionsNeeded.size()]), 101);
+
+                goToHome();
+
+
+                }
+
+        }*/
+
+
         goToHome();
+        askNotificationPermission();
+
+//        checkPermission();
 
 
         Intent intent = new Intent(this , ChatHeadService.class);
@@ -70,8 +77,8 @@ public class SplashScreen extends BaseActivity {
         FirebaseMessaging firebaseMessaging =  FirebaseMessaging.getInstance();
         firebaseMessaging.getToken().addOnCompleteListener(task -> {
             AppValidator.logData("getToken","" + task.getResult());
+            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, task.getResult());
         });
-
 
 
         return splashBinding;
@@ -86,8 +93,9 @@ public class SplashScreen extends BaseActivity {
     }
 
 
-    public  void goToHome(){
-        new Handler().postDelayed(this::validateUserDetails, 2000);
+    public  void goToHome() {
+
+        new Handler().postDelayed(this::validateUserDetails, 1000);
     }
 
 
@@ -111,18 +119,39 @@ public class SplashScreen extends BaseActivity {
                 }
             });
 
-    void checkPermission(){
-        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-        ){
-            List<String> listPermissionsNeeded = new ArrayList<>();
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]),101);
+//    void checkPermission(){
+//        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+//        ){
+//            List<String> listPermissionsNeeded = new ArrayList<>();
+//            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+//            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
+//                    (new String[listPermissionsNeeded.size()]),101);
+//
+//
+//        }
 
+//    }
+
+    // Declare the launcher at the top of your Activity/Fragment:
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // FCM SDK (and your app) can post notifications.
+                } else {
+                    // TODO: Inform user that that your app will not show notifications.
+                }
+            });
+
+    private void askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                    } else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
         }
-
     }
-
-
-
 }

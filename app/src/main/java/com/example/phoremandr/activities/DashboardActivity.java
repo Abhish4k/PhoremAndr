@@ -1,7 +1,6 @@
 package com.example.phoremandr.activities;
 
 import android.Manifest;
-import android.app.Notification;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,19 +12,27 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.viewbinding.ViewBinding;
 
 import com.example.phoremandr.R;
+import com.example.phoremandr.api_model.RegisterResponse;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivityDashboardBinding;
+import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.fragment.ContactFragment;
 import com.example.phoremandr.fragment.CreateMemoFragment;
 import com.example.phoremandr.fragment.HomeFragment;
 import com.example.phoremandr.fragment.SettingsFragment;
 import com.example.phoremandr.utils.AppValidator;
+import com.example.phoremandr.utils.SharedPreferencesKeys;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.security.AccessControlContext;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DashboardActivity extends BaseActivity   implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -33,6 +40,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     private static  final String READ_CALL_LOGS = Manifest.permission.READ_CALL_LOG;
     private static  final String PHONE = Manifest.permission.CALL_PHONE;
 
+    private  static  final  String READ_CONTACTS =  Manifest.permission.READ_CONTACTS;
     private static final  String NOTIFICATION = Manifest.permission.POST_NOTIFICATIONS;
     private static  final int REQUEST_CODE = 200;
     ActivityDashboardBinding dashboardBinding;
@@ -45,7 +53,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
             Toast.makeText(this , "Permissions Already Granted !", Toast.LENGTH_SHORT).show();
         }else {
             ActivityCompat.requestPermissions(this ,
-                    new String[]{PHONE,READ_CALL_LOGS, NOTIFICATION} ,REQUEST_CODE );
+                    new String[]{PHONE,READ_CALL_LOGS, NOTIFICATION , READ_CONTACTS } ,REQUEST_CODE );
         }
 
     }
@@ -73,7 +81,7 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     }
 
     @Override
-    public ViewBinding getViewModel() {
+    public ActivityDashboardBinding getViewModel() {
         dashboardBinding = DataBindingUtil.setContentView(DashboardActivity.this, R.layout.activity_dashboard);
         dashboardBinding.bottomNavigation
                 .setOnNavigationItemSelectedListener(this);
@@ -90,6 +98,13 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
 
             loadFragment(new HomeFragment(true), getString(R.string.home));
         }
+
+        String timeZoneId = TimeZone.getDefault().getID();
+
+        if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId) != null){
+
+            callUpdateTimeZoneApi(sharedPrefHelper.getValue(SharedPreferencesKeys.userId), timeZoneId);
+        }
         return dashboardBinding;
     }
 
@@ -97,8 +112,6 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     public void setStatusBarColor(int color) {
 
     }
-
-
 
     public  void  loadFragment(Fragment fragment, String name){
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLay,fragment).addToBackStack(name).commit();
@@ -127,9 +140,44 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
        int callLogPermission =  ActivityCompat.checkSelfPermission(this , READ_CALL_LOGS );
        int phonePermission = ActivityCompat.checkSelfPermission(this , PHONE);
        int notification  = ActivityCompat.checkSelfPermission(this, NOTIFICATION);
+        int read_contacts  = ActivityCompat.checkSelfPermission(this, READ_CONTACTS);
 
-       return callLogPermission ==PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED;
+       return callLogPermission == PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED && read_contacts == PackageManager.PERMISSION_GRANTED;
     }
 
+
+    @Override
+    protected void onDestroy() {
+
+        /*Intent intent = new Intent(this , ChatHeadService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        startService(intent);*/
+
+        super.onDestroy();
+    }
+
+
+    void  callUpdateTimeZoneApi(String userId, String timeZone){
+        Call<RegisterResponse> call3 = apiInterface.callUpdateTimeZoneApi(userId, timeZone);
+
+        call3.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
+
+                assert response.body() != null;
+                AppValidator.showToast(DashboardActivity.this, response.body().getMessage());
+                if(response.body().getCode().contains("200")){
+                    AppValidator.logData("key","callTimeZoneApi");
+
+                }
+            }
+            @Override
+            public void onFailure(@NotNull  Call<RegisterResponse> call,@NotNull Throwable t) {
+                AppValidator.logData("updateTimeZone",""+t.getMessage());
+            }
+        });
+
+    }
 }
 

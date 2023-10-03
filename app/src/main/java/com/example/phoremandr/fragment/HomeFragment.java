@@ -79,10 +79,12 @@ public class HomeFragment extends BaseFragment {
 
         if(isShow){
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.VISIBLE);
+            fragmentHomeBinding.homeToolbar.ivBack.setVisibility(View.INVISIBLE);
 
 
         }else {
             fragmentHomeBinding.fbCreateMemo.setVisibility(View.GONE);
+//            fragmentHomeBinding.homeToolbar.ivBack.setVisibility(View.INVISIBLE);
             fragmentHomeBinding.homeToolbar.ivBack.setOnClickListener(v -> requireFragmentManager().popBackStack());
 
         }

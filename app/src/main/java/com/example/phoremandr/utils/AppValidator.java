@@ -11,9 +11,12 @@ import android.widget.Toast;
 import com.example.phoremandr.R;
 import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.api_request_model.CreateMemoRequestModel;
+import com.example.phoremandr.api_request_model.ForgetPassRequestModel;
 import com.example.phoremandr.api_request_model.LoginRequestModel;
+import com.example.phoremandr.api_request_model.NewPassRequestModel;
 import com.example.phoremandr.api_request_model.RegisterRequestModel;
 import com.example.phoremandr.api_request_model.UpdateProfileRequestModel;
+import com.example.phoremandr.api_request_model.VerifOtpRequestModel;
 import com.example.phoremandr.helper.SharedPrefHelper;
 
 import java.util.regex.Pattern;
@@ -99,6 +102,48 @@ public class AppValidator {
     }
 
 
+
+
+    public static  boolean validateForgetPass(Context context, ForgetPassRequestModel forgetPassRequestModel){
+        if(!isValid(forgetPassRequestModel.getEmail())) {
+            showToast(context, context.getString(R.string.enter_valid_email));
+            return false;
+        }
+        return  true;
+    }
+
+    public static  boolean validateOtpVerify(Context context, VerifOtpRequestModel verifOtpRequestModel){
+        if(!isValid(verifOtpRequestModel.getEmail())) {
+            showToast(context, context.getString(R.string.enter_valid_email));
+            return false;
+        }
+        if(verifOtpRequestModel.getVerification_code().isEmpty()) {
+            showToast(context, context.getString(R.string.enter_valid_email));
+            return false;
+        } else if (verifOtpRequestModel.getVerification_code().length()>6) {
+            showToast(context, context.getString(R.string.enter_valid_email));
+            return false;
+
+        }
+        return  true;
+    }
+
+    public static  boolean validateResetPass(Context context, NewPassRequestModel newPassRequestModel){
+
+        if(newPassRequestModel.getNew_password().isEmpty()){
+            showToast(context, context.getString(R.string.enter_password));
+            return false;
+        }if (!newPassRequestModel.getConf_Pass().equals(newPassRequestModel.getNew_password())) {
+            showToast(context, context.getString(R.string.password_unmatched));
+            return false;
+        }
+
+        return  true;
+    }
+
+
+
+
     public  static  boolean validateProfile(Context context,UpdateProfileRequestModel updateProfileRequestModel){
 
          if (updateProfileRequestModel.getFirstName().isEmpty()){
@@ -141,14 +186,14 @@ public class AppValidator {
         });
 
         AlertDialog alertDialog = builder.create();
-        int LAYOUT_FLAG;
+      /*  int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        alertDialog.getWindow().setType(LAYOUT_FLAG);
+        alertDialog.getWindow().setType(LAYOUT_FLAG);*/
         alertDialog.show();
     }
 

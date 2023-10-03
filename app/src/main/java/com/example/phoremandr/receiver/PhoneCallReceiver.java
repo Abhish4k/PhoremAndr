@@ -1,8 +1,5 @@
 package com.example.phoremandr.receiver;
-import android.Manifest;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,16 +8,9 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
-
 import com.example.phoremandr.R;
-import com.example.phoremandr.activities.DashboardActivity;
-import com.example.phoremandr.fragment.CreateMemoFragment;
-import com.example.phoremandr.fragment.ViewMemoFragment;
-import com.example.phoremandr.utils.AppValidator;
-
-import java.security.Permission;
 import java.util.Date;
+
 public class PhoneCallReceiver  extends BroadcastReceiver
 {
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
@@ -31,7 +21,6 @@ public class PhoneCallReceiver  extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-
         try
         {
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL"))
@@ -57,7 +46,6 @@ public class PhoneCallReceiver  extends BroadcastReceiver
                     state = TelephonyManager.CALL_STATE_RINGING;
                 }
 
-
                 Log.e("phoneState",""+ number);
 
                 if(number != null){
@@ -81,6 +69,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
         if(lastState == state)
         {
             //No change, debounce extras
+
             return;
         }
         switch (state)
@@ -108,7 +97,6 @@ public class PhoneCallReceiver  extends BroadcastReceiver
         lastState = state;
     }
 
-
     private void showAlertDialog(Context context, String number) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.inc_call);
@@ -118,7 +106,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
 
             Intent i = context.getPackageManager().getLaunchIntentForPackage("com.example.phoremandr");
             i.setComponent(new ComponentName("com.example.phoremandr", "com.example.phoremandr.activities.DashboardActivity"));
-            i.putExtra("isDashboard" , true);
+           i.putExtra("isDashboard" , true);
             context.startActivity(i);
 
         });

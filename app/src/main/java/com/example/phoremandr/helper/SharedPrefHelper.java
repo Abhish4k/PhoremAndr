@@ -27,6 +27,7 @@ public class SharedPrefHelper {
         myEdit.commit();
     }
 
+
     public void  setBoolValue(String key, boolean value){
         myEdit.putBoolean(key, value);
         myEdit.commit();

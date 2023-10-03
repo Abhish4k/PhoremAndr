@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class GetMemoByIdDataResponse {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
     @SerializedName("user_id")
     @Expose
     private Integer userId;
@@ -26,14 +23,6 @@ public class GetMemoByIdDataResponse {
     @SerializedName("reminder")
     @Expose
     private String reminder;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getUserId() {
         return userId;

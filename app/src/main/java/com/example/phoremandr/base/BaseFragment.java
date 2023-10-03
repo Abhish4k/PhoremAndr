@@ -35,9 +35,6 @@ public abstract class BaseFragment<ViewDataBinding> extends Fragment {
         return  viewBinding.getRoot();
     }
 
-
-
-
     public abstract ViewBinding getViewModel(LayoutInflater layoutInflater, ViewGroup container);
 
     public  void  loadFragment(Fragment fragment, String name){

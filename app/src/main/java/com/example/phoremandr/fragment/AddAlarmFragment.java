@@ -1,15 +1,16 @@
 package com.example.phoremandr.fragment;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
-
 import com.example.phoremandr.R;
 import com.example.phoremandr.adapter.AddAlarmAdapter;
+import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestDataModel;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
@@ -55,8 +56,6 @@ public class AddAlarmFragment extends BaseFragment {
         addAlarmModelList = new ArrayList<>();
         addAllAlarm();
 
-
-
         addAlarmAdapter = new AddAlarmAdapter(addAlarmModelList, sharedPrefHelper);
         addAlarmBinding.rvAddAlarm.setHasFixedSize(true);
         addAlarmBinding.rvAddAlarm.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -69,59 +68,91 @@ public class AddAlarmFragment extends BaseFragment {
             this.position  = position;
 
         });
-
-
         addAlarmBinding.btnSubmit.setOnClickListener(v -> onClickButton());
 
-
     }
 
 
-    void addAllAlarm(){
-
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm", "alarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone", "alarmToneChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm", "alertAlarmChannel"));
-        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm", "emergencyAlarmChannel"));
+    public  void addAllAlarm(){
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm), "alarm.mp3", "alarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alarm_tone), "alarm_tone.wav", "alarmToneChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.alert_alarm), "alert_alarm.wav", "alertAlarmChannel"));
+        addAlarmModelList.add(new AddAlarmModel(requireContext().getString(R.string.emergency_alarm), "emergency_alarm.wav", "emergencyAlarmChannel"));
     }
+
+
+
 
     void onClickButton(){
-        if(sound.isEmpty()){
-            if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
-                channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
-                sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+
+        AppValidator.logData("ALARM TONES" , "This is Alarm add response" +sound + channel);
+        try {
+
+//                if(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm) > -1){
+//                    channel = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getChannelName();
+//                    sound = addAlarmModelList.get(sharedPrefHelper.getIntValue(SharedPreferencesKeys.alarm)).getSound();
+//
+//                    AppValidator.logData("SOUND VALUE" , "This is Sound Value "+sound);
+//                }
+            AppValidator.logData("SOUND VALUE" , "This is Sound Value "+sound);
+
+            if(sound.isEmpty() ){
+                AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
+            }else {
+                callSettingApi();
             }
+
+        }catch(Exception e) {
+
+             e.printStackTrace();
+
+
         }
 
-        if(sound.isEmpty() ){
-            AppValidator.showToast(requireContext(), requireContext().getString(R.string.select_alarm));
-        }else {
-           callSettingApi();
-        }
     }
 
 
 
-    void callSettingApi(){
+ void callSettingApi(){
+
         addAlarmBinding.addAlarmProgress.setVisibility(View.VISIBLE);
 
-        Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(
-                sharedPrefHelper.getValue(SharedPreferencesKeys.userId),channel, sound
-        );
+//custom_sound
+
+     RequestBody user_id = RequestBody.create(sharedPrefHelper.getValue(SharedPreferencesKeys.userId),MediaType.parse("text/plain"));
+     RequestBody channel_id = RequestBody.create(channel,MediaType.parse("text/plain"));
+
+     // Converting to MultiPart body acceptable form
+
+     Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + File.pathSeparator + File.separator + requireContext().getPackageName() + "/raw/" + sound);
+     RequestBody requestFile = RequestBody.create(uri.toString(),MediaType.parse("audio/*"));
+     MultipartBody.Part custom_sound = MultipartBody.Part.createFormData("custom_sound", sound,requestFile);
+
+        Call<AddAlarmRequestModel> call3 = apiInterface.callAddAlarmApi(user_id, custom_sound, channel_id);
+
+        AppValidator.logData("callAlarmUserId",sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
+        AppValidator.logData("channel","" + channel);
+        AppValidator.logData("sound","" + sound);
+     AppValidator.logData("FILE VALUE" , "THIS IS FILE RESPONSE"  + uri);
+
 
         call3.enqueue(new Callback<AddAlarmRequestModel>() {
             @Override
             public void onResponse(@NotNull Call<AddAlarmRequestModel> call, @NotNull Response<AddAlarmRequestModel> response) {
+                AppValidator.logData("Response" , "This is Alarm Response=======================>>>"+ response.message());
 
-                addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
+                    addAlarmBinding.addAlarmProgress.setVisibility(View.GONE);
+                    if( response.body() != null){
+                        AppValidator.showToast(requireActivity(), response.body().getMessage());
+                        if(response.body().getCode().equals("200")){
+                            sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
+                            requireFragmentManager().popBackStack();
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                    sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
-                    requireFragmentManager().popBackStack();
-                }
 
+                        }
+                    }else {
+                        AppValidator.showToast(requireContext(), response.message());
+                    }
 
 
             }

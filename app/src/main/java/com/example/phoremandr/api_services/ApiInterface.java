@@ -1,6 +1,9 @@
 package com.example.phoremandr.api_services;
 
+import com.example.phoremandr.api_model.ForgetPassResponse;
 import com.example.phoremandr.api_model.LoginResponse;
+import com.example.phoremandr.api_model.NewPassResponse;
+import com.example.phoremandr.api_model.OtpVerifResponse;
 import com.example.phoremandr.api_model.RegisterResponse;
 import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_model.get_all_memo.GetAllMemoResponse;
@@ -8,11 +11,8 @@ import com.example.phoremandr.api_model.get_memo_by_id.GetMemoByIdResponse;
 import com.example.phoremandr.api_model.get_user_profile.GetUserProfileResponse;
 import com.example.phoremandr.api_model.update_user_profile.UpdateProfileResponse;
 
-import java.security.SecureRandom;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -29,7 +29,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("p_login")
-    Call<LoginResponse> callLoginApi( @Field("email") String email, @Field("password") String password, @Field("device_token") String device_token);
+    Call<LoginResponse> callLoginApi( @Field("email") String email, @Field("password") String password, @Field("device_token") String device_token, @Field("timezone") String timeZone);
 
 
     @FormUrlEncoded
@@ -69,8 +69,8 @@ public interface ApiInterface {
     @Multipart
     @POST("create_memo")
     Call<RegisterResponse> callCreateMemoWithVoiceApi(@Part("name") RequestBody name, @Part("user_id") RequestBody user_id,
-                                             @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
-                                             @Part("reminder") RequestBody reminder, @Part MultipartBody.Part voice_memo);
+                                                      @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
+                                                      @Part("reminder") RequestBody reminder, @Part MultipartBody.Part voice_memo);
 
 
 
@@ -86,8 +86,8 @@ public interface ApiInterface {
     @POST("edit_memo")
     Call<GetMemoByIdResponse> callEditMemoWithVoiceApi(@Part("id") RequestBody id, @Part("name") RequestBody name,
                                                        @Part("user_id") RequestBody user_id,
-                                              @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
-                                              @Part("reminder") RequestBody reminder,@Part MultipartBody.Part voice_memo);
+                                                       @Part("phone_number") RequestBody phone_number, @Part("memo") RequestBody memo,
+                                                       @Part("reminder") RequestBody reminder,@Part MultipartBody.Part voice_memo);
 
 
     @FormUrlEncoded
@@ -95,14 +95,30 @@ public interface ApiInterface {
     Call<RegisterResponse> callDeleteMemoApi(@Field("memo_id") String memo_id);
 
 
-    @FormUrlEncoded
+    @Multipart
     @POST("settings")
-    Call<AddAlarmRequestModel> callAddAlarmApi(@Field("user_id") String user_id,
-                                               @Field("channel_id") String channel_id,
-                                               @Field("custom_sound") String custom_sound);
+    Call<AddAlarmRequestModel> callAddAlarmApi(@Part("user_id") RequestBody user_id,
+                                               @Part  MultipartBody.Part custom_sound,
+                                               @Part("channel_id") RequestBody channel_id);
 
 
 
+    @FormUrlEncoded
+    @POST("update_timezone")
+    Call<RegisterResponse> callUpdateTimeZoneApi(@Field("user_id") String userId, @Field("timezone") String timeZone);
+
+    @FormUrlEncoded
+    @POST("forgot_password")
+    Call<ForgetPassResponse> callForgotPasswordApi (@Field("email") String email );
+
+    @FormUrlEncoded
+    @POST("verify_otp")
+    Call<OtpVerifResponse>callOtpVerifyApi(@Field("email")String email , @Field("verification_code") String verification_code);
+
+    @FormUrlEncoded
+    @POST("reset_password")
+    Call<NewPassResponse>callResetPassApi(@Field("email")String email ,
+                                          @Field("new_password") String new_password);
 
 
 }
