@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setStatusBarColor(R.color.green_500);
         SharedPrefHelper.getInstance(viewBinding.getRoot().getContext());
         sharedPrefHelper = new SharedPrefHelper();
-        createChannel();
+       // createChannel();
     }
 
     public abstract ViewBinding getViewModel();
@@ -70,6 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             notificationChannel.enableVibration(true);
             notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
             /*notificationChannel.setSound(sound, att);*/
+
 
             notificationManager.createNotificationChannel(notificationChannel);
 

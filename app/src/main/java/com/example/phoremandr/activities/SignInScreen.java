@@ -117,8 +117,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             signInBinding.loginProgress.setVisibility(View.VISIBLE);
             callLoginApi(loginRequestModel);
 
-            createChannel();
-
         }
     }
 
@@ -180,6 +178,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
     }
 
     void goToDashboard() {
+        FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
+        sharedPrefHelper.setValue(SharedPreferencesKeys.channelId, "alarmChannel");
+        firebaseMessageReceiver.showNotification(SignInScreen.this,getString(R.string.welcome_app), getString(R.string.app_name),sharedPrefHelper.getValue(SharedPreferencesKeys.channelId));
 
         startActivity(new Intent(SignInScreen.this, DashboardActivity.class));
     }
