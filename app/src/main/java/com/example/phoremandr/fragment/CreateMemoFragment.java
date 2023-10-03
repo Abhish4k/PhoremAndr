@@ -84,8 +84,7 @@ public class CreateMemoFragment extends BaseFragment {
     void initView() {
 
         memoBinding.memoToolbar.setNameData(name);
-
-        memoBinding.memoToolbar.setVisibility(isVisible);
+        memoBinding.memoToolbar.setVisibility(true);
 
         memoBinding.memoToolbar.ivBack.setOnClickListener(v -> {
             stopRecording();

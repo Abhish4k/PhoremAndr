@@ -33,7 +33,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     public void
     onMessageReceived(RemoteMessage remoteMessage)
     {
-        AppValidator.logData("receiveNotification","" + remoteMessage.getNotification());
+        AppValidator.logData("receiveNotification","" + remoteMessage.getNotification().getChannelId());
 
 
         if (remoteMessage.getNotification() != null) {
@@ -42,7 +42,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                         getApplicationContext(),
                         remoteMessage.getNotification().getTitle(),
                         remoteMessage.getNotification().getBody(),
-                        remoteMessage.getNotification().getChannelId());
+                        remoteMessage.getNotification().getSound());
             }
 
         }
@@ -59,7 +59,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     // Method to display the notifications
- public void showNotification(Context context,String title, String message, String channel_Id) {
+ public void showNotification(Context context,String title, String message,  String sound) {
 
         // Pass the intent to switch to the MainActivity
         Intent intent = new Intent(context, DashboardActivity.class);
@@ -76,49 +76,44 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                     (context, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
 
-        AppValidator.logData("channelIdRetrieve","" + channel_Id);
 
 
-        Uri sound = null;
-        if (channel_Id != null) {
-            switch (channel_Id) {
+        Uri soundUri = null;
+        if (sound != null) {
+            switch (sound) {
                 case "alarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
                     break;
 
                 case "emergencyAlarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
+                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
                     break;
 
                 case "alarmToneChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm_tone);
+                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm_tone);
                     break;
 
                 case "alertAlarmChannel":
-                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alert_alarm);
+                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alert_alarm);
                     break;
 //                case "new_email_arrived_channel":
 //                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
 //                    break;
             }
         } else {
-            channel_Id = getString(R.string.default_notification_channel_id);
-            sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+            soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
         }
 
 
-       // AppValidator.showToast(context, channel_Id);
 
-        AppValidator.logData("channelId", "This is my Channel id " + channel_Id);
-
-        AppValidator.logData("uri", "This is uri response " + sound);
+        AppValidator.logData("uri", "This is uri response " + Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm));
 
 
-        if ( sound!=null) {
+        if ( soundUri!=null) {
             // Check if the Android Version is greater than Oreo
                 NotificationCompat.Builder builder
                         = new NotificationCompat
-                        .Builder(context, channel_Id)
+                        .Builder(context,context.getString(R.string.default_notification_channel_id) )
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
@@ -129,12 +124,12 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 NotificationManager notificationManager
                         = (NotificationManager) context.getSystemService(
                         Context.NOTIFICATION_SERVICE);
-                AppValidator.logData("check", "Hello" + sound);
+                AppValidator.logData("check", "Hello " + soundUri);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel notificationChannel
                         = new NotificationChannel(
-                        channel_Id,"web_app",
+                        context.getString(R.string.default_notification_channel_id), "web_app",
                         NotificationManager.IMPORTANCE_HIGH);
 
                 AudioAttributes att = new AudioAttributes.Builder()
@@ -143,7 +138,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                         .build();
                 notificationChannel.enableVibration(true);
                 notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
-                notificationChannel.setSound(sound, att);
+                notificationChannel.setSound(soundUri, att);
 
 
                 notificationManager.createNotificationChannel(notificationChannel);

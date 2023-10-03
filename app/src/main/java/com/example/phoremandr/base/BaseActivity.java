@@ -54,8 +54,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     public void createChannel() {
         AppValidator.logData("channelId","here");
-        NotificationChannel notificationChannel
-                = null;
+        NotificationChannel notificationChannel = null;
+        NotificationManager notificationManager
+                = (NotificationManager) getSystemService(
+                Context.NOTIFICATION_SERVICE);
         Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.alarm);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(
@@ -67,7 +69,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                     .build();
             notificationChannel.enableVibration(true);
             notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
-            notificationChannel.setSound(sound, att);
+            /*notificationChannel.setSound(sound, att);*/
+
+            notificationManager.createNotificationChannel(notificationChannel);
 
         }
 

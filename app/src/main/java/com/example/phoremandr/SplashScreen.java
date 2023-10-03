@@ -40,29 +40,12 @@ public class SplashScreen extends BaseActivity {
     @Override
     public ViewBinding getViewModel() {
         splashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
-      /*  if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            displayOverLauncher.launch(intent);
+
+            goToHome();
 
 
-            if (ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-            ) {
-                List<String> listPermissionsNeeded = new ArrayList<>();
-                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-                ActivityCompat.requestPermissions(SplashScreen.this, listPermissionsNeeded.toArray
-                        (new String[listPermissionsNeeded.size()]), 101);
-
-                goToHome();
 
 
-                }
-
-        }*/
-
-
-        goToHome();
-        askNotificationPermission();
 
 //        checkPermission();
 
@@ -95,7 +78,16 @@ public class SplashScreen extends BaseActivity {
 
     public  void goToHome() {
 
-        new Handler().postDelayed(this::validateUserDetails, 1000);
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            displayOverLauncher.launch(intent);
+//            new Handler().postDelayed(this::validateUserDetails, 6000);
+
+        }
+
+        askNotificationPermission();
+        new Handler().postDelayed(this::validateUserDetails, 6000);
     }
 
 
@@ -129,7 +121,7 @@ public class SplashScreen extends BaseActivity {
 //
 //
 //        }
-
+//
 //    }
 
     // Declare the launcher at the top of your Activity/Fragment:
