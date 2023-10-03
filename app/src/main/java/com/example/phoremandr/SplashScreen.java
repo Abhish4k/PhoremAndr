@@ -32,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends BaseActivity {
@@ -77,15 +78,16 @@ public class SplashScreen extends BaseActivity {
 
 
     public  void goToHome() {
-
         if (!Settings.canDrawOverlays(this)) {
+
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             displayOverLauncher.launch(intent);
-//            new Handler().postDelayed(this::validateUserDetails, 6000);
-
         }
-
+        else{
+            askNotificationPermission();
+            new Handler().postDelayed(this::validateUserDetails, 2000);
+        }
         askNotificationPermission();
         new Handler().postDelayed(this::validateUserDetails, 6000);
     }

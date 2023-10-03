@@ -134,7 +134,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
                 AudioAttributes att = new AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                         .build();
                 notificationChannel.enableVibration(true);
                 notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
