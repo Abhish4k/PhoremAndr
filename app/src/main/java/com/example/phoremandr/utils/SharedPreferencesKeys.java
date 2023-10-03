@@ -10,5 +10,6 @@ public class SharedPreferencesKeys {
   public static String userId = "userId";
 
   public static String alarm = "alarm";
+  public static String channelId = "channelId";
 
 }
