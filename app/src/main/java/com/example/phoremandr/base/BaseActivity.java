@@ -52,31 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.sendBroadcast(broadcastIntent);
         super.onDestroy();
     }
-    public void createChannel() {
-        AppValidator.logData("channelId","here");
-        NotificationChannel notificationChannel = null;
-        NotificationManager notificationManager
-                = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.alarm);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(
-            getString(R.string.default_notification_channel_id),"web_app",
-            NotificationManager.IMPORTANCE_HIGH);
-            AudioAttributes att = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build();
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
-            /*notificationChannel.setSound(sound, att);*/
-
-
-            notificationManager.createNotificationChannel(notificationChannel);
-
-        }
-
-    }
 
 
 

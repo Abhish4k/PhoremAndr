@@ -11,5 +11,6 @@ public class SharedPreferencesKeys {
 
   public static String alarm = "alarm";
   public static String channelId = "channelId";
+  public static String sound = "sound";
 
 }
