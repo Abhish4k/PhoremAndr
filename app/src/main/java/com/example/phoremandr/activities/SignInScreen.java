@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
@@ -180,6 +181,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
     void goToDashboard() {
         FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
         sharedPrefHelper.setValue(SharedPreferencesKeys.channelId, "alarmChannel");
+        sharedPrefHelper.setValue(SharedPreferencesKeys.sound, ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.alarm);
         firebaseMessageReceiver.showNotification(SignInScreen.this,getString(R.string.welcome_app), getString(R.string.app_name),sharedPrefHelper.getValue(SharedPreferencesKeys.channelId));
 
         startActivity(new Intent(SignInScreen.this, DashboardActivity.class));

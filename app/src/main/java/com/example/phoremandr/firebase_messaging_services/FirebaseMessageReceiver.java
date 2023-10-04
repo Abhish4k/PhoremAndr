@@ -1,6 +1,7 @@
 package com.example.phoremandr.firebase_messaging_services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -84,29 +86,30 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             switch (sound) {
                 case "alarmChannel":
                     channel_id = context.getString(R.string.default_notification_channel_id);
-                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+                    soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.alarm);
                     break;
 
                 case "emergencyAlarmChannel":
                     channel_id = context.getString(R.string.emergency_alarm_channel_id);
-                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
+                    soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.emergency_alarm);
                     break;
 
                 case "alarmToneChannel":
                     channel_id = context.getString(R.string.alarm_tone_channel_id);
-                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm_tone);
+                    soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.alarm_tone);
                     break;
 
                 case "alertAlarmChannel":
                     channel_id = context.getString(R.string.alert_alarm_channel_id);
-                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alert_alarm);
+                    soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.alert_alarm);
                     break;
-//                case "new_email_arrived_channel":
-//                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
-//                    break;
+                case "alert_alarm_channel":
+                    channel_id = context.getString(R.string.default_notification_channel_id);
+                    soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+                    break;
             }
         } else {
-            soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+            soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.alarm);
             channel_id = context.getString(R.string.default_notification_channel_id);
         }
 
@@ -115,55 +118,27 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         AppValidator.logData("uri", "This is uri response " +channel_id + "," + soundUri);
 
-
         if ( soundUri!=null) {
             // Check if the Android Version is greater than Oreo
+            NotificationManager notificationManager
+                    = (NotificationManager) context.getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            createChannel( notificationManager, context);
                 NotificationCompat.Builder builder
                         = new NotificationCompat
-                        .Builder(context,channel_id )
+                        .Builder(context,context.getString(R.string.default_notification_channel_id) )
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                        .setAutoCancel(true)
+                        .setSound(soundUri)
                         .setContentIntent(pendingIntent);
 
                 builder.setContent(getCustomDesign(context,title, message));
-                NotificationManager notificationManager
-                        = (NotificationManager) context.getSystemService(
-                        Context.NOTIFICATION_SERVICE);
-
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (sharedPrefHelper.getValue(SharedPreferencesKeys.channelId) != null){
-                    AppValidator.logData("checkSound", "" + soundUri + ", checkChannel " + sharedPrefHelper.getValue("channelId") + ", channelLength, " + channel_id.length());
-                    notificationManager.deleteNotificationChannel(sharedPrefHelper.getValue(SharedPreferencesKeys.channelId));
-                }
-
-
-                NotificationChannel notificationChannel
-                        = new NotificationChannel(
-                        channel_id, "web_app",
-                        NotificationManager.IMPORTANCE_HIGH);
+            AppValidator.logData("notificationChannel", " "  + soundUri);
 
 
 
 
-                AudioAttributes att = new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build();
-                notificationChannel.enableVibration(true);
-                notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
-                notificationChannel.setSound(soundUri, att);
-
-                sharedPrefHelper.setValue(SharedPreferencesKeys.channelId, channel_id);
-                notificationManager.createNotificationChannel(notificationChannel);
-                AppValidator.logData("afterUpdateChannel", "" + notificationChannel.getId());
-
-
-
-            }
             notificationManager.notify(0, builder.build());
 
 
@@ -171,4 +146,35 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
     }
 
+
+    public void createChannel(NotificationManager notificationManager, Context context) {
+
+
+        sharedPrefHelper = new SharedPrefHelper();
+
+        NotificationChannel notificationChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            notificationChannel = new NotificationChannel(
+                  context.getString(R.string.default_notification_channel_id),"web_app",
+                    NotificationManager.IMPORTANCE_HIGH);
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
+            notificationChannel.setSound(Uri.parse(sharedPrefHelper.getValue(SharedPreferencesKeys.sound)),att);
+
+
+            AppValidator.logData("channelIdSound", "" + notificationChannel.getSound() + ", " + notificationManager);
+
+            if(notificationManager != null){
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+
+        }
+
     }
+
+}

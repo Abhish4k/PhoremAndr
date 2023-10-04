@@ -1,7 +1,11 @@
 package com.example.phoremandr.fragment;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +19,15 @@ import com.example.phoremandr.api_model.add_alarm.AddAlarmRequestModel;
 import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentAddAlarmBinding;
+import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,6 +156,17 @@ public class AddAlarmFragment extends BaseFragment {
                             sharedPrefHelper.setIntValue(SharedPreferencesKeys.alarm, position);
                             requireFragmentManager().popBackStack();
 
+                            FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
+                            AppValidator.logData("getSound","" + soundUri(channel));
+                            NotificationManager notificationManager
+                                    = (NotificationManager) requireActivity().getSystemService(
+                                    Context.NOTIFICATION_SERVICE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                notificationManager.deleteNotificationChannel(requireContext().getString(R.string.default_notification_channel_id));
+                                sharedPrefHelper.setValue(SharedPreferencesKeys.sound, soundUri(channel).toString());
+                            }
+                           // firebaseMessageReceiver.createChannel(soundUri(channel), notificationManager, requireContext());
+
 
                         }
                     }else {
@@ -164,6 +182,34 @@ public class AddAlarmFragment extends BaseFragment {
             }
         });
 
+    }
+
+
+    Uri soundUri(String channelId){
+        Uri uri = null;
+        switch (channelId) {
+            case "alarmChannel":
+                uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + requireActivity().getPackageName() + "/" + R.raw.alarm);
+                break;
+
+            case "emergencyAlarmChannel":
+                uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + requireActivity().getPackageName() + "/" + R.raw.emergency_alarm);
+                break;
+
+            case "alarmToneChannel":
+                uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + requireActivity().getPackageName() + "/" + R.raw.alarm_tone);
+                break;
+
+            case "alertAlarmChannel":
+                uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + requireActivity().getPackageName() + "/" + R.raw.alert_alarm);
+                break;
+//                case "new_email_arrived_channel":
+//                    sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.alarm);
+//                    break;
+        }
+
+
+        return  uri;
     }
 
 }
