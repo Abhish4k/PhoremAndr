@@ -29,6 +29,8 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     // Override onNewToken to get new token
 
     public static SharedPrefHelper sharedPrefHelper;
+
+
     @Override
     public void onNewToken(@NonNull String token)
     {
@@ -40,7 +42,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
         AppValidator.logData("receiveNotification","" + remoteMessage.getNotification().getSound());
-
         showNotification(
                 getApplicationContext(),
                 remoteMessage.getNotification().getTitle(),
@@ -156,7 +157,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 notificationChannel.enableVibration(true);
                 notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
                 notificationChannel.setSound(soundUri, att);
-
                 sharedPrefHelper.setValue(SharedPreferencesKeys.channelId, channel_id);
                 notificationManager.createNotificationChannel(notificationChannel);
                 AppValidator.logData("afterUpdateChannel", "" + notificationChannel.getId());
