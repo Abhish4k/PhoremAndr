@@ -20,6 +20,7 @@ import com.example.phoremandr.api_request_model.AddAlarmModel;
 import com.example.phoremandr.base.BaseFragment;
 import com.example.phoremandr.databinding.FragmentAddAlarmBinding;
 import com.example.phoremandr.firebase_messaging_services.FirebaseMessageReceiver;
+import com.example.phoremandr.notification.NotificationUtils;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
 
@@ -158,13 +159,15 @@ public class AddAlarmFragment extends BaseFragment {
 
                             FirebaseMessageReceiver firebaseMessageReceiver = new FirebaseMessageReceiver();
                             AppValidator.logData("getSound","" + soundUri(channel));
-                            NotificationManager notificationManager
+
+                            NotificationUtils.updateNotificationSound(requireContext(), channel, R.raw.alarm);
+                            /*NotificationManager notificationManager
                                     = (NotificationManager) requireActivity().getSystemService(
                                     Context.NOTIFICATION_SERVICE);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 notificationManager.deleteNotificationChannel(requireContext().getString(R.string.default_notification_channel_id));
                                 sharedPrefHelper.setValue(SharedPreferencesKeys.sound, soundUri(channel).toString());
-                            }
+                            }*/
                            // firebaseMessageReceiver.createChannel(soundUri(channel), notificationManager, requireContext());
 
 

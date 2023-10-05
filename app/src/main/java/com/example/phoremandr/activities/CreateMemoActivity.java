@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -77,7 +78,12 @@ public class CreateMemoActivity extends BaseActivity {
         createMemoActivityBinding.memoToolbar.ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(CreateMemoActivity.this , DashboardActivity.class);
             startActivity(intent);
+
         });
+
+
+
+
 
 
         createMemoActivityBinding.tvDateTime.setOnClickListener(v -> showDatePickerDialog());

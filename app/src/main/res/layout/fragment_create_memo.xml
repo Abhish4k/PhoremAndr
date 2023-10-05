@@ -122,7 +122,19 @@
                        android:layout_width="@dimen/_50sdp"
                        android:layout_height="@dimen/_50sdp"
                        android:src="@drawable/mic" />
+
+
                </LinearLayout>
+
+
+                <Spinner
+                    android:id="@+id/selectSoundTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_gravity="center_horizontal"/>
 
                 <Button
                     android:id="@+id/btnSubmit"
