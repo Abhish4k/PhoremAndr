@@ -85,7 +85,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="this_is_user_email">This is user email</string>
     <string name="password_unmatched">Password does not match</string>
-    <string name="channel_id">emergencyAlarmChannel</string>
+    <string name="channel_id">alarmChannel</string>
 <!--    <string name="default_notification_channel_id" translatable="false">alarmChannel</string>-->
 <!--    <string name="emergency_alarm_channel_id" translatable="false">emergencyAlarmChannel</string>-->
 <!--    <string name="alarm_tone_channel_id" translatable="false">alarmToneChannel</string>-->

@@ -1,7 +1,5 @@
 package com.example.phoremandr.notification;
-
 import android.os.AsyncTask;
-
 
 
 public class BackgroundTaskHelper extends AsyncTask<Void,Void,Void> {

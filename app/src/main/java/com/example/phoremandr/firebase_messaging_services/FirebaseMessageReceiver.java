@@ -120,13 +120,13 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
-        AppValidator.logData("receiveNotification","" + remoteMessage.getNotification().getSound());
+      /*  AppValidator.logData("receiveNotification","" + remoteMessage.getNotification().getSound());
 
         showNotification(
                 getApplicationContext(),
                 remoteMessage.getNotification().getTitle(),
                 remoteMessage.getNotification().getBody(),
-                remoteMessage.getNotification().getSound());
+                remoteMessage.getNotification().getSound());*/
         super.onMessageReceived(remoteMessage);
     }
 
@@ -139,8 +139,13 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         remoteViews.setTextViewText(R.id.tvTitle, title);
         remoteViews.setTextViewText(R.id.tvMsg, message);
 
+
+
         return remoteViews;
     }
+
+
+
 
     // Method to display the notifications
  public void showNotification(Context context,String title, String message,  String sound) {
@@ -158,7 +163,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             pendingIntent = PendingIntent.getActivity
                     (context, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         }
-
 
 
         Uri soundUri = null;
@@ -461,13 +465,20 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         removeFirebaseOrigianlNotificaitons();
 
         if (bundle ==null)
-            return;
+        {
+            for (String key : bundle.keySet()) {
+                Object value = bundle.get(key);
+                AppValidator.logData("FCM", "Key: " + key + " Value: " + value);
+            }
+
+            return;}
 
         //pares the message
         CloudMsg cloudMsg = parseCloudMsg(bundle);
+        AppValidator.logData("FCM", "Key: " + cloudMsg.msg + " Value: " + cloudMsg.getTestValue());
 
         //if you want take the data to Activity, set it
-  /*      Bundle myBundle = new Bundle();
+       /*Bundle myBundle = new Bundle();
         myBundle.putSerializable("type", (Serializable) cloudMsg);*/
         Intent myIntent = new Intent(this, DashboardActivity.class);
         myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -484,10 +495,18 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         AppValidator.logData("soundGetFromNoti","" + cloudMsg.getTestValue());
         //set the Notification
         Uri soundUri = null;
-        if(cloudMsg.getTestValue().equals("alertAlarmChannel")){
-            soundUri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alert_alarm);
+        if(cloudMsg != null){
+            if(cloudMsg.getTestValue() != null){
+                if(cloudMsg.getTestValue().equals("alarmToneChannel")){
+                    soundUri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.alarm_tone);
+                }
+            }
+
         }
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+
+        AppValidator.logData("soundUri","" + soundUri);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, this.getString(R.string.channel_id))
                 .setSmallIcon(R.drawable.app_logo)
                 .setContentTitle(cloudMsg.getTitle())
                 .setContentText(cloudMsg.getMsg())
@@ -496,6 +515,20 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           NotificationChannel notificationChannel = new NotificationChannel(
+                  this.getString(R.string.channel_id),"emergency_alarm_channel" ,
+                    NotificationManager.IMPORTANCE_HIGH);
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build();
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
+            notificationChannel.setSound(soundUri,att);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
         notificationManager.notify(notificationCount++, notificationBuilder.build());
 
         super.handleIntent(intent);
@@ -506,7 +539,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         //check notificationManager is available
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager == null )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.deleteNotificationChannel("alarmChannel");
+        }
+        /*if (notificationManager == null )
             return;
 
         //check api level for getActiveNotifications()
@@ -533,7 +569,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             //trace the library source code, follow the rule to remove it.
             if (tag != null && tag.contains("FCM-Notification"))
                 notificationManager.cancel(tag, id);
-        }
+        }*/
     }
 
     private CloudMsg parseCloudMsg(Bundle bundle) {
