@@ -86,10 +86,11 @@ public class SplashScreen extends BaseActivity {
         }
         else{
             askNotificationPermission();
-            new Handler().postDelayed(this::validateUserDetails, 2000);
         }
+        new Handler().postDelayed(this::validateUserDetails, 10000);
         askNotificationPermission();
-        new Handler().postDelayed(this::validateUserDetails, 6000);
+
+
     }
 
 
@@ -97,9 +98,11 @@ public class SplashScreen extends BaseActivity {
         AppValidator.logData("userId","" + sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
         if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty()){
             startActivity(new Intent(SplashScreen.this, SignInScreen.class));
-        }else {
+        } else {
             startActivity(new Intent(SplashScreen.this, DashboardActivity.class));
         }
+
+
     }
 
 
@@ -138,12 +141,15 @@ public class SplashScreen extends BaseActivity {
 
     private void askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED) {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                    } else {
+
+//                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+            else {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
