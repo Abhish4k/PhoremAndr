@@ -24,6 +24,7 @@ import com.example.phoremandr.activities.SignInScreen;
 import com.example.phoremandr.base.BaseActivity;
 import com.example.phoremandr.databinding.ActivitySignupBinding;
 import com.example.phoremandr.databinding.ActivitySplashBinding;
+import com.example.phoremandr.helper.SharedPrefHelper;
 import com.example.phoremandr.receiver.ChatHeadService;
 import com.example.phoremandr.utils.AppValidator;
 import com.example.phoremandr.utils.SharedPreferencesKeys;
@@ -43,9 +44,6 @@ public class SplashScreen extends BaseActivity {
         splashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
             goToHome();
-
-
-
 
 
 //        checkPermission();
@@ -77,31 +75,47 @@ public class SplashScreen extends BaseActivity {
     }
 
 
-    public  void goToHome() {
-        if (!Settings.canDrawOverlays(this)) {
-
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            displayOverLauncher.launch(intent);
+    public void goToHome() {
+        if (!checkDrawOverlayPermission()) {
+            new Handler().postDelayed(this::validateUserDetails, 2000);
+        }else {
+            new Handler().postDelayed(this::validateUserDetails, 2000);
         }
-        else{
-            askNotificationPermission();
-        }
-        new Handler().postDelayed(this::validateUserDetails, 10000);
-        askNotificationPermission();
 
 
     }
 
+    private static int REQUEST_CODE = 1;
+    private boolean checkDrawOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            /** check if we already  have permission to draw over other apps */
+            if (!Settings.canDrawOverlays(this)) {
+                AppValidator.logData("displayOverLauncher", "canDrawOverlays NOK");
+                /** if not construct intent to request permission */
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                /** request permission via start activity for result */
+                displayOverLauncher.launch(intent);;
+                return false;
+            } else {
+                AppValidator.logData("displayOverLauncher", "canDrawOverlays OK");
+            }
+        }
+        return true;
+    }
 
     public void validateUserDetails(){
-        AppValidator.logData("userId","" + sharedPrefHelper.getValue(SharedPreferencesKeys.userId));
-        if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId).isEmpty()){
-            startActivity(new Intent(SplashScreen.this, SignInScreen.class));
-        } else {
-            startActivity(new Intent(SplashScreen.this, DashboardActivity.class));
+        try{
+            /*SharedPrefHelper.getInstance(SplashScreen.this);
+            sharedPrefHelper = new SharedPrefHelper();*/
+            if(sharedPrefHelper.getValue(SharedPreferencesKeys.userId) .isEmpty()){
+                startActivity(new Intent(SplashScreen.this, SignInScreen.class));
+            } else {
+                startActivity(new Intent(SplashScreen.this, DashboardActivity.class));
+            }
+        }catch (NullPointerException e){
+           e.printStackTrace();
         }
-
 
     }
 
@@ -112,46 +126,10 @@ public class SplashScreen extends BaseActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     // There are no request codes
                     Intent data = result.getData();
+                    AppValidator.logData("ONDISPLAYLAUNCHER" , "This is your result"+result.getData());
 
                 }
             });
 
-//    void checkPermission(){
-//        if(ContextCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-//        ){
-//            List<String> listPermissionsNeeded = new ArrayList<>();
-//            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-//            ActivityCompat.requestPermissions(SplashScreen.this,listPermissionsNeeded.toArray
-//                    (new String[listPermissionsNeeded.size()]),101);
-//
-//
-//        }
-//
-//    }
 
-    // Declare the launcher at the top of your Activity/Fragment:
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    // FCM SDK (and your app) can post notifications.
-                } else {
-                    // TODO: Inform user that that your app will not show notifications.
-                }
-            });
-
-    private void askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-
-//                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-            }
-            else {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-            }
-        }
-    }
 }

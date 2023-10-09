@@ -159,7 +159,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
             AppValidator.logData("Builder", "builder.addData: " +builder);
 
-
         }
         else {
             builder = builder.setContentTitle(title)
