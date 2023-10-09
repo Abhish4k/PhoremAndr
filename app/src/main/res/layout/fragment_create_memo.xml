@@ -126,16 +126,6 @@
 
                </LinearLayout>
 
-
-                <Spinner
-                    android:id="@+id/selectSoundTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    
-                    android:textSize="@dimen/_14ssp"
-                    android:layout_gravity="center_horizontal"/>
-
                 <Button
                     android:id="@+id/btnSubmit"
                     android:layout_width="match_parent"

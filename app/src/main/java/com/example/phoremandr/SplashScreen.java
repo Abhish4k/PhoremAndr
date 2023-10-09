@@ -46,8 +46,6 @@ public class SplashScreen extends BaseActivity {
             goToHome();
 
 
-//        checkPermission();
-
 
         Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
