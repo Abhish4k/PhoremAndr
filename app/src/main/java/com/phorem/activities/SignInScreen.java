@@ -159,7 +159,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                     sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
 
 
-                    if (!response.body().getData().getToken().isEmpty()) {
+                    if (response.body().getData().getToken()==null) {
                         sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
                     }
                     sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
