@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.phoremandr'
+    namespace 'com.phorem'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.phoremandr"
+        applicationId "com.phorem"
         minSdk 24
         targetSdk 33
         versionCode 1

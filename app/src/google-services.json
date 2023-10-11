@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126456521747:android:97c7d4c0a6266286714be6",
+        "android_client_info": {
+          "package_name": "com.phorem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126456521747-shcnfqb910fldsfk53fb3q1i1va89inv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYBRp-ecyUnCYJvJ8i6pTm-ppfoHcSkOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126456521747-shcnfqb910fldsfk53fb3q1i1va89inv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
