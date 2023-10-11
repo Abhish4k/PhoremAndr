@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-permission
         android:name="android.permission.MODIFY_PHONE_STATE"
@@ -88,9 +89,11 @@
             android:name=".receiver.ChatHeadService"
             android:exported="true"
             android:enabled="true"
-            android:stopWithTask="false">
+            android:stopWithTask="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
-                <action android:name="com.example.phoremandr.receiver.ChatHeadService"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.phoremandr.receiver.ChatHeadService"/>
             </intent-filter>
         </service>
 
@@ -100,11 +103,10 @@
             android:name=".firebase_messaging_services.FirebaseMessageReceiver"
             android:exported="true"
             android:enabled="true">
+
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-
-
 
         </service>
 
@@ -119,10 +121,15 @@
         <meta-data
             android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
             android:value="true" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
+<!--            android:value="my_channel" />-->
 
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.channel_id"
+            android:value="@string/channel_id" />
 
 
 
