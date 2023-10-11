@@ -54,7 +54,7 @@
 
 
         <activity
-            android:name=".SplashScreen"
+            android:name="com.phorem.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,16 +62,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SignUpScreen"/>
-        <activity android:name=".activities.ForgotPass"/>
-        <activity android:name=".activities.Otp_Verify"/>
-        <activity android:name=".activities.SignInScreen"/>
-        <activity android:name=".activities.CreateNewPass"/>
-        <activity android:name=".activities.CreateMemoActivity"/>
-        <activity android:name=".activities.DashboardActivity"
+        <activity android:name="com.phorem.activities.SignUpScreen"/>
+        <activity android:name="com.phorem.activities.ForgotPass"/>
+        <activity android:name="com.phorem.activities.Otp_Verify"/>
+        <activity android:name="com.phorem.activities.SignInScreen"/>
+        <activity android:name="com.phorem.activities.CreateNewPass"/>
+        <activity android:name="com.phorem.activities.CreateMemoActivity"/>
+        <activity android:name="com.phorem.activities.DashboardActivity"
             android:windowSoftInputMode="adjustPan"/>
 
-        <receiver android:name=".receiver.CallReceiver"
+        <receiver android:name="com.phorem.receiver.CallReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -86,7 +86,7 @@
             </intent-filter></receiver>
 
         <service
-            android:name=".receiver.ChatHeadService"
+            android:name="com.phorem.receiver.ChatHeadService"
             android:exported="true"
             android:enabled="true"
             android:stopWithTask="false"
@@ -100,7 +100,7 @@
 
 
         <service
-            android:name=".firebase_messaging_services.FirebaseMessageReceiver"
+            android:name="com.phorem.firebase_messaging_services.FirebaseMessageReceiver"
             android:exported="true"
             android:enabled="true">
 
