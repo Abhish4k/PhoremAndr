@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.phorem.R;
 import com.phorem.activities.DashboardActivity;
+import com.phorem.activities.Dialog;
 import com.phorem.utils.AppValidator;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -38,38 +39,27 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     public void handleIntent(Intent intent)
-
     {
-
-
         AppValidator.logData("FCM", "Handle Intent" );
-
         try
         {
             if (intent.getExtras() != null)
             {
                 RemoteMessage.Builder builder = new RemoteMessage.Builder("FirebaseMessageReceiver");
                 AppValidator.logData("INtent", " Intent: "+builder );
-
-
                 for (String key : intent.getExtras().keySet())
                 {
                     builder.addData(key, intent.getExtras().get(key).toString());
-
                 }
                 AppValidator.logData("intent", " Intent: " +builder);
-
                 onMessageReceived(builder.build());
                 AppValidator.logData("intent", " OnMessage: " );
-
-
             }
             else
             {
                 AppValidator.logData("intent", " Intent: " +intent);
 
                 super.handleIntent(intent);
-
             }
         }
         catch (Exception e)
@@ -96,6 +86,14 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
     // Method to display the notifications
     public void showNotification(Context context,String title, String message,String sound) {
+
+        Intent intent1= new Intent(this, Dialog.class);
+// Set the Activity to start in a new, empty task.
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent1.putExtra("message" , message );
+        intent1.putExtra("name" , title);
+        startActivity(intent1);
 
         Intent intent  = new Intent(context, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);

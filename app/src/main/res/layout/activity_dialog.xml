@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/alertSmall">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/custom_alert"
+        android:padding="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/notif_icon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_9sdp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/alertTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_toRightOf="@id/notif_icon"
+            android:hint="@string/app_name"
+            android:paddingVertical="@dimen/_1sdp"
+            android:singleLine="true"
+            android:textColor="#575757"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/alertName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alertTitle"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:hint="Abhishek"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:singleLine="true"
+            android:textColor="#575757"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/alertMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alertName"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:hint="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+            android:maxLines="4"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:textColor="#575757"
+            android:textSize="@dimen/_13ssp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
