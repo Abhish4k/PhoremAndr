@@ -33,7 +33,6 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             showNotification(this, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getSound());
 
-
         }
 
     }
@@ -69,13 +68,11 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     @Override
-    public  void onTaskRemoved(Intent rootIntent){
-        Intent restartIntent= new Intent(getApplicationContext(), DashboardActivity.class);
+    public  void onTaskRemoved(Intent rootIntent) {
+        Intent restartIntent = new Intent(getApplicationContext(), DashboardActivity.class);
         restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent notifyIntent = PendingIntent.getActivity(getApplicationContext(), 0, restartIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-
     }
 
     private RemoteViews getCustomDesign(Context context,String title, String message) {
@@ -84,9 +81,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         remoteViews.setTextViewText(R.id.tvMsg, message);
         return remoteViews;
     }
+
     // Method to display the notifications
     public void showNotification(Context context,String title, String message,String sound) {
-
         Intent intent1= new Intent(this, Dialog.class);
 // Set the Activity to start in a new, empty task.
         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -139,9 +136,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                         .setContentText(message)
                         .setSound(soundUri)
                         .setSmallIcon(R.mipmap.ic_launcher);
-
             }
-
         }
         NotificationCompat.Builder builder
                 = new NotificationCompat
@@ -156,16 +151,13 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             builder = builder.setContent(getCustomDesign(context,title, message));
 
             AppValidator.logData("Builder", "builder.addData: " +builder);
-
         }
         else {
             builder = builder.setContentTitle(title)
                     .setContentText(message)
                     .setSound(soundUri)
                     .setSmallIcon(R.mipmap.ic_launcher);
-
         }
-
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(sound!=null){
@@ -186,9 +178,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                             notificationChannel.enableVibration(true);
                             notificationChannel.setVibrationPattern(new long[]{400, 400});
                             notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-                        notificationManager.createNotificationChannel(
-                                notificationChannel);
+                            notificationManager.createNotificationChannel(notificationChannel);
                     }
                     break;
                 case "emergencyAlarmChannel":
@@ -204,8 +194,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                             notificationChannel.enableVibration(true);
                             notificationChannel.setVibrationPattern(new long[]{400, 400});
                             notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                            notificationManager.createNotificationChannel(
-                                    notificationChannel);
+                            notificationManager.createNotificationChannel(notificationChannel);
                         }
                         break;
 
@@ -223,8 +212,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                             notificationChannel.enableVibration(true);
                             notificationChannel.setVibrationPattern(new long[]{400, 400});
                             notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                            notificationManager.createNotificationChannel(
-                                    notificationChannel);
+                            notificationManager.createNotificationChannel(notificationChannel);
                         }
                         break;
 
@@ -242,8 +230,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                             notificationChannel.enableVibration(true);
                             notificationChannel.setVibrationPattern(new long[]{400, 400});
                             notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                           notificationManager.createNotificationChannel(
-                                notificationChannel);
+                           notificationManager.createNotificationChannel(notificationChannel);
                         }
                         break;
                 }
@@ -262,8 +249,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                     notificationChannel.enableVibration(true);
                     notificationChannel.setVibrationPattern(new long[]{400, 400});
                     notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                    notificationManager.createNotificationChannel(
-                            notificationChannel);
+                    notificationManager.createNotificationChannel(notificationChannel);
                 }
             }
 

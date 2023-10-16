@@ -53,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/alertName"
             android:layout_marginBottom="@dimen/_8sdp"
-            android:hint="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
             android:maxLines="4"
             android:paddingHorizontal="@dimen/_2sdp"
             android:textColor="#575757"
