@@ -67,7 +67,7 @@ public class SplashScreen extends BaseActivity {
 
     public void goToHome() {
         if (!checkDrawOverlayPermission()) {
-            new Handler().postDelayed(this::validateUserDetails, 5000);
+            new Handler().postDelayed(this::validateUserDetails, 8000);
         }else {
             new Handler().postDelayed(this::validateUserDetails, 2000);
         }

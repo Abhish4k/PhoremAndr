@@ -67,13 +67,15 @@ public class CreateNewPass extends BaseActivity {
                 public void onResponse(@NotNull Call<NewPassResponse> call, @NotNull Response<NewPassResponse> response) {
                     createnewpassbinding.resetPassProgress.setVisibility(View.GONE);
 
-                    assert response.body() != null;
-                    AppValidator.showToast(CreateNewPass.this, response.body().getMessage());
-                    if(response.body().getCode().contains("200")){
+                   if (response.body() != null){
+                       AppValidator.showToast(CreateNewPass.this, response.body().getMessage());
+                       if(response.body().getCode().contains("200")){
 
-                        goToSignInScreen();
+                           goToSignInScreen();
 
-                    }
+                       }
+
+                   }
 
                 }
                 @Override

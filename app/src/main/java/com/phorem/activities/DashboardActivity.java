@@ -165,12 +165,14 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
             @Override
             public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
 
-                assert response.body() != null;
-                AppValidator.showToast(DashboardActivity.this, response.body().getMessage());
-                if(response.body().getCode().contains("200")){
-                    AppValidator.logData("key","callTimeZoneApi");
+                if (response.body() != null){
+                    AppValidator.showToast(DashboardActivity.this, response.body().getMessage());
+                    if(response.body().getCode().contains("200")){
+                        AppValidator.logData("key","callTimeZoneApi");
 
+                    }
                 }
+
             }
             @Override
             public void onFailure(@NotNull  Call<RegisterResponse> call,@NotNull Throwable t) {

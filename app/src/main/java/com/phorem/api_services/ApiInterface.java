@@ -24,7 +24,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("p_register")
-    Call<RegisterResponse> callRegisterApi(@Field("firstname") String firstname, @Field("lastname") String lastname, @Field("email") String email, @Field("password") String password, @Field("country") String country);
+    Call<RegisterResponse> callRegisterApi(@Field("firstname") String firstname, @Field("lastname") String lastname, @Field("email") String email, @Field("country") String country, @Field("password") String password);
 
 
     @FormUrlEncoded

@@ -59,12 +59,14 @@ public class Otp_Verify extends BaseActivity {
             public void onResponse(@NotNull Call<OtpVerifResponse> call, @NotNull Response<OtpVerifResponse> response) {
                 otpVerifBinding.verifyProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
-                if(response.body().getCode().contains("200")){
-                    goToCreatePassScreen(verifOtpRequestModel.getEmail().trim());
+                if (response.body() != null){
+                    AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
+                    if(response.body().getCode().contains("200")){
+                        goToCreatePassScreen(verifOtpRequestModel.getEmail().trim());
 
+                    }
                 }
+
 
             }
             @Override

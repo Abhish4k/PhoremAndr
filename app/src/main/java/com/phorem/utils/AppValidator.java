@@ -94,6 +94,9 @@ public class AppValidator {
         if(registerRequestModel.getPassword().isEmpty()){
             showToast(context, context.getString(R.string.enter_password));
             return false;
+        } if(registerRequestModel.getPassword().length() <6 ){
+            showToast(context, context.getString(R.string.password_must_be_at_least));
+            return false;
         }
 
         return  true;

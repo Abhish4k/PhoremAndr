@@ -66,7 +66,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         signInBinding.btnSignIn.setOnClickListener(this);
 
         checkPermission();
-        startPowerSaverIntent(SignInScreen.this);
+//      startPowerSaverIntent(SignInScreen.this);
         FirebaseApp.initializeApp(SignInScreen.this);
 
 
@@ -150,22 +150,24 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
                 signInBinding.loginProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(SignInScreen.this, response.body().getMessage());
-                if (response.body().getCode().contains("200")) {
-                    AppValidator.logData("key", "goToDashboard");
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.firstName, response.body().getData().getFirstname());
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.lastName, response.body().getData().getLastname());
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
+                if (response.body() != null){
+                    AppValidator.showToast(SignInScreen.this, response.body().getMessage());
+                    if (response.body().getCode().contains("200")) {
+                        AppValidator.logData("key", "goToDashboard");
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.firstName, response.body().getData().getFirstname());
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.lastName, response.body().getData().getLastname());
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
 
 
-                    if (response.body().getData().getToken()==null) {
-                        sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
+                        if (response.body().getData().getToken()==null) {
+                            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
+                        }
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
+
+                        goToDashboard();
                     }
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
-
-                    goToDashboard();
                 }
+
             }
 
             @Override
@@ -183,7 +185,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
     }
 
 
-    public static List<Intent> POWER_MANAGER_INTENTS = Arrays.asList(
+  /*  public static List<Intent> POWER_MANAGER_INTENTS = Arrays.asList(
             new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")),
             new Intent().setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity")),
             new Intent().setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity")),
@@ -229,6 +231,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+     */
 
 
 
