@@ -36,9 +36,6 @@ public class SplashScreen extends BaseActivity {
         splashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
             goToHome();
-
-
-
         Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
