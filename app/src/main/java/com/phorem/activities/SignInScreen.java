@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -17,8 +18,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.phorem.R;
 import com.phorem.api_model.LoginResponse;
+import com.phorem.api_model.LoginResponseData;
+import com.phorem.api_model.error_body_model.ErrorModel;
 import com.phorem.api_request_model.LoginRequestModel;
 import com.phorem.base.BaseActivity;
 import com.phorem.databinding.ActivitySigninBinding;
@@ -29,7 +34,10 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -150,22 +158,66 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
                 signInBinding.loginProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(SignInScreen.this, response.body().getMessage());
-                if (response.body().getCode().contains("200")) {
-                    AppValidator.logData("key", "goToDashboard");
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.firstName, response.body().getData().getFirstname());
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.lastName, response.body().getData().getLastname());
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
+                if(response.body() != null){
+                    AppValidator.showToast(SignInScreen.this, response.body().getMessage());
+                    if (response.body().getCode().contains("200")) {
+                        AppValidator.logData("key", "goToDashboard");
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.firstName, response.body().getData().getFirstname());
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.lastName, response.body().getData().getLastname());
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.email, response.body().getData().getEmail());
 
 
-                    if (response.body().getData().getToken()==null) {
-                        sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
+                        if (response.body().getData().getToken()==null) {
+                            sharedPrefHelper.setValue(SharedPreferencesKeys.deviceToken, response.body().getData().getToken());
+                        }
+                        sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
+
+                        goToDashboard();
                     }
-                    sharedPrefHelper.setValue(SharedPreferencesKeys.userId, response.body().getData().getId());
+                } else if(response.code() == 400){
+//                    if (response.code() == 400) {
+//                        Gson gson = new GsonBuilder().create();
+//                        MovieErrorResponse mError = new MovieErrorResponse();
+//                        try {
+//                            mError = gson.fromJson(response.errorBody().string(), MovieErrorResponse.class);
+//                            if(mError.getMessage().equals("Wallet  not enough."))
+//                            {
+//                                if(mError.getWalletBalance()==null)
+//                                {
+//                                    mError.setWalletBalance("0");
+//                                }
+//
+//                                //ToDo we can handle here
+//
+//                            }
+//                        } catch (IOException e) {
+//                            // handle failure to read error
+//                        }
+                    Gson gson= new GsonBuilder().create();
+                    LoginResponse errorModel=new LoginResponse();
+//                    errorModel=gson.fromJson(response.errorBody().string(), LoginResponse.class);
+//                    AppValidator.logData("errorBody","" + errorModel.getMessage());
+                    try {
+                        errorModel = gson.fromJson(response.errorBody().string(), LoginResponse.class);
 
-                    goToDashboard();
+                        AppValidator.logData("errorBody","" + errorModel.getMessage());
+                        AppValidator.logData("errorBody","" + errorModel.getCode());
+                        if(errorModel.getCode().equals("201"))
+                        {
+                            AppValidator.logData("errorBody","" + errorModel.getStatus());
+                            Toast.makeText(getApplicationContext() , ""+errorModel.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(getApplicationContext() , SignUpScreen.class);
+//                            startActivity(intent);
+
+                        }
+
+                    } catch (IOException e) {
+                        // handle failure to read error
+                    }
+
                 }
+
+
             }
 
             @Override

@@ -23,12 +23,12 @@ public class PhoneCallReceiver  extends BroadcastReceiver
     {
         try
         {
-            if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL"))
-            {
-                savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
-            }
-            else
-            {
+//            if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL"))
+//            {
+//                savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+//            }
+//            else
+//            {
                 String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
                 String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
 
@@ -53,7 +53,7 @@ public class PhoneCallReceiver  extends BroadcastReceiver
                 }
 
             }
-        }
+//        }
         catch (Exception e)
         {
             e.printStackTrace();

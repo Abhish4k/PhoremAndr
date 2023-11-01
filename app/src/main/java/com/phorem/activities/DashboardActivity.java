@@ -37,7 +37,7 @@ import retrofit2.Response;
 
 public class DashboardActivity extends BaseActivity   implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-    private static  final String READ_CALL_LOGS = Manifest.permission.READ_CALL_LOG;
+//    private static  final String READ_CALL_LOGS = Manifest.permission.READ_CALL_LOG;
     private static  final String PHONE = Manifest.permission.CALL_PHONE;
 
     private  static  final  String READ_CONTACTS =  Manifest.permission.READ_CONTACTS;
@@ -53,7 +53,9 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
             Toast.makeText(this , "Permissions Already Granted !", Toast.LENGTH_SHORT).show();
         }else {
             ActivityCompat.requestPermissions(this ,
-                    new String[]{PHONE,READ_CALL_LOGS, NOTIFICATION , READ_CONTACTS } ,REQUEST_CODE );
+                    new String[]{PHONE,
+//                            READ_CALL_LOGS,
+                            NOTIFICATION , READ_CONTACTS } ,REQUEST_CODE );
         }
 
     }
@@ -64,12 +66,13 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
         if (requestCode== REQUEST_CODE){
             if (grantResults.length>0){
                 int phone = grantResults[0];
-                int read_call_logs = grantResults[1];
+//                int read_call_logs = grantResults[1];
 
                 boolean checkPhone = phone ==PackageManager.PERMISSION_GRANTED;
-                boolean checkCallLog = read_call_logs == PackageManager.PERMISSION_GRANTED;
+//                boolean checkCallLog = read_call_logs == PackageManager.PERMISSION_GRANTED;
 
-                if(checkPhone && checkCallLog){
+                if(checkPhone){
+//                        && checkCallLog){
                     Toast.makeText(this , "Permissions Granted !", Toast.LENGTH_SHORT).show();
 
 
@@ -137,12 +140,13 @@ public class DashboardActivity extends BaseActivity   implements BottomNavigatio
     }
 
     public  boolean checkPermission(){
-       int callLogPermission =  ActivityCompat.checkSelfPermission(this , READ_CALL_LOGS );
+//       int callLogPermission =  ActivityCompat.checkSelfPermission(this , READ_CALL_LOGS );
        int phonePermission = ActivityCompat.checkSelfPermission(this , PHONE);
        int notification  = ActivityCompat.checkSelfPermission(this, NOTIFICATION);
         int read_contacts  = ActivityCompat.checkSelfPermission(this, READ_CONTACTS);
 
-       return callLogPermission == PackageManager.PERMISSION_GRANTED && phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED && read_contacts == PackageManager.PERMISSION_GRANTED;
+//       return callLogPermission == PackageManager.PERMISSION_GRANTED &&
+              return phonePermission == PackageManager.PERMISSION_GRANTED && notification == PackageManager.PERMISSION_GRANTED && read_contacts == PackageManager.PERMISSION_GRANTED;
     }
 
 
