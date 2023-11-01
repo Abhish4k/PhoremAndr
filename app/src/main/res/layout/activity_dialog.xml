@@ -12,6 +12,15 @@
         android:padding="@dimen/_10sdp">
 
         <ImageView
+            android:id="@+id/cancel_icon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/cancelicon" />
+
+
+        <ImageView
             android:id="@+id/notif_icon"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="25dp"

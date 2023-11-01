@@ -57,11 +57,14 @@ public class ForgotPass extends BaseActivity {
             public void onResponse(@NotNull Call<ForgetPassResponse> call, @NotNull Response<ForgetPassResponse> response) {
               forgetPassBinding.forgotProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                 AppValidator.showToast(ForgotPass.this, response.body().getMessage());
+                if (response.body() != null){
+                    AppValidator.logData("RESPONSEEEEEEE=================", ""+response.body().getStatus());
+                    AppValidator.showToast(ForgotPass.this, response.body().getMessage());
                     if (response.body().getCode().contains("200")){
-                     goToVerifyPage(forgetPassRequestModel.getEmail());
+                        goToVerifyPage(forgetPassRequestModel.getEmail());
                     }
+
+                }
 
             }
 

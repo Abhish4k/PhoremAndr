@@ -41,7 +41,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -56,8 +56,8 @@
             android:taskAffinity=""
             android:exported="true"
             android:theme="@style/Theme.Transparent">
-
         </activity>
+
 
         <activity
             android:name=".SplashScreen"
@@ -66,6 +66,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity android:name=".activities.SignUpScreen" />
@@ -115,7 +116,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/app_logo"
+            android:resource="@drawable/splashicon"
             android:value="@mipmap/ic_launcher" />
         <meta-data
             android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"

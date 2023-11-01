@@ -6,13 +6,19 @@ import android.widget.TextView;
 import androidx.databinding.DataBindingUtil;
 
 import com.phorem.R;
+import com.phorem.api_model.ForgetPassResponse;
 import com.phorem.api_model.OtpVerifResponse;
+import com.phorem.api_request_model.ForgetPassRequestModel;
 import com.phorem.api_request_model.VerifOtpRequestModel;
 import com.phorem.base.BaseActivity;
 import com.phorem.databinding.OtpVerifBinding;
 import com.phorem.utils.AppValidator;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +36,7 @@ public class Otp_Verify extends BaseActivity {
 
 
     private void initView() {
+        TextView resendOtp = findViewById(R.id.ResendOtpBtn);
         String userEmail = getIntent().getStringExtra("USER_EMAIL");
         TextView emailTextView = findViewById(R.id.verifEmail);
 
@@ -51,6 +58,7 @@ public class Otp_Verify extends BaseActivity {
         }
     }
 
+
     void  callOtpVerifyApi(VerifOtpRequestModel verifOtpRequestModel){
         Call<OtpVerifResponse> call3 = apiInterface.callOtpVerifyApi(verifOtpRequestModel.getEmail(), verifOtpRequestModel.getVerification_code());
 
@@ -58,23 +66,97 @@ public class Otp_Verify extends BaseActivity {
             @Override
             public void onResponse(@NotNull Call<OtpVerifResponse> call, @NotNull Response<OtpVerifResponse> response) {
                 otpVerifBinding.verifyProgress.setVisibility(View.GONE);
+                if (response.body() != null){
+                    AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
+                    if(response.body().getCode().contains("200")){
+                        goToCreatePassScreen(verifOtpRequestModel.getEmail().trim());
 
-                assert response.body() != null;
-                AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
-                if(response.body().getCode().contains("200")){
-                    goToCreatePassScreen(verifOtpRequestModel.getEmail().trim());
-
+                    }
                 }
+
 
             }
             @Override
             public void onFailure(@NotNull  Call<OtpVerifResponse> call,@NotNull Throwable t) {
-                otpVerifBinding.verifyProgress.setVisibility(View.GONE);
+                otpVerifBinding.verifyProgress.setVisibility(View.VISIBLE);
                 AppValidator.logData("otpVerificationError",""+t.getMessage());
             }
         });
 
     }
+
+
+    public void onClickResendBtn(View v){
+        ForgetPassRequestModel forgetPassRequestModel = new ForgetPassRequestModel(otpVerifBinding.verifEmail.getText().toString().trim() );
+        if (AppValidator.validateForgetPass(this , forgetPassRequestModel)){
+            otpVerifBinding.verifyProgress.setVisibility(View.VISIBLE);
+            callForgotPasswordApi(forgetPassRequestModel);
+        }
+
+
+    }
+
+    void callForgotPasswordApi (ForgetPassRequestModel forgetPassRequestModel){
+        Call<ForgetPassResponse> call3 = apiInterface.callForgotPasswordApi(forgetPassRequestModel.getEmail());
+
+        call3.enqueue(new Callback<ForgetPassResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ForgetPassResponse> call, @NotNull Response<ForgetPassResponse> response) {
+
+                if (response.body() != null){
+                    AppValidator.logData("RESPONSEEEEEEE=================", ""+response.body().getMessage());
+                    otpVerifBinding.verifyProgress.setVisibility(View.GONE);
+                    AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
+                    if (response.body().getCode().contains("200")){
+                        forgetPassRequestModel.getEmail();
+
+                    }
+
+                }if(response.code() == 400){
+                    try {
+                        String errorBody = response.errorBody().string();
+                        AppValidator.logData("OTP_Verify_Message","" + errorBody);
+
+                        JSONObject json = null;
+
+                        try {
+                            json = new JSONObject(errorBody);
+
+                            // Extract The User Id From Json Object (With Try Catch)
+                            String stringToExtract = null;
+
+                            try {
+                                stringToExtract = json.getString("message");
+                                AppValidator.showToast(Otp_Verify.this, stringToExtract);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ForgetPassResponse> call,@NotNull Throwable t) {
+                AppValidator.logData("otResendError",""+t.getMessage());
+            }
+
+        });
+    }
+
+
+
+
 
     void goToCreatePassScreen(String email){
         Intent intent = new Intent(Otp_Verify.this , CreateNewPass.class);

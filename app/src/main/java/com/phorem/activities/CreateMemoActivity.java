@@ -300,10 +300,12 @@ public class CreateMemoActivity extends BaseActivity {
 
                 createMemoActivityBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(CreateMemoActivity.this, response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                    startActivity(new Intent(CreateMemoActivity.this, DashboardActivity.class));
+                if (response.body() != null){
+                    AppValidator.showToast(CreateMemoActivity.this, response.body().getMessage());
+                    if(response.body().getCode().equals("200")){
+                        startActivity(new Intent(CreateMemoActivity.this, DashboardActivity.class));
+                    }
+
                 }
 
             }
@@ -334,13 +336,13 @@ public class CreateMemoActivity extends BaseActivity {
 
                 createMemoActivityBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(CreateMemoActivity.this, response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                   startActivity(new Intent(CreateMemoActivity.this, DashboardActivity.class));
+                if (response.body() != null){
+                    AppValidator.showToast(CreateMemoActivity.this, response.body().getMessage());
+                    if(response.body().getCode().equals("200")){
+                        startActivity(new Intent(CreateMemoActivity.this, DashboardActivity.class));
+                    }
+
                 }
-
-
 
             }
             @Override

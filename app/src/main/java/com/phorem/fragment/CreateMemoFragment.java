@@ -259,18 +259,20 @@ public class CreateMemoFragment extends BaseFragment {
             @Override
             public void onResponse(@NotNull Call<GetMemoByIdResponse> call, @NotNull Response<GetMemoByIdResponse> response) {
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
-                assert response.body() != null;
+                if (response.body() != null){
+                    if (response.body().getCode().equals("200")) {
+                        GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
 
-                if (response.body().getCode().equals("200")) {
-                    GetMemoByIdDataResponse getMemoByIdDataResponse = response.body().getData();
+                        memoBinding.etName.setText(getMemoByIdDataResponse.getName());
+                        memoBinding.etMemoName.setText(getMemoByIdDataResponse.getMemo());
+                        memoBinding.etPhone.setText(getMemoByIdDataResponse.getPhoneNumber());
+                        memoBinding.tvDateTime.setText(getMemoByIdDataResponse.getReminder());
 
-                    memoBinding.etName.setText(getMemoByIdDataResponse.getName());
-                    memoBinding.etMemoName.setText(getMemoByIdDataResponse.getMemo());
-                    memoBinding.etPhone.setText(getMemoByIdDataResponse.getPhoneNumber());
-                    memoBinding.tvDateTime.setText(getMemoByIdDataResponse.getReminder());
-
-                    audioUrl = getMemoByIdDataResponse.getVoiceMemo();
+                        audioUrl = getMemoByIdDataResponse.getVoiceMemo();
+                    }
                 }
+
+
             }
 
             @Override
@@ -367,11 +369,13 @@ public class CreateMemoFragment extends BaseFragment {
 
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                    getFragmentManager().popBackStack();
+                if (response.body() != null){
+                    AppValidator.showToast(requireActivity(), response.body().getMessage());
+                    if(response.body().getCode().equals("200")){
+                        getFragmentManager().popBackStack();
+                    }
                 }
+
 
             }
 
@@ -401,13 +405,13 @@ public class CreateMemoFragment extends BaseFragment {
 
                 memoBinding.createMemoProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getMessage());
-                if(response.body().getCode().equals("200")){
-                    getFragmentManager().popBackStack();
+                if (response.body() != null){
+                    AppValidator.showToast(requireActivity(), response.body().getMessage());
+                    if(response.body().getCode().equals("200")){
+                        getFragmentManager().popBackStack();
+                    }
+
                 }
-
-
 
             }
             @Override
@@ -507,16 +511,14 @@ public class CreateMemoFragment extends BaseFragment {
                 AppValidator.logData("getEditMemoWithoutVoice","" + response.code() + "," + response.body() + ""+ call.request());
 
                 if(response.code() == 200){
-                    assert response.body() != null;
-                    AppValidator.showToast(requireActivity(), response.body().getStatus());
-                    if(response.body().getCode().equals("200")){
-                        getFragmentManager().popBackStack();
+                    if (response.body() != null){
+                        AppValidator.showToast(requireActivity(), response.body().getStatus());
+                        if(response.body().getCode().equals("200")){
+                            getFragmentManager().popBackStack();
+                        }
                     }
+
                 }
-
-
-
-
 
             }
             @Override

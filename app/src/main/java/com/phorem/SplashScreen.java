@@ -36,9 +36,6 @@ public class SplashScreen extends BaseActivity {
         splashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
             goToHome();
-
-
-
         Intent intent = new Intent(this , ChatHeadService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
@@ -67,7 +64,8 @@ public class SplashScreen extends BaseActivity {
 
     public void goToHome() {
         if (!checkDrawOverlayPermission()) {
-            new Handler().postDelayed(this::validateUserDetails, 9000);
+
+            new Handler().postDelayed(this::validateUserDetails, 8000);
         }else {
             new Handler().postDelayed(this::validateUserDetails, 2000);
         }

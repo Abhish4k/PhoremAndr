@@ -30,6 +30,7 @@
     <string name="submit">Submit</string>
     <string name="enter_email">Please enter your email</string>
     <string name="enter_password">Please enter your password</string>
+    <string name="password_must_be_at_least">Password must be at least 6 character.</string>
     <string name="enter_valid_email">Please enter valid email</string>
     <string name="phone_number">Phone number</string>
     <string name="create_your_memo">Create your memo</string>

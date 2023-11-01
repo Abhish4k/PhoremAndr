@@ -128,15 +128,17 @@ public class HomeFragment extends BaseFragment {
 
                 fragmentHomeBinding.homeProgress.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
+                if (response.body() != null){
+                    AppValidator.showToast(requireActivity(), response.body().getStatus());
 
-                if(!response.body().getData().isEmpty()){
-                    getAllMemoDataResponseList.addAll(response.body().getData());
-                    homeAdapter.notifyDataSetChanged();
+                    if(!response.body().getData().isEmpty()){
+                        getAllMemoDataResponseList.addAll(response.body().getData());
+                        homeAdapter.notifyDataSetChanged();
+                    }
+
+                    AppValidator.logData("getAllMemoList", "" + getAllMemoDataResponseList.size());
                 }
 
-                AppValidator.logData("getAllMemoList", "" + getAllMemoDataResponseList.size());
             }
             @Override
             public void onFailure(@NotNull  Call<GetAllMemoResponse> call,@NotNull Throwable t) {

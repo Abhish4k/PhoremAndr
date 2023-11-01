@@ -190,26 +190,30 @@ public class EditProfileFragment extends BaseFragment {
 
                 editProfileBinding.progressEdit.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
+                if (response.body() != null){
 
-                GetUserProfileResponseData getUserProfileResponseData = response.body().getData();
+                    AppValidator.showToast(requireActivity(), response.body().getStatus());
 
-                if(!getUserProfileResponseData.getProfilePic().isEmpty()){
-                    Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
+                    GetUserProfileResponseData getUserProfileResponseData = response.body().getData();
+
+                    if(!getUserProfileResponseData.getProfilePic().isEmpty()){
+                        Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
+                    }
+
+                    if(!getUserProfileResponseData.getFirstname().isEmpty()){
+                        editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
+                    }
+
+                    if(!getUserProfileResponseData.getLastname().isEmpty()){
+                        editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
+                    }
+
+                    if(!getUserProfileResponseData.getEmail().isEmpty()){
+                        editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
+                    }
+
                 }
 
-                if(!getUserProfileResponseData.getFirstname().isEmpty()){
-                    editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
-                }
-
-                if(!getUserProfileResponseData.getLastname().isEmpty()){
-                    editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
-                }
-
-                if(!getUserProfileResponseData.getEmail().isEmpty()){
-                    editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
-                }
 
 
             }
@@ -248,26 +252,28 @@ public class EditProfileFragment extends BaseFragment {
 
                 editProfileBinding.progressEdit.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
+                if (response.body() != null){
+                    AppValidator.showToast(requireActivity(), response.body().getStatus());
 
-                UpdateProfileDataResponse getUserProfileResponseData = response.body().getData();
+                    UpdateProfileDataResponse getUserProfileResponseData = response.body().getData();
 
-                if(!getUserProfileResponseData.getProfilePic().isEmpty()){
-                    Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
+                    if(!getUserProfileResponseData.getProfilePic().isEmpty()){
+                        Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
+                    }
+
+                    if(!getUserProfileResponseData.getFirstname().isEmpty()){
+                        editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
+                    }
+
+                    if(!getUserProfileResponseData.getLastname().isEmpty()){
+                        editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
+                    }
+
+                    if(!getUserProfileResponseData.getEmail().isEmpty()){
+                        editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
+                    }
                 }
 
-                if(!getUserProfileResponseData.getFirstname().isEmpty()){
-                    editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
-                }
-
-                if(!getUserProfileResponseData.getLastname().isEmpty()){
-                    editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
-                }
-
-                if(!getUserProfileResponseData.getEmail().isEmpty()){
-                    editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
-                }
 
 
             }
@@ -294,25 +300,28 @@ public class EditProfileFragment extends BaseFragment {
 
                 editProfileBinding.progressEdit.setVisibility(View.GONE);
 
-                assert response.body() != null;
-                AppValidator.showToast(requireActivity(), response.body().getStatus());
+                if (response.body() != null){
+                    AppValidator.showToast(requireActivity(), response.body().getStatus());
 
-                UpdateProfileDataResponse getUserProfileResponseData = response.body().getData();
+                    UpdateProfileDataResponse getUserProfileResponseData = response.body().getData();
 
-                if(!getUserProfileResponseData.getProfilePic().isEmpty()){
-                    Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
-                }
+                    if(!getUserProfileResponseData.getProfilePic().isEmpty()){
+                        Glide.with(requireActivity()).load(getUserProfileResponseData.getProfilePic()).into(editProfileBinding.ivUser);
+                    }
 
-                if(!getUserProfileResponseData.getFirstname().isEmpty()){
-                    editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
-                }
+                    if(!getUserProfileResponseData.getFirstname().isEmpty()){
+                        editProfileBinding.etFirstName.setText(getUserProfileResponseData.getFirstname());
+                    }
 
-                if(!getUserProfileResponseData.getLastname().isEmpty()){
-                    editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
-                }
+                    if(!getUserProfileResponseData.getLastname().isEmpty()){
+                        editProfileBinding.etLastName.setText(getUserProfileResponseData.getLastname());
+                    }
 
-                if(!getUserProfileResponseData.getEmail().isEmpty()){
-                    editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
+                    if(!getUserProfileResponseData.getEmail().isEmpty()){
+                        editProfileBinding.etEmail.setText(getUserProfileResponseData.getEmail());
+                    }
+
+
                 }
 
 
