@@ -15,6 +15,10 @@ import com.phorem.databinding.OtpVerifBinding;
 import com.phorem.utils.AppValidator;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,7 +78,7 @@ public class Otp_Verify extends BaseActivity {
             }
             @Override
             public void onFailure(@NotNull  Call<OtpVerifResponse> call,@NotNull Throwable t) {
-                otpVerifBinding.verifyProgress.setVisibility(View.GONE);
+                otpVerifBinding.verifyProgress.setVisibility(View.VISIBLE);
                 AppValidator.logData("otpVerificationError",""+t.getMessage());
             }
         });
@@ -101,19 +105,50 @@ public class Otp_Verify extends BaseActivity {
 
                 if (response.body() != null){
                     AppValidator.logData("RESPONSEEEEEEE=================", ""+response.body().getMessage());
+                    otpVerifBinding.verifyProgress.setVisibility(View.GONE);
                     AppValidator.showToast(Otp_Verify.this, response.body().getMessage());
                     if (response.body().getCode().contains("200")){
                         forgetPassRequestModel.getEmail();
 
                     }
 
+                }if(response.code() == 400){
+                    try {
+                        String errorBody = response.errorBody().string();
+                        AppValidator.logData("OTP_Verify_Message","" + errorBody);
+
+                        JSONObject json = null;
+
+                        try {
+                            json = new JSONObject(errorBody);
+
+                            // Extract The User Id From Json Object (With Try Catch)
+                            String stringToExtract = null;
+
+                            try {
+                                stringToExtract = json.getString("message");
+                                AppValidator.showToast(Otp_Verify.this, stringToExtract);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
 
             }
 
             @Override
             public void onFailure(@NotNull Call<ForgetPassResponse> call,@NotNull Throwable t) {
-                AppValidator.logData("forgetPassError",""+t.getMessage());
+                AppValidator.logData("otResendError",""+t.getMessage());
             }
 
         });

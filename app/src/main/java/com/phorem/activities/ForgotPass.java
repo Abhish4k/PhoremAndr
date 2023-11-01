@@ -58,7 +58,7 @@ public class ForgotPass extends BaseActivity {
               forgetPassBinding.forgotProgress.setVisibility(View.GONE);
 
                 if (response.body() != null){
-                    AppValidator.logData("RESPONSEEEEEEE=================", ""+response.body().getMessage());
+                    AppValidator.logData("RESPONSEEEEEEE=================", ""+response.body().getStatus());
                     AppValidator.showToast(ForgotPass.this, response.body().getMessage());
                     if (response.body().getCode().contains("200")){
                         goToVerifyPage(forgetPassRequestModel.getEmail());

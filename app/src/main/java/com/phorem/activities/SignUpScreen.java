@@ -32,9 +32,6 @@ public class SignUpScreen extends BaseActivity {
     @Override
     public ActivitySignupBinding getViewModel() {
         signupBinding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
-
-
-
         return signupBinding;
     }
 
